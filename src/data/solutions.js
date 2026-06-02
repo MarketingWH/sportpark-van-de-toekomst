@@ -179,7 +179,7 @@ const ecorasterPadMedia = [
 ];
 
 const terrasMedia = [
-  youtubeMedia('https://www.youtube.com/watch?v=1fgJqrIESL0', 'Klimaatadaptief terras video'),
+  youtubeMedia('https://www.youtube.com/watch?v=2pCCWXfbRPU', 'Klimaatadaptief terras video'),
   ...folderMedia(
     'Klimaatadaptief terras',
     [

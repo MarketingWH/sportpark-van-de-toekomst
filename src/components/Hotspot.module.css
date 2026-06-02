@@ -1,0 +1,91 @@
+.hotspotButton {
+  position: relative;
+  width: 1.3rem;
+  height: 1.3rem;
+  padding: 0;
+  border-radius: 50%;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.core,
+.outerRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.core {
+  inset: 0.22rem;
+  background:
+    radial-gradient(circle at 35% 35%, #ffffff 0%, rgba(250, 252, 253, 0.96) 42%, rgba(184, 201, 211, 0.86) 100%);
+  box-shadow:
+    0 0 0 0.12rem rgba(255, 255, 255, 0.12),
+    0 0 1rem color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.outerRing {
+  border: 1px solid rgba(243, 247, 250, 0.72);
+  opacity: 0.6;
+  animation: pulse 3.2s ease-in-out infinite;
+}
+
+.active .outerRing {
+  border-color: color-mix(in srgb, var(--accent) 38%, white 62%);
+  opacity: 0.92;
+}
+
+.tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.68rem);
+  transform: translate(-50%, 0.32rem);
+  min-width: 10rem;
+  padding: 0.66rem 0.8rem;
+  border-radius: 0.95rem;
+  border: 1px solid rgba(198, 226, 211, 0.12);
+  background: rgba(6, 16, 27, 0.86);
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.18);
+  color: #eff8f1;
+  text-align: left;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+  backdrop-filter: blur(16px);
+}
+
+.tooltip strong {
+  display: block;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.tooltip small {
+  display: block;
+  margin-top: 0.18rem;
+  color: rgba(230, 239, 232, 0.66);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tooltipVisible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(0.95);
+    opacity: 0.38;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: 0.8;
+  }
+}

@@ -1,0 +1,201 @@
+.routeRail {
+  position: absolute;
+  right: 2.4rem;
+  top: 10.8rem;
+  z-index: 7;
+  display: grid;
+  gap: 1rem;
+  pointer-events: none;
+}
+
+.routeLabel {
+  justify-self: end;
+  color: rgba(235, 241, 245, 0.66);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.routeItems {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.routeItem {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.85rem;
+  color: rgba(243, 247, 249, 0.74);
+  cursor: pointer;
+  transition: color 180ms ease;
+  pointer-events: auto;
+}
+
+.routeMeta {
+  display: grid;
+  justify-items: end;
+  gap: 0.16rem;
+  opacity: 0;
+  transform: translateX(0.5rem);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.routeMeta small {
+  color: rgba(224, 233, 239, 0.54);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.routeMeta strong {
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.routeIndex {
+  width: 2.95rem;
+  height: 2.95rem;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(239, 244, 247, 0.18);
+  background: rgba(7, 18, 31, 0.12);
+  backdrop-filter: blur(10px);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.routeItem:hover .routeMeta,
+.routeItemActive .routeMeta {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.routeItem:hover .routeIndex,
+.routeItemActive .routeIndex {
+  transform: scale(1.02);
+  border-color: rgba(239, 244, 247, 0.34);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.controlDock {
+  position: absolute;
+  right: 2.2rem;
+  bottom: 2rem;
+  z-index: 5;
+  display: inline-flex;
+  gap: 0.75rem;
+  padding: 0.76rem;
+  border-radius: 999px;
+  border: 1px solid rgba(239, 244, 247, 0.14);
+  background: rgba(7, 18, 31, 0.32);
+  backdrop-filter: blur(18px);
+}
+
+.controlButton {
+  min-width: 9rem;
+  padding: 0.84rem 1.08rem;
+  border-radius: 999px;
+  border: 1px solid rgba(239, 244, 247, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(244, 247, 249, 0.9);
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+}
+
+.controlButton:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.controlButtonActive {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.discoverHint {
+  position: absolute;
+  left: 2.4rem;
+  bottom: 2.5rem;
+  z-index: 4;
+  color: rgba(236, 242, 247, 0.8);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1180px) {
+  .routeRail {
+    right: 1rem;
+    top: 6.6rem;
+  }
+
+  .controlDock {
+    right: 1rem;
+    bottom: 1rem;
+  }
+
+  .discoverHint {
+    left: 1rem;
+    bottom: 6rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .routeRail {
+    right: 0.75rem;
+    left: 0.75rem;
+    top: 5.4rem;
+    transform: none;
+    justify-items: start;
+  }
+
+  .routeLabel {
+    justify-self: start;
+  }
+
+  .routeItems {
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    overflow-x: auto;
+    max-width: calc(100vw - 1.5rem);
+    padding-bottom: 0.2rem;
+  }
+
+  .routeItem {
+    grid-template-columns: auto;
+    justify-items: center;
+  }
+
+  .routeMeta {
+    justify-items: center;
+    order: 2;
+    max-width: 7rem;
+    text-align: center;
+    transform: translateY(-0.2rem);
+  }
+
+  .controlDock {
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    display: grid;
+  }
+
+  .controlButton {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .discoverHint {
+    display: none;
+  }
+}

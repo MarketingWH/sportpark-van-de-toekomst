@@ -1,0 +1,9 @@
+node_modules/
+dist/
+vite-*.log
+vite-*.err.log
+vite-*.out.log
+.vercel/
+preview*.log
+qa-*.png
+qa-performance-dom.html

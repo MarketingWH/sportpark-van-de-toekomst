@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sportpark van de Toekomst</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{overflow:hidden;background:#0d1b2e;font-family:'Segoe UI',system-ui,sans-serif;color:#fff}
+#canvas{display:block;position:fixed;top:0;left:0}
+#header{position:fixed;top:0;left:0;right:0;padding:24px 32px;background:linear-gradient(180deg,rgba(0,0,0,.72) 0%,transparent 100%);z-index:50;pointer-events:none}
+#header .logo{font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#4CAF50;margin-bottom:6px}
+#header h1{font-size:24px;font-weight:200;letter-spacing:5px;text-transform:uppercase}
+#header .sub{font-size:11px;color:rgba(255,255,255,.5);margin-top:5px;letter-spacing:2px}
+#nav-dots{position:fixed;right:22px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:14px;z-index:50}
+.nav-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:all .3s;border:1px solid rgba(255,255,255,.15)}
+.nav-dot.active{background:#4CAF50;transform:scale(1.6)}
+.nav-dot:hover{background:rgba(255,255,255,.6)}
+#controls{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:10px;align-items:center;z-index:50}
+.cbtn{padding:9px 20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.8);border-radius:30px;cursor:pointer;font-size:12px;font-weight:500;letter-spacing:.8px;backdrop-filter:blur(12px);transition:all .25s;white-space:nowrap}
+.cbtn:hover{background:rgba(255,255,255,.15);color:#fff}
+.cbtn.on{background:rgba(76,175,80,.28);border-color:rgba(76,175,80,.55);color:#7CFC7C}
+#progress{position:fixed;bottom:0;left:0;height:2px;background:linear-gradient(90deg,#4CAF50,#8BC34A);transition:width .1s linear;z-index:50}
+#tooltip{position:fixed;pointer-events:none;z-index:60;background:rgba(5,15,30,.92);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 14px;font-size:13px;backdrop-filter:blur(10px);transition:opacity .2s,transform .2s;opacity:0;transform:translateY(4px)}
+#tooltip.vis{opacity:1;transform:translateY(0)}
+#tooltip .tt-name{font-weight:500;margin-bottom:2px}
+#tooltip .tt-hint{font-size:10px;color:rgba(255,255,255,.45);letter-spacing:1px}
+#panel{position:fixed;right:0;top:0;bottom:0;width:390px;background:rgba(5,15,30,.96);backdrop-filter:blur(20px);border-left:1px solid rgba(255,255,255,.07);transform:translateX(100%);transition:transform .45s cubic-bezier(.16,1,.3,1);z-index:100;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent}
+#panel::-webkit-scrollbar{width:3px}
+#panel::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1)}
+#panel.open{transform:translateX(0)}
+.ph{padding:28px 26px 20px;border-bottom:1px solid rgba(255,255,255,.06);position:relative}
+.pcat{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px}
+.ptitle{font-size:19px;font-weight:300;line-height:1.35}
+.pclose{position:absolute;top:22px;right:22px;width:30px;height:30px;border:1px solid rgba(255,255,255,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:rgba(255,255,255,.45);transition:all .2s}
+.pclose:hover{background:rgba(255,255,255,.1);color:#fff}
+.pb{padding:22px 26px}
+.pdesc{font-size:13px;line-height:1.75;color:rgba(255,255,255,.6);margin-bottom:22px}
+.flist{list-style:none;margin-bottom:24px}
+.flist li{font-size:13px;color:rgba(255,255,255,.68);padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:flex-start;gap:9px}
+.flist li::before{content:'✓';color:#4CAF50;font-weight:700;flex-shrink:0;margin-top:1px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+.sc{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:13px 15px}
+.sv{font-size:21px;font-weight:600;margin-bottom:3px}
+.sl{font-size:10px;color:rgba(255,255,255,.38);letter-spacing:.8px}
+.pcta{display:block;width:100%;padding:13px;background:#4CAF50;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:background .2s;text-align:center;text-decoration:none;margin-top:4px}
+.pcta:hover{background:#43A047}
+#loading{position:fixed;inset:0;background:#0d1b2e;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;transition:opacity .8s}
+.lt{font-size:12px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:18px}
+.lb{width:200px;height:2px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
+.lf{height:100%;background:#4CAF50;width:0;transition:width .1s linear}
+#err{position:fixed;inset:0;background:#0d1b2e;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:2000;text-align:center;padding:40px}
+#err h2{color:#ef5350;margin-bottom:12px}
+#err p{color:rgba(255,255,255,.5);font-size:13px;line-height:1.6}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+<div id="loading">
+  <div class="lt">Sportpark laden...</div>
+  <div class="lb"><div class="lf" id="lf"></div></div>
+</div>
+
+<div id="err">
+  <h2>Kon Three.js niet laden</h2>
+  <p>Controleer je internetverbinding en herlaad de pagina.<br>Three.js wordt geladen via CDN (cdn.jsdelivr.net).</p>
+</div>
+
+<div id="header">
+  <div class="logo">Innovatief &amp; Duurzaam</div>
+  <h1>Sportpark van de Toekomst</h1>
+  <div class="sub">Klik op de lichtpunten om onze producten te ontdekken</div>
+</div>
+
+<div id="nav-dots"></div>
+
+<div id="controls">
+  <button class="cbtn on" id="btnAuto" onclick="toggleAuto()">&#9654; Auto Vlucht</button>
+  <button class="cbtn" onclick="changeSpeed(-1)">&#8592; Langzamer</button>
+  <button class="cbtn" onclick="changeSpeed(1)">Sneller &#8594;</button>
+  <button class="cbtn" id="btnExplore" onclick="toggleExplore()">&#x2638; Verken Zelf</button>
+</div>
+
+<div id="progress" style="width:0%"></div>
+
+<div id="tooltip">
+  <div class="tt-name"></div>
+  <div class="tt-hint">KLIK VOOR INFO</div>
+</div>
+
+<div id="panel">
+  <div class="ph">
+    <div class="pcat" id="pcat"></div>
+    <div class="ptitle" id="ptitle"></div>
+    <div class="pclose" onclick="closePanel()">&#x2715;</div>
+  </div>
+  <div class="pb">
+    <p class="pdesc" id="pdesc"></p>
+    <ul class="flist" id="pfeatures"></ul>
+    <div class="stats" id="pstats"></div>
+    <a class="pcta" href="mailto:info@example.com" id="pcta">Meer informatie aanvragen</a>
+  </div>
+</div>
+
+<!-- Laad Three.js via gewone script-tags (meest betrouwbaar) -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+<script>
+// Controleer of Three.js geladen is
+if (typeof THREE === 'undefined') {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('err').style.display = 'flex';
+  throw new Error('Three.js niet geladen');
+}
+
+// ── PRODUCTEN ────────────────────────────────────────────────────────────────
+var PRODUCTS = [
+  {
+    name: 'GreenMatter Fietsparkeerssysteem',
+    cat: 'Mobiliteit & Duurzaamheid',
+    color: 0x4CAF50, hex: '#4CAF50',
+    pos: { x: 38, y: 0, z: 5 },
+    desc: 'Ons fietsparkeerssysteem is vervaardigd uit 100% gerecycled kunststof en biedt een robuuste, esthetische en volledig onderhoudsvrije oplossing voor het stallen van fietsen in sportparken en openbare ruimtes.',
+    features: ['100% gerecycled kunststof materiaal','UV- en weerbestendig voor extreme omstandigheden','Modulair uitbreidbaar – van 4 tot 100+ fietsen','Geen schilderen, behandelen of onderhoud nodig','Beschikbaar in elke RAL-kleur op aanvraag'],
+    stats: [{v:'100%',l:'Gerecycled'},{v:'25j',l:'Garantie'},{v:'0',l:'Onderhoud'},{v:'20',l:'Fietsen/module'}]
+  },
+  {
+    name: 'Walbeschoeiing',
+    cat: 'Waterbeheer & Oeverwerk',
+    color: 0x29B6F6, hex: '#29B6F6',
+    pos: { x: -5, y: 0, z: -48 },
+    desc: 'Onze walbeschoeiing van gerecycled kunststof beschermt oevers duurzaam en effectief. Het materiaal rot niet, trekt geen paalworm aan en bevat geen giftige impregneeringsmiddelen – ideaal voor ecologisch verantwoorde projecten.',
+    features: ['Geen paalrot of aantasting door organismen','Vrij van giftige impregneermiddelen','Bevordert biodiversiteit langs wateroevers','Eenvoudige en snelle installatie','Levensduur van minimaal 50 jaar'],
+    stats: [{v:'50j',l:'Levensduur'},{v:'0%',l:'Chemicaliën'},{v:'↑',l:'Biodiversiteit'},{v:'A+',l:'Milieuscore'}]
+  },
+  {
+    name: 'Damwand',
+    cat: 'Civiele Techniek',
+    color: 0x90A4AE, hex: '#90A4AE',
+    pos: { x: -45, y: 0, z: -30 },
+    desc: 'Duurzame kunststof damwanden als milieuvriendelijk alternatief voor staal of beton. Corrosievrij, geluidsabsorberend en geschikt voor permanent watercontact – met een drastisch lagere CO₂-voetafdruk dan traditionele varianten.',
+    features: ['Corrosievrij – geen roestvorming ooit','Geluidsabsorberende profielen','Geschikt voor permanent water- en grondcontact','Snelle plaatsing met minimale omgevingshinder','Tot 40% lagere CO₂-uitstoot vs. stalen damwand'],
+    stats: [{v:'75j',l:'Levensduur'},{v:'-40%',l:'CO₂ vs staal'},{v:'0',l:'Onderhoud'},{v:'100%',l:'Recyclebaar'}]
+  },
+  {
+    name: 'Klimaatadaptieve Parkeerplaats',
+    cat: 'Ecoraster Verharding',
+    color: 0x8BC34A, hex: '#8BC34A',
+    pos: { x: -42, y: 0, z: 15 },
+    desc: 'De klimaatadaptieve parkeerplaats met Ecoraster combineert parkeerruimte met waterberging en groenstructuur. Regenwater infiltreert direct in de bodem via het open rasterprofiel, waardoor hittestress en piekafvoer worden verminderd.',
+    features: ['Waterpasserende verharding: tot 400 L/m²/uur','Vermindert hitte-eilandeffect met 30%','Draagkracht tot 400 ton/m² – geschikt voor alle voertuigen','Gras- of grindvulling naar keuze','Volledig demonteerbaar en herbruikbaar'],
+    stats: [{v:'400L',l:'Afvoer/m²/u'},{v:'-30%',l:'Hitte eiland'},{v:'400t',l:'Draagkracht/m²'},{v:'100%',l:'Recyclebaar'}]
+  },
+  {
+    name: 'Klimaatadaptief Terras',
+    cat: 'GreenMatter + Ecoraster',
+    color: 0xFF9800, hex: '#FF9800',
+    pos: { x: 15, y: 0, z: 42 },
+    desc: 'Een volledig circulair buitenterras met GreenMatter picknicktafels en Ecoraster terrasvloeren. Waterpasserend, onderhoudsvrij en hittebestendig – de perfecte duurzame buitenruimte voor elk sportpark of recreatiegebied.',
+    features: ['GreenMatter picknicktafels: 100% gerecycled','Ecoraster tegels: waterpasserend en hittebestendig','Splintervrij – veilig voor kinderen en sporters','Geen verzakking of vorstschade','Kleur en vorm stabiel voor decennia'],
+    stats: [{v:'0',l:'Onderhoud'},{v:'25j',l:'Garantie'},{v:'100%',l:'Circulair'},{v:'-25%',l:'Piekafvoer'}]
+  }
+];
+
+// ── RENDERER ─────────────────────────────────────────────────────────────────
+var canvas = document.getElementById('canvas');
+var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+
+var scene = new THREE.Scene();
+scene.background = new THREE.Color(0x7dc4e0);
+scene.fog = new THREE.FogExp2(0x9fd4e8, 0.006);
+
+var camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 500);
+
+// ── VERLICHTING ───────────────────────────────────────────────────────────────
+scene.add(new THREE.HemisphereLight(0x87ceeb, 0x3d7a3d, 0.7));
+var sun = new THREE.DirectionalLight(0xfff8e8, 1.8);
+sun.position.set(80, 130, 60);
+sun.castShadow = true;
+sun.shadow.camera.near = 1;
+sun.shadow.camera.far = 400;
+sun.shadow.camera.left = -110;
+sun.shadow.camera.right = 110;
+sun.shadow.camera.top = 110;
+sun.shadow.camera.bottom = -110;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.bias = -0.0004;
+scene.add(sun);
+
+// ── HELPER FUNCTIES ───────────────────────────────────────────────────────────
+function mkBox(w, h, d, color, x, y, z, cast, recv) {
+  if (cast === undefined) cast = true;
+  if (recv === undefined) recv = true;
+  var m = new THREE.Mesh(
+    new THREE.BoxGeometry(w, h, d),
+    new THREE.MeshLambertMaterial({ color: color })
+  );
+  m.position.set(x, y, z);
+  m.castShadow = cast;
+  m.receiveShadow = recv;
+  scene.add(m);
+  return m;
+}
+
+function slab(w, d, color, x, z) {
+  var y = arguments.length > 5 ? arguments[5] : 0.025;
+  return mkBox(w, 0.05, d, color, x, y, z, false, true);
+}
+
+// ── TERREIN ───────────────────────────────────────────────────────────────────
+slab(260, 260, 0x4a7c3f, 0, 0);
+
+// Sportveld
+slab(46, 72, 0x2d8a3e, 0, 0, 0.03);
+// Veldlijnen
+slab(46, 0.3, 0xffffff, 0, -35, 0.07);
+slab(46, 0.3, 0xffffff, 0, 35, 0.07);
+slab(46, 0.3, 0xffffff, 0, 0, 0.07);
+slab(0.3, 72, 0xffffff, -23, 0, 0.07);
+slab(0.3, 72, 0xffffff, 23, 0, 0.07);
+// Doelen
+[-1, 1].forEach(function(s) {
+  mkBox(0.2, 2, 6, 0xffffff, s * 23, 1, 0);
+  mkBox(0.2, 2, 6, 0xffffff, s * 25.5, 1, 0);
+  mkBox(2.6, 0.2, 6, 0xffffff, s * 24.25, 2, 0);
+});
+
+// Atletiekbaan (vereenvoudigd als rechthoekige rand)
+slab(50, 82, 0xd4742a, 0, 0, 0.015);
+slab(44, 74, 0x2d8a3e, 0, 0, 0.025); // veld opnieuw bovenop
+
+// Paden
+slab(7, 140, 0xd8cfc0, 68, 0);
+slab(7, 140, 0xd8cfc0, -68, 0);
+slab(140, 7, 0xd8cfc0, 0, 68);
+slab(140, 7, 0xd8cfc0, 0, -68);
+
+// ── WATER / KANAAL ────────────────────────────────────────────────────────────
+var waterGeo = new THREE.PlaneGeometry(130, 22);
+var waterMat = new THREE.MeshLambertMaterial({ color: 0x1a6b9a });
+var waterMesh = new THREE.Mesh(waterGeo, waterMat);
+waterMesh.rotation.x = -Math.PI / 2;
+waterMesh.position.set(-5, 0.12, -57);
+scene.add(waterMesh);
+slab(130, 3, 0x3d6e32, -5, -47, 0.01);
+slab(130, 3, 0x3d6e32, -5, -67, 0.01);
+
+// ── GEBOUWEN ──────────────────────────────────────────────────────────────────
+// Sportzaal
+mkBox(22, 9, 16, 0xe8e2d2, -26, 4.5, 18);
+mkBox(22, 1.5, 17, 0xb5a880, -26, 9.25, 18);
+// Ramen
+mkBox(3.5, 3, 0.2, 0x7ab8d9, -23, 5, 10, false);
+mkBox(3.5, 3, 0.2, 0x7ab8d9, -18, 5, 10, false);
+mkBox(3.5, 3, 0.2, 0x7ab8d9, -13, 5, 10, false);
+// Entreepaviloen
+mkBox(13, 6, 11, 0xf0eade, 20, 3, 18);
+mkBox(13, 1, 11, 0xc4a86c, 20, 6.5, 18);
+// Tribune
+mkBox(12, 2, 6, 0xd0c8b8, -26, 1, 32);
+mkBox(12, 1.5, 6, 0xd0c8b8, -26, 2.75, 30);
+
+// ── BOMEN ─────────────────────────────────────────────────────────────────────
+function mkTree(x, z, s) {
+  if (!s) s = 1;
+  var g = new THREE.Group();
+  var trunkMat = new THREE.MeshLambertMaterial({ color: 0x6b4423 });
+  var trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.18 * s, 0.28 * s, 2.2 * s, 7), trunkMat);
+  trunk.position.y = 1.1 * s;
+  trunk.castShadow = true;
+  g.add(trunk);
+  var h = 0.22 + Math.random() * 0.1;
+  var foliageMat = new THREE.MeshLambertMaterial({ color: new THREE.Color().setHSL(0.28, 0.55, h) });
+  for (var i = 0; i < 3; i++) {
+    var cone = new THREE.Mesh(
+      new THREE.ConeGeometry((3.2 - i * 0.7) * s, (2.2 - i * 0.15) * s, 8),
+      foliageMat
+    );
+    cone.position.y = (2.2 + i * 1.4) * s;
+    cone.castShadow = true;
+    g.add(cone);
+  }
+  g.position.set(x, 0, z);
+  scene.add(g);
+}
+
+var treePos = [
+  [58,-58],[68,-42],[58,-22],[68,8],[58,28],[62,55],
+  [-58,-58],[-68,-42],[-58,-22],[-68,8],[-58,28],[-62,55],
+  [22,-62],[40,-62],[-22,-62],[-40,-62],
+  [12,62],[28,62],[-16,62],[-32,62],
+  [-40,10],[-40,22],[-40,30],[14,32],[32,36],[10,48],
+  [48,-8],[48,18],[52,40]
+];
+treePos.forEach(function(p) { mkTree(p[0], p[1], 0.75 + Math.random() * 0.45); });
+
+// ── PRODUCT STRUCTUREN ────────────────────────────────────────────────────────
+
+// 1 — FIETSPARKEERSSYSTEEM
+var bikeG = new THREE.Group();
+var rackMat = new THREE.MeshLambertMaterial({ color: 0x2E7D32 });
+for (var i = 0; i < 5; i++) {
+  var px = i * 2.2 - 4.4;
+  [0, 0.9].forEach(function(pz) {
+    var p = new THREE.Mesh(new THREE.BoxGeometry(0.14, 1.05, 0.14), rackMat);
+    p.position.set(px, 0.52, pz); p.castShadow = true; bikeG.add(p);
+  });
+  var bar = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.95), rackMat);
+  bar.position.set(px, 0.92, 0.45); bikeG.add(bar);
+}
+var roofMat = new THREE.MeshLambertMaterial({ color: 0x1B5E20 });
+var roof = new THREE.Mesh(new THREE.BoxGeometry(11, 0.18, 3.8), roofMat);
+roof.position.set(0, 2.55, 0.45); bikeG.add(roof);
+[[-4.8,0],[4.8,0],[-4.8,0.9],[4.8,0.9]].forEach(function(pp) {
+  var post = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 2.55, 7), rackMat);
+  post.position.set(pp[0], 1.27, pp[1]); bikeG.add(post);
+});
+slab(13, 5, 0xc8b89a, 0, 0.45);
+bikeG.position.set(38, 0, 5);
+scene.add(bikeG);
+
+// 2 — WALBESCHOEIING
+var walbG = new THREE.Group();
+var wpMat = new THREE.MeshLambertMaterial({ color: 0x2e5c2e });
+for (var i = 0; i < 22; i++) {
+  var plank = new THREE.Mesh(new THREE.BoxGeometry(0.22, 2.8, 0.55), wpMat);
+  plank.position.set(i * 2.55 - 28, 0.9, 0); plank.castShadow = true; walbG.add(plank);
+}
+var cap = new THREE.Mesh(new THREE.BoxGeometry(58, 0.3, 0.65), new THREE.MeshLambertMaterial({ color: 0x1a3d1a }));
+cap.position.set(0, 2.4, 0); walbG.add(cap);
+walbG.position.set(-5, -0.25, -47);
+scene.add(walbG);
+
+// 3 — DAMWAND
+var damG = new THREE.Group();
+var dmMat = new THREE.MeshLambertMaterial({ color: 0x455A64 });
+var dmDark = new THREE.MeshLambertMaterial({ color: 0x37474F });
+for (var i = 0; i < 16; i++) {
+  var sheet = new THREE.Mesh(new THREE.BoxGeometry(0.11, 4.5, 2.2), dmMat);
+  sheet.position.set(i * 2.35 - 18.8, 1.8, 0); sheet.castShadow = true; damG.add(sheet);
+  [-1.12, 1.12].forEach(function(rz) {
+    var ridge = new THREE.Mesh(new THREE.BoxGeometry(0.07, 4.5, 0.12), dmDark);
+    ridge.position.set(i * 2.35 - 18.8, 1.8, rz); damG.add(ridge);
+  });
+}
+damG.position.set(-45, -0.4, -30);
+scene.add(damG);
+
+// 4 — ECORASTER PARKEERPLAATS
+var ecoG = new THREE.Group();
+var ecoFrMat = new THREE.MeshLambertMaterial({ color: 0x558B2F });
+var ecoGrMat = new THREE.MeshLambertMaterial({ color: 0x66BB6A });
+var cs = 3, ecoCols = 8, ecoRows = 6;
+for (var r = 0; r < ecoRows; r++) {
+  for (var c = 0; c < ecoCols; c++) {
+    var fx = c * cs - ecoCols * cs / 2 + cs / 2;
+    var fz = r * cs - ecoRows * cs / 2 + cs / 2;
+    var frame = new THREE.Mesh(new THREE.BoxGeometry(cs - 0.12, 0.13, cs - 0.12), ecoFrMat);
+    frame.position.set(fx, 0.065, fz); frame.receiveShadow = true; ecoG.add(frame);
+    var grass = new THREE.Mesh(new THREE.BoxGeometry(cs - 0.45, 0.07, cs - 0.45), ecoGrMat);
+    grass.position.set(fx, 0.02, fz); ecoG.add(grass);
+  }
+}
+for (var r = 0; r <= 3; r++) {
+  var line = new THREE.Mesh(
+    new THREE.BoxGeometry(ecoCols * cs, 0.02, 0.15),
+    new THREE.MeshLambertMaterial({ color: 0xffffff })
+  );
+  line.position.set(0, 0.14, r * 2 * cs - ecoRows * cs / 2); ecoG.add(line);
+}
+ecoG.position.set(-42, 0, 15);
+scene.add(ecoG);
+
+// 5 — KLIMAATADAPTIEF TERRAS
+var terG = new THREE.Group();
+var tileMat = new THREE.MeshLambertMaterial({ color: 0x8D6E63 });
+var tileAltMat = new THREE.MeshLambertMaterial({ color: 0x795548 });
+var ts = 2.4, tCols = 10, tRows = 7;
+for (var r = 0; r < tRows; r++) {
+  for (var c = 0; c < tCols; c++) {
+    var tile = new THREE.Mesh(
+      new THREE.BoxGeometry(ts - 0.1, 0.09, ts - 0.1),
+      (r + c) % 2 === 0 ? tileMat : tileAltMat
+    );
+    tile.position.set(c * ts - tCols * ts / 2 + ts / 2, 0.045, r * ts - tRows * ts / 2 + ts / 2);
+    tile.receiveShadow = true; terG.add(tile);
+  }
+}
+var tpMat = new THREE.MeshLambertMaterial({ color: 0x33691E });
+var tlMat = new THREE.MeshLambertMaterial({ color: 0x1B5E20 });
+[[-9,-5],[0,-5],[9,-5],[-9,1],[0,1],[9,1]].forEach(function(tp) {
+  var tx = tp[0], tz = tp[1];
+  var top = new THREE.Mesh(new THREE.BoxGeometry(2.5, 0.1, 1.05), tpMat);
+  top.position.set(tx, 0.88, tz); top.castShadow = true; terG.add(top);
+  [-1, 1].forEach(function(s) {
+    var leg = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.82, 0.08), tlMat);
+    leg.position.set(tx + s * 0.85, 0.44, tz); terG.add(leg);
+    var bench = new THREE.Mesh(new THREE.BoxGeometry(2.5, 0.08, 0.38), tpMat);
+    bench.position.set(tx, 0.56, tz + s * 0.88); bench.castShadow = true; terG.add(bench);
+    [-1, 1].forEach(function(bx) {
+      var bl = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.56, 0.06), tlMat);
+      bl.position.set(tx + bx * 0.85, 0.28, tz + s * 0.88); terG.add(bl);
+    });
+  });
+});
+terG.position.set(15, 0, 42);
+scene.add(terG);
+
+// ── HOTSPOTS ──────────────────────────────────────────────────────────────────
+var hotspots = [];
+var clickTargets = [];
+
+PRODUCTS.forEach(function(p, idx) {
+  var g = new THREE.Group();
+  g.position.set(p.pos.x, p.pos.y, p.pos.z);
+
+  var ringMat = new THREE.MeshBasicMaterial({ color: p.color, transparent: true, opacity: 0.55 });
+  var ring = new THREE.Mesh(new THREE.TorusGeometry(1.6, 0.1, 12, 36), ringMat);
+  ring.rotation.x = -Math.PI / 2; ring.position.y = 0.18; g.add(ring);
+
+  var pulseMat = new THREE.MeshBasicMaterial({ color: p.color, transparent: true, opacity: 0.25 });
+  var pulse = new THREE.Mesh(new THREE.TorusGeometry(2.5, 0.06, 8, 36), pulseMat);
+  pulse.rotation.x = -Math.PI / 2; pulse.position.y = 0.12; g.add(pulse);
+
+  var beamMat = new THREE.MeshBasicMaterial({ color: p.color, transparent: true, opacity: 0.35 });
+  var beam = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.09, 3, 8), beamMat);
+  beam.position.y = 1.5; g.add(beam);
+
+  var beaconMat = new THREE.MeshBasicMaterial({ color: p.color });
+  var beacon = new THREE.Mesh(new THREE.SphereGeometry(0.52, 16, 16), beaconMat);
+  beacon.position.y = 3; g.add(beacon);
+
+  g._ring = ring; g._pulse = pulse; g._beam = beam; g._beacon = beacon; g._idx = idx;
+  hotspots.push(g);
+  clickTargets.push(beacon);
+  scene.add(g);
+});
+
+// ── NAV DOTS ─────────────────────────────────────────────────────────────────
+var ndEl = document.getElementById('nav-dots');
+PRODUCTS.forEach(function(p, i) {
+  var d = document.createElement('div');
+  d.className = 'nav-dot'; d.title = p.name;
+  d.addEventListener('click', function() { flyTo(i); });
+  ndEl.appendChild(d);
+});
+
+function refreshDots() {
+  var closest = -1, cd = Infinity;
+  PRODUCTS.forEach(function(p, i) {
+    var pp = new THREE.Vector3(p.pos.x, p.pos.y, p.pos.z);
+    var dd = camera.position.distanceTo(pp);
+    if (dd < cd) { cd = dd; closest = i; }
+  });
+  var dots = document.querySelectorAll('.nav-dot');
+  dots.forEach(function(d, i) { d.classList.toggle('active', i === closest && cd < 30); });
+}
+
+// ── CAMERA PAD ────────────────────────────────────────────────────────────────
+var camPts = [
+  new THREE.Vector3(0,   68,  92),
+  new THREE.Vector3(45,  38,  72),
+  new THREE.Vector3(58,  14,  22),
+  new THREE.Vector3(48,   7,   6),  // fietspark
+  new THREE.Vector3(28,   9, -18),
+  new THREE.Vector3(5,    7, -44),  // walbeschoeiing
+  new THREE.Vector3(-28,  9, -42), // damwand
+  new THREE.Vector3(-55,  8, -14),
+  new THREE.Vector3(-56,  7,  18), // ecoraster
+  new THREE.Vector3(-32,  9,  38),
+  new THREE.Vector3(10,   6,  52), // terras
+  new THREE.Vector3(32,   9,  56),
+  new THREE.Vector3(52,  22,  42),
+  new THREE.Vector3(28,  48,  82)
+];
+var lookPts = [
+  new THREE.Vector3(0,4,0),
+  new THREE.Vector3(0,4,0),
+  new THREE.Vector3(38,2,5),
+  new THREE.Vector3(38,1,5),
+  new THREE.Vector3(-5,1,-48),
+  new THREE.Vector3(-5,1,-48),
+  new THREE.Vector3(-45,1,-30),
+  new THREE.Vector3(-45,1,-30),
+  new THREE.Vector3(-42,1,15),
+  new THREE.Vector3(-42,1,15),
+  new THREE.Vector3(15,1,42),
+  new THREE.Vector3(15,1,42),
+  new THREE.Vector3(0,4,0),
+  new THREE.Vector3(0,4,0)
+];
+var camPath = new THREE.CatmullRomCurve3(camPts, true, 'catmullrom', 0.5);
+var lookPath = new THREE.CatmullRomCurve3(lookPts, true, 'catmullrom', 0.5);
+
+// ── ORBIT CONTROLS ────────────────────────────────────────────────────────────
+var oc = new THREE.OrbitControls(camera, renderer.domElement);
+oc.enableDamping = true; oc.dampingFactor = 0.06;
+oc.minDistance = 5; oc.maxDistance = 220;
+oc.maxPolarAngle = Math.PI / 2.15;
+oc.enabled = false;
+
+// ── PANEEL ────────────────────────────────────────────────────────────────────
+function openPanel(i) {
+  var p = PRODUCTS[i];
+  document.getElementById('pcat').textContent = p.cat;
+  document.getElementById('pcat').style.color = p.hex;
+  document.getElementById('ptitle').textContent = p.name;
+  document.getElementById('pdesc').textContent = p.desc;
+  var fl = document.getElementById('pfeatures'); fl.innerHTML = '';
+  p.features.forEach(function(f) { var li = document.createElement('li'); li.textContent = f; fl.appendChild(li); });
+  var st = document.getElementById('pstats'); st.innerHTML = '';
+  p.stats.forEach(function(s) {
+    var c = document.createElement('div'); c.className = 'sc';
+    c.innerHTML = '<div class="sv" style="color:' + p.hex + '">' + s.v + '</div><div class="sl">' + s.l + '</div>';
+    st.appendChild(c);
+  });
+  document.getElementById('panel').classList.add('open');
+}
+
+function closePanel() { document.getElementById('panel').classList.remove('open'); }
+
+// ── VLIEGEN NAAR PRODUCT ──────────────────────────────────────────────────────
+var flyRAF = null;
+function flyTo(idx) {
+  autoOn = false; exploreOn = false; oc.enabled = false;
+  document.getElementById('btnAuto').classList.remove('on');
+  document.getElementById('btnExplore').classList.remove('on');
+  if (flyRAF) cancelAnimationFrame(flyRAF);
+  var p = PRODUCTS[idx];
+  var target = new THREE.Vector3(p.pos.x + 10, p.pos.y + 12, p.pos.z + 14);
+  var lookAt = new THREE.Vector3(p.pos.x, p.pos.y, p.pos.z);
+  var start = camera.position.clone();
+  var t0 = Date.now(), dur = 2200;
+  (function step() {
+    var a = Math.min((Date.now() - t0) / dur, 1);
+    var e = 1 - Math.pow(1 - a, 4);
+    camera.position.lerpVectors(start, target, e);
+    camera.lookAt(lookAt);
+    if (a < 1) { flyRAF = requestAnimationFrame(step); }
+    else { openPanel(idx); flyRAF = null; }
+  })();
+}
+
+// ── STAAT & KNOPPEN ───────────────────────────────────────────────────────────
+var autoOn = true, exploreOn = false, pathT = 0, speed = 0.00032;
+
+function toggleAuto() {
+  autoOn = !autoOn; exploreOn = false; oc.enabled = false;
+  document.getElementById('btnAuto').classList.toggle('on', autoOn);
+  document.getElementById('btnExplore').classList.remove('on');
+}
+function toggleExplore() {
+  exploreOn = !exploreOn; autoOn = false; oc.enabled = exploreOn;
+  document.getElementById('btnExplore').classList.toggle('on', exploreOn);
+  document.getElementById('btnAuto').classList.remove('on');
+  if (exploreOn) { oc.target.set(0, 0, 0); oc.update(); }
+}
+function changeSpeed(d) { speed = Math.max(0.00008, Math.min(0.0018, speed + d * 0.0001)); }
+
+// ── MUIS INTERACTIE ───────────────────────────────────────────────────────────
+var raycaster = new THREE.Raycaster();
+var mouse = new THREE.Vector2();
+var hovered = null;
+var tip = document.getElementById('tooltip');
+
+canvas.addEventListener('mousemove', function(e) {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  var hits = raycaster.intersectObjects(clickTargets);
+  if (hits.length) {
+    var beacon = hits[0].object;
+    var hs = null;
+    for (var k = 0; k < hotspots.length; k++) { if (hotspots[k]._beacon === beacon) { hs = hotspots[k]; break; } }
+    if (hs) {
+      hovered = hs;
+      tip.querySelector('.tt-name').textContent = PRODUCTS[hs._idx].name;
+      tip.classList.add('vis');
+      tip.style.left = (e.clientX + 16) + 'px';
+      tip.style.top = (e.clientY - 12) + 'px';
+      canvas.style.cursor = 'pointer';
+    }
+  } else {
+    hovered = null;
+    tip.classList.remove('vis');
+    canvas.style.cursor = 'default';
+  }
+});
+
+canvas.addEventListener('click', function(e) {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  var hits = raycaster.intersectObjects(clickTargets);
+  if (hits.length) {
+    for (var k = 0; k < hotspots.length; k++) {
+      if (hotspots[k]._beacon === hits[0].object) { flyTo(hotspots[k]._idx); break; }
+    }
+  }
+});
+
+// ── RESIZE ────────────────────────────────────────────────────────────────────
+window.addEventListener('resize', function() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// ── LAADSCHERM WEGHALEN ───────────────────────────────────────────────────────
+var lf = document.getElementById('lf');
+var loadStart = Date.now();
+(function animLoad() {
+  var pct = Math.min((Date.now() - loadStart) / 1800 * 100, 100);
+  lf.style.width = pct + '%';
+  if (pct < 100) requestAnimationFrame(animLoad);
+  else {
+    setTimeout(function() {
+      var ld = document.getElementById('loading');
+      ld.style.opacity = '0';
+      setTimeout(function() { ld.style.display = 'none'; }, 800);
+    }, 200);
+  }
+})();
+
+// ── ANIMATIELUS ───────────────────────────────────────────────────────────────
+var clock = new THREE.Clock();
+
+(function animate() {
+  requestAnimationFrame(animate);
+  var t = clock.getElapsedTime();
+
+  if (autoOn) {
+    pathT = (pathT + speed) % 1;
+    var camPos = camPath.getPoint(pathT);
+    var lookPos = lookPath.getPoint(pathT);
+    camera.position.copy(camPos);
+    camera.lookAt(lookPos);
+    document.getElementById('progress').style.width = (pathT * 100) + '%';
+  }
+
+  if (exploreOn) oc.update();
+
+  // Water animeren
+  waterMat.color.setHSL(0.58, 0.72, 0.28 + 0.04 * Math.sin(t * 0.9));
+
+  // Hotspots animeren
+  hotspots.forEach(function(h, i) {
+    var ph = t * 2.6 + i * 1.25;
+    h._beacon.position.y = 3 + 0.28 * Math.sin(ph);
+    h._ring.material.opacity = 0.35 + 0.28 * Math.sin(ph * 0.65);
+    var rs = 1 + 0.12 * Math.sin(ph * 0.5);
+    h._ring.scale.set(rs, rs, rs);
+    var pf = (t * 0.55 + i * 0.42) % 1;
+    var ps = 0.6 + pf * 2.2;
+    h._pulse.scale.set(ps, ps, ps);
+    h._pulse.material.opacity = 0.38 * (1 - pf);
+    h._beam.material.opacity = 0.18 + 0.16 * Math.sin(ph * 0.85);
+    var bs = hovered === h ? 1.45 : 1;
+    h._beacon.scale.set(bs, bs, bs);
+  });
+
+  refreshDots();
+  renderer.render(scene, camera);
+})();
+</script>
+</body>
+</html>

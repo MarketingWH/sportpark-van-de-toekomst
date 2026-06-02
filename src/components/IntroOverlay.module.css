@@ -1,0 +1,295 @@
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  color: #f5f8fb;
+  pointer-events: none;
+}
+
+.heroBackdrop,
+.heroShade {
+  position: absolute;
+  inset: 0;
+}
+
+.heroBackdrop {
+  background:
+    linear-gradient(180deg, rgba(7, 14, 24, 0.22), rgba(7, 14, 24, 0.28)),
+    url('/montfort-hero-sportpark.png') center center / cover no-repeat;
+}
+
+.heroShade {
+  background:
+    linear-gradient(180deg, rgba(3, 10, 18, 0.08) 0%, transparent 18%, transparent 68%, rgba(4, 16, 30, 0.48) 100%),
+    linear-gradient(90deg, rgba(4, 12, 20, 0.4) 0%, rgba(4, 12, 20, 0.1) 36%, rgba(4, 12, 20, 0.08) 100%);
+}
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.7rem 2.2rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  pointer-events: auto;
+}
+
+.logoWrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.logoMark {
+  display: inline-grid;
+  gap: 0.22rem;
+}
+
+.logoMark span {
+  width: 1.5rem;
+  height: 0.16rem;
+  border-radius: 999px;
+  background: rgba(248, 251, 253, 0.92);
+}
+
+.logoMark span:nth-child(1) {
+  width: 1.1rem;
+}
+
+.logoMark span:nth-child(3) {
+  width: 0.8rem;
+}
+
+.nav {
+  display: flex;
+  gap: 2.3rem;
+  justify-content: center;
+  flex: 1;
+  color: rgba(242, 246, 249, 0.72);
+}
+
+.menuHint {
+  color: rgba(244, 247, 249, 0.82);
+}
+
+.hero {
+  position: absolute;
+  left: 14vw;
+  top: 18vh;
+  max-width: 41rem;
+  pointer-events: auto;
+}
+
+.kicker {
+  display: inline-block;
+  color: rgba(224, 232, 238, 0.78);
+  font-size: 0.74rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.titleRule {
+  width: 7.8rem;
+  height: 1px;
+  margin: 1.35rem 0 1.55rem;
+  background: rgba(239, 245, 249, 0.38);
+}
+
+.hero h1 {
+  margin: 0;
+  font-family: 'Sora', 'Segoe UI Variable Display', sans-serif;
+  font-size: clamp(3.1rem, 5vw, 5.2rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.hero p {
+  margin: 1.45rem 0 0;
+  max-width: 28rem;
+  color: rgba(228, 236, 242, 0.82);
+  font-size: 1.02rem;
+  line-height: 1.85;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.8rem;
+}
+
+.primaryAction,
+.secondaryAction {
+  min-width: 12rem;
+  padding: 0.92rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid rgba(239, 244, 247, 0.2);
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+
+.primaryAction {
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(248, 251, 253, 0.96);
+}
+
+.secondaryAction {
+  background: rgba(255, 255, 255, 0.02);
+  color: rgba(240, 245, 248, 0.92);
+}
+
+.primaryAction:hover,
+.secondaryAction:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.scrollHint {
+  position: absolute;
+  left: 14vw;
+  bottom: 12.8rem;
+  color: rgba(236, 242, 247, 0.82);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+}
+
+.dotRail {
+  position: absolute;
+  right: 6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  gap: 1rem;
+}
+
+.dotRail span {
+  width: 3rem;
+  height: 3rem;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(240, 245, 248, 0.22);
+  color: rgba(240, 245, 248, 0.68);
+  font-size: 0.78rem;
+}
+
+.bottomBand {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: minmax(18rem, 1fr) minmax(20rem, 1.15fr);
+  gap: 3rem;
+  align-items: start;
+  padding: 3rem 14vw 3.2rem;
+  background:
+    linear-gradient(180deg, rgba(6, 25, 46, 0) 0%, rgba(6, 25, 46, 0.14) 10%, rgba(4, 19, 38, 0.94) 100%);
+  pointer-events: auto;
+}
+
+.bottomHeadline span {
+  display: inline-block;
+  margin-bottom: 0.9rem;
+  color: rgba(221, 232, 239, 0.6);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.bottomHeadline h2 {
+  margin: 0;
+  font-family: 'Sora', 'Segoe UI Variable Display', sans-serif;
+  font-size: clamp(2rem, 3vw, 3.2rem);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.bottomCopy {
+  max-width: 34rem;
+  padding-top: 0.3rem;
+}
+
+.bottomCopy p {
+  margin: 0;
+  color: rgba(228, 236, 242, 0.82);
+  font-size: 1.02rem;
+  line-height: 1.8;
+}
+
+@media (max-width: 1180px) {
+  .header {
+    padding-inline: 1.2rem;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .hero {
+    left: 1.2rem;
+    right: 1.2rem;
+    top: 15vh;
+    max-width: 32rem;
+  }
+
+  .scrollHint {
+    left: 1.2rem;
+    bottom: 12rem;
+  }
+
+  .dotRail {
+    right: 1.2rem;
+  }
+
+  .bottomBand {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding: 2.2rem 1.2rem 2.6rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .header {
+    padding-top: 1rem;
+    font-size: 0.66rem;
+  }
+
+  .hero {
+    top: 12vh;
+  }
+
+  .hero h1 {
+    letter-spacing: 0.1em;
+  }
+
+  .hero p,
+  .bottomCopy p {
+    font-size: 0.94rem;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .dotRail {
+    display: none;
+  }
+
+  .scrollHint {
+    bottom: 11rem;
+  }
+}

@@ -1,0 +1,331 @@
+.wrapper {
+  width: 100%;
+  min-height: 100dvh;
+}
+
+.photoFrame {
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 2.6vw, 2.5rem);
+  background:
+    radial-gradient(circle at top right, rgba(255, 241, 217, 0.88), rgba(241, 233, 220, 0) 34%),
+    linear-gradient(180deg, #ece7df 0%, #ddd7ce 100%);
+}
+
+.photoFrameImmersive {
+  padding: 0;
+  background:
+    radial-gradient(circle at top right, rgba(255, 214, 154, 0.22), rgba(255, 214, 154, 0) 30%),
+    linear-gradient(180deg, #081111 0%, #0d1616 100%);
+}
+
+.photoBackdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  transform: scale(1.08);
+  filter: blur(26px) saturate(0.92) brightness(0.72);
+}
+
+.photoFrameImmersive .photoBackdrop {
+  transform: scale(1.12);
+  filter: blur(32px) saturate(0.94) brightness(0.6);
+}
+
+.photoBackdropShade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(circle at center, rgba(255, 250, 242, 0.08), rgba(21, 26, 20, 0.16)),
+    linear-gradient(180deg, rgba(248, 240, 227, 0.18), rgba(13, 18, 16, 0.18));
+}
+
+.photoStage {
+  position: relative;
+  z-index: 2;
+  width: min(
+    1500px,
+    calc(100% - 1rem),
+    calc((100dvh - clamp(2rem, 5vw, 4.5rem)) * 1.47)
+  );
+  padding: clamp(0.7rem, 1.2vw, 1rem);
+  border-radius: clamp(1.35rem, 2vw, 2rem);
+  background: rgba(244, 239, 232, 0.64);
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  box-shadow:
+    0 2rem 4.5rem rgba(30, 34, 25, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(18px);
+}
+
+.photoStageImmersive {
+  width: min(100vw, calc(100dvh * 1.5024435));
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.photoMat {
+  position: absolute;
+  inset: clamp(0.45rem, 1vw, 0.65rem);
+  border-radius: calc(clamp(1.35rem, 2vw, 2rem) - 0.35rem);
+  border: 1px solid rgba(72, 83, 64, 0.08);
+  background:
+    linear-gradient(180deg, rgba(249, 246, 240, 0.92), rgba(232, 226, 216, 0.88)),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0));
+}
+
+.photoMatImmersive {
+  display: none;
+}
+
+.photoSurface {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: calc(clamp(1.35rem, 2vw, 2rem) - 0.45rem);
+  background:
+    linear-gradient(180deg, rgba(252, 248, 242, 0.9), rgba(237, 232, 223, 0.92));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.42),
+    0 1.2rem 2.8rem rgba(30, 34, 25, 0.14);
+}
+
+.photoSurfaceImmersive {
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.photo {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.photoImmersive {
+  width: 100%;
+  height: 100dvh;
+  object-fit: cover;
+}
+
+.hotspotLayer,
+.backdrop {
+  position: absolute;
+  inset: 0;
+}
+
+.hotspotLayer {
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.55s ease;
+}
+
+.hotspotLayerVisible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.backdrop {
+  z-index: 4;
+  background: linear-gradient(180deg, rgba(7, 16, 26, 0.06), rgba(7, 16, 26, 0.16));
+  pointer-events: none;
+}
+
+.hotspot {
+  position: absolute;
+  width: 1.8rem;
+  height: 1.8rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  background: transparent;
+  opacity: 0;
+  --hotspot-scale: 0.72;
+  transform: translate(-50%, -50%) scale(var(--hotspot-scale));
+  transition:
+    opacity 0.45s ease,
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hotspotLayerVisible .hotspot {
+  opacity: 1;
+  --hotspot-scale: 1;
+}
+
+.hotspotCore,
+.hotspotPulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.hotspotCore {
+  inset: 0.24rem;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #f4f6f5 42%, #dfe8e1 100%);
+  box-shadow:
+    0 0 0 0.14rem rgba(255, 255, 255, 0.26),
+    0 0 1.4rem rgba(255, 255, 255, 0.55);
+}
+
+.hotspotPulse {
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+.hotspotActive .hotspotPulse {
+  border-color: #ff7a00;
+  animation-duration: 1.7s;
+}
+
+.popup {
+  position: absolute;
+  z-index: 8;
+  width: min(22rem, calc(100% - 1.5rem));
+  padding: 1rem;
+  border-radius: 1.4rem;
+  background: rgba(250, 246, 238, 0.97);
+  box-shadow: 0 1.5rem 3rem rgba(16, 22, 14, 0.18);
+  color: #131813;
+}
+
+.alignLeft.alignBottom {
+  transform: translate(1rem, 1rem);
+}
+
+.alignRight.alignBottom {
+  transform: translate(calc(-100% - 1rem), 1rem);
+}
+
+.alignLeft.alignTop {
+  transform: translate(1rem, calc(-100% - 1rem));
+}
+
+.alignRight.alignTop {
+  transform: translate(calc(-100% - 1rem), calc(-100% - 1rem));
+}
+
+.closeButton {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid rgba(19, 24, 19, 0.12);
+  background: rgba(23, 54, 27, 0.06);
+  color: #17361b;
+  cursor: pointer;
+}
+
+.popupBody {
+  display: grid;
+  gap: 0.75rem;
+  padding-right: 2rem;
+}
+
+.popupLabel {
+  color: #88a95f;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.popupBody h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  line-height: 1.15;
+}
+
+.popupBody p {
+  margin: 0;
+  color: #31352f;
+  line-height: 1.65;
+}
+
+.popupImage {
+  width: 100%;
+  border-radius: 1rem;
+  display: block;
+}
+
+.popupLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 3rem;
+  padding: 0.9rem 1rem;
+  border-radius: 0.95rem;
+  background: #ff7a00;
+  color: #fffef9;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(0.92);
+    opacity: 0.38;
+  }
+
+  50% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 760px) {
+  .photoFrame {
+    padding: 0.75rem;
+  }
+
+  .photoFrameImmersive {
+    padding: 0;
+  }
+
+  .photoStage {
+    width: 100%;
+    padding: 0.55rem;
+    border-radius: 1.25rem;
+  }
+
+  .photoStageImmersive {
+    width: 100%;
+    padding: 0;
+    border-radius: 0;
+  }
+
+  .photoMat {
+    inset: 0.35rem;
+    border-radius: 0.95rem;
+  }
+
+  .photoSurface {
+    border-radius: 0.9rem;
+  }
+
+  .popup {
+    left: 0.75rem !important;
+    right: 0.75rem;
+    top: auto !important;
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
+    width: auto;
+    transform: none !important;
+  }
+}

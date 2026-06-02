@@ -248,8 +248,8 @@ const parkeerplaatsMedia = [
   ...folderMedia(
     'Klimaatadaptieve parkeerplaats',
     [
-      'PP_Parkplatz-06-18-15_bearbeitet_1600x1200-1024x777.jpg',
       '20260423 Ecoraster Bloxx - Nederlands kenteken_2.jpg',
+      'PP_Parkplatz-06-18-15_bearbeitet_1600x1200-1024x777.jpg',
       '20241121 GM - Ecoraster (Gras)Tegels - Insta (2).jpg',
       '20260331 GM - Klimaatadaptief parkeerterrein Delft.jpg',
       'Alternatief vor header.jpg',

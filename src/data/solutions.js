@@ -494,7 +494,7 @@ export const solutions = [
       '[Teamtafel](https://greenmatter.nl/oplossingen/teamtafel/) – Een centrale ontmoetingsplek voor teams, vrijwilligers en bezoekers.',
     ],
     media: terrasMedia,
-    buttonText: 'Onze flyer van het klimaatadaptieve terras!',
+    buttonText: 'Ons klimaatadaptieve terras!',
     url: 'https://greenmatter.nl/wp-content/uploads/2026/05/Flyer-GreenMatter-Circulair-en-klimaatadaptief-terras.pdf',
   },
   {
@@ -543,7 +543,7 @@ export const solutions = [
       '[Ecoraster (gras)tegels](https://greenmatter.nl/oplossingen/ecoraster-grastegels/) – Waterdoorlatende verharding die regenwater natuurlijk infiltreert en plasvorming voorkomt.',
     ],
     media: fietsenstallingMedia,
-    buttonText: 'Onze klimaatadaptieve fietsenstalling',
+    buttonText: 'Ons klimaatadaptieve fietsenstalling',
     url: 'https://greenmatter.nl/wp-content/uploads/2026/05/Flyer-GreenMatter-Circulaire-en-klimaatadaptieve-fietsenstalling.pdf',
   },
   {
@@ -590,7 +590,7 @@ export const solutions = [
       '[Solar verlichting](https://greenmatter.nl/oplossingen/solar/) – Energiezuinige verlichting op zonne-energie voor een veilige parkeeromgeving zonder netaansluiting.',
     ],
     media: parkeerplaatsMedia,
-    buttonText: 'Onze klimaatadaptieve parkeerplaats',
+    buttonText: 'Ons klimaatadaptieve parkeerplaats',
     url: 'https://greenmatter.nl/wp-content/uploads/2026/05/Flyer-GreenMatter-Circulaire-en-klimaatadaptieve-parkeerplaatsen.pdf',
   },
 ];

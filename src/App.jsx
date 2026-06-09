@@ -1,4 +1,5 @@
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { useMemo, useState } from 'react';
 import styles from './App.module.css';
 import SolutionShowcaseSection from './components/SolutionShowcaseSection';
@@ -71,6 +72,7 @@ function App() {
         </main>
       </div>
       <Analytics />
+      <SpeedInsights />
     </>
   );
 }

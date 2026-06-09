@@ -197,6 +197,7 @@ const terrasMedia = [
 ];
 
 const speeltoestellenMedia = [
+ youtubeMedia('https://www.youtube.com/watch?v=3LOkswUYy_Q', 'Leisure Lands'),
   {
     type: 'youtube',
     url: 'https://www.youtube.com/watch?v=UHa9XNbhOQ0',

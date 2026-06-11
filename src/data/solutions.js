@@ -218,6 +218,7 @@ const fietsenstallingMedia = folderMedia(
   'Klimaatadaptieve fietsenstalling',
   [
     'Klimaatadaptieve fietsenstalling.webp',
+    'Klimaatadaptieve fietsenstalling 2.webp',
     'IMG_4358.JPG.jpg',
     'IMG_4361.JPG.jpg',
   ],

@@ -104,6 +104,7 @@ const modulaireSportvloerenMedia = [
     'Modulaire sportvloeren',
     [
       'GreenMatter-modulaire-sportvloer-groen-Tilburg_1.jpg',
+      'modulaire sportvloer.webp',
       'GreenMatter-modulaire-sportvloer-3x3-basketball-court_8.jpg',
       'GreenMatter-modulaire-sportvloer-Tilburg-1_3.jpg',
       'Heer-vrankenstraat.JPG_4.jpg',
@@ -127,6 +128,7 @@ const fitnessparkMedia = [
   ...folderMedia(
     'GreenMatter fitnesspark',
     [
+      'GreenMatter fitnesspark.webp',
       'WhatsApp Image 2025-11-26 at 16.13.05 (1).jpg',
       'GreenMatter-QR-FIT-beweegbank-header_2.jpg',
       'WhatsApp Image 2025-11-26 at 16.13.04.jpg',

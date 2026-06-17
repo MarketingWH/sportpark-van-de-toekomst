@@ -27,6 +27,9 @@ const mobileFilterLabels = {
   'solar-woodle': 'Solar Woodle',
 };
 
+const whitepaperUrl =
+  'https://greenmatter.nl/wp-content/uploads/2025/01/Whitepaper-GreenMatter.pdf';
+
 function renderInlineText(content, keyPrefix = 'inline') {
   if (typeof content !== 'string') {
     return '';
@@ -387,11 +390,31 @@ Met vriendelijke groet,`,
           <a className={styles.mailChip} href={mailSelectionHref}>
             {mailCtaText}
           </a>
+
+          <a
+            className={`${styles.mailChip} ${styles.whitepaperChip}`}
+            href={whitepaperUrl}
+            rel="noreferrer"
+            target="_blank"
+          >
+            Download whitepaper
+          </a>
         </div>
 
-        <a className={styles.mobileMailCta} href={mailSelectionHref}>
-          {mailCtaText}
-        </a>
+        <div className={styles.mobileCtaGroup}>
+          <a className={styles.mobileMailCta} href={mailSelectionHref}>
+            {mailCtaText}
+          </a>
+
+          <a
+            className={`${styles.mobileMailCta} ${styles.mobileWhitepaperCta}`}
+            href={whitepaperUrl}
+            rel="noreferrer"
+            target="_blank"
+          >
+            Whitepaper
+          </a>
+        </div>
       </div>
 
       <div className={styles.solutionList}>

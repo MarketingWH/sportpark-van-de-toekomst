@@ -325,10 +325,15 @@
 
 @media (min-width: 861px) {
   .solutionNavBar {
-    gap: 0.95rem;
+    grid-template-columns: max-content max-content;
+    align-items: center;
+    justify-content: start;
+    column-gap: 0.75rem;
+    row-gap: 0.95rem;
   }
 
   .solutionNav {
+    grid-column: 1 / -1;
     align-items: center;
     flex-wrap: nowrap;
     gap: 0.55rem;
@@ -375,6 +380,7 @@
   }
 
   .mailChip {
+    justify-self: start;
     white-space: nowrap;
   }
 }

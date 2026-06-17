@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { uiText } from '../data/translations';
 import MediaSlider from './MediaSlider';
 import styles from './SolutionShowcaseSection.module.css';
 
@@ -24,6 +25,19 @@ const mobileFilterLabels = {
   terras: 'Terras',
   fietsenstalling: 'Fietsenstalling',
   parkeerplaats: 'Parkeerplaats',
+  'solar-woodle': 'Solar Woodle',
+};
+
+const mobileFilterLabelsEn = {
+  'modulaire-sportvloeren': 'Sports flooring',
+  vlonderplanken: 'Decking',
+  fitnesspark: 'Fitness',
+  dugout: 'Dug-out',
+  kantplanken: 'Edge boards',
+  'ecoraster-pad': 'Ecoraster path',
+  terras: 'Terrace',
+  fietsenstalling: 'Bike parking',
+  parkeerplaats: 'Parking',
   'solar-woodle': 'Solar Woodle',
 };
 
@@ -132,7 +146,15 @@ const expandTransition = {
   },
 };
 
-function SolutionShowcaseSection({ activeSolutionId, onSelectSolution, solutions }) {
+function SolutionShowcaseSection({
+  activeSolutionId,
+  language = 'nl',
+  onSelectSolution,
+  solutions,
+}) {
+  const copy = uiText[language] ?? uiText.nl;
+  const compactFilterLabels =
+    language === 'en' ? mobileFilterLabelsEn : mobileFilterLabels;
   const [expandedSolutionId, setExpandedSolutionId] = useState(null);
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [isDesktopNavDragging, setIsDesktopNavDragging] = useState(false);
@@ -182,7 +204,7 @@ function SolutionShowcaseSection({ activeSolutionId, onSelectSolution, solutions
       return '#';
     }
 
-    const onderwerp = encodeURIComponent('Aanvraag Sportpark van de Toekomst');
+    const onderwerp = encodeURIComponent(copy.quoteSubject);
     const geselecteerdeProducten = selectedSolutionsForMail.map(
       (solution) => solution.title,
     );
@@ -199,8 +221,10 @@ Kunnen jullie meer informatie sturen?
 Met vriendelijke groet,`,
     );
 
-    return `mailto:info@greenmatter.nl?subject=${onderwerp}&body=${bericht}`;
-  }, [selectedSolutionsForMail]);
+    return `mailto:info@greenmatter.nl?subject=${onderwerp}&body=${encodeURIComponent(
+      copy.quoteBody(geselecteerdeProducten),
+    )}`;
+  }, [copy, selectedSolutionsForMail]);
 
   const mailCtaText =
     selectedFilters.length > 0
@@ -208,6 +232,11 @@ Met vriendelijke groet,`,
           selectedSolutionsForMail.length === 1 ? 'product' : 'producten'
         }`
       : 'Offerte aanvragen';
+
+  const localizedMailCtaText =
+    selectedFilters.length > 0
+      ? copy.quoteButtonWithCount(selectedSolutionsForMail.length)
+      : copy.quoteButton;
 
   const handleDesktopFilterWheel = (event) => {
     if (typeof window !== 'undefined' && window.innerWidth <= 860) {
@@ -347,8 +376,9 @@ Met vriendelijke groet,`,
     <section className={styles.section}>
       <div className={styles.intro}>
         <div className={styles.introCopy}>
-          <h2>Oplossingen in detail</h2>
-          <p>
+          <h2>{copy.solutionsHeading}</h2>
+          <p>{copy.solutionsIntro}</p>
+          <p hidden>
             Bekijk hier op je gemak al onze oplossingen die wij passend vinden voor
             het sportpark van de toekomst. Ben je geïnspireerd geraakt? Klik dan
             hieronder de oplossingen aan die jou interesseren en gebruik daarna de
@@ -381,7 +411,7 @@ Met vriendelijke groet,`,
               >
                 <span className={styles.chipLabelDesktop}>{solution.title}</span>
                 <span className={styles.chipLabelMobile}>
-                  {mobileFilterLabels[solution.id] ?? solution.title}
+                  {compactFilterLabels[solution.id] ?? solution.title}
                 </span>
               </button>
             ))}
@@ -389,7 +419,7 @@ Met vriendelijke groet,`,
 
           <div className={styles.desktopCtaRow}>
             <a className={styles.mailChip} href={mailSelectionHref}>
-              {mailCtaText}
+              {localizedMailCtaText}
             </a>
 
             <a
@@ -398,14 +428,14 @@ Met vriendelijke groet,`,
               rel="noreferrer"
               target="_blank"
             >
-              Download whitepaper
+              {copy.whitepaperButton}
             </a>
           </div>
         </div>
 
         <div className={styles.mobileCtaGroup}>
           <a className={styles.mobileMailCta} href={mailSelectionHref}>
-            {mailCtaText}
+            {localizedMailCtaText}
           </a>
 
           <a
@@ -414,7 +444,7 @@ Met vriendelijke groet,`,
             rel="noreferrer"
             target="_blank"
           >
-            Whitepaper
+            {copy.mobileWhitepaperButton}
           </a>
         </div>
       </div>
@@ -429,7 +459,7 @@ Met vriendelijke groet,`,
           const resolvedButtonText =
             typeof solution.buttonText === 'string' && solution.buttonText.trim()
               ? solution.buttonText.trim()
-              : 'Bekijk productpagina';
+              : copy.defaultProductButton;
           const hasPossibleSolutions =
             solutionsWithPossibleSolutions.has(solution.id) &&
             Array.isArray(solution.benefits) &&
@@ -450,7 +480,7 @@ Met vriendelijke groet,`,
               <div className={styles.contentColumn}>
                 <div className={styles.contentCard}>
                   <span className={styles.solutionIndex}>
-                    Oplossing {String(index + 1).padStart(2, '0')}
+                    {copy.hotspotLabel} {String(index + 1).padStart(2, '0')}
                   </span>
                   <h3>{solution.title}</h3>
                   <p className={styles.lead}>
@@ -478,7 +508,7 @@ Met vriendelijke groet,`,
                       type="button"
                       onClick={(event) => toggleSolutionContent(solution.id, event)}
                     >
-                      Meer lezen
+                      {copy.readMore}
                     </button>
                   ) : null}
 
@@ -522,7 +552,7 @@ Met vriendelijke groet,`,
 
                           {hasPossibleSolutions ? (
                             <div className={styles.benefitBlock}>
-                              <h4>Mogelijke oplossingen</h4>
+                              <h4>{copy.possibleSolutions}</h4>
                               <ul>
                                 {solution.benefits.map((benefit, benefitIndex) => (
                                   <li key={`${solution.id}-benefit-${benefitIndex}`}>
@@ -552,7 +582,7 @@ Met vriendelijke groet,`,
                               type="button"
                               onClick={(event) => toggleSolutionContent(solution.id, event)}
                             >
-                              Minder lezen
+                              {copy.readLess}
                             </button>
                           </div>
                         </motion.div>

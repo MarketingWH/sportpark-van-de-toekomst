@@ -1,9 +1,11 @@
 import { useReducedMotion } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { uiText } from '../data/translations';
 import styles from './TransitionSection.module.css';
 
 const COUNTDOWN_TARGET = new Date(2030, 0, 1, 0, 0, 0).getTime();
 const HOME_LOGO_SRC = '/sportpark-home-logo.svg';
+const HOME_LOGO_EN_SRC = '/sportpark-home-logo-en.svg';
 const HOME_LOGO_WIDTH = 800;
 const HOME_LOGO_HEIGHT = 191;
 const DESKTOP_DAY_WIDTH = 1680;
@@ -61,7 +63,7 @@ function interpolateSeries(value, inputRange, outputRange) {
   return outputRange[outputRange.length - 1];
 }
 
-function getCountdownParts() {
+function getCountdownParts(labels = uiText.nl.countdownUnits) {
   const remainingMs = Math.max(COUNTDOWN_TARGET - Date.now(), 0);
   const totalSeconds = Math.floor(remainingMs / 1000);
   const days = Math.floor(totalSeconds / 86400);
@@ -71,19 +73,19 @@ function getCountdownParts() {
 
   return [
     {
-      label: 'Dagen',
+      label: labels[0],
       value: String(days),
     },
     {
-      label: 'Uur',
+      label: labels[1],
       value: String(hours).padStart(2, '0'),
     },
     {
-      label: 'Minuten',
+      label: labels[2],
       value: String(minutes).padStart(2, '0'),
     },
     {
-      label: 'Seconden',
+      label: labels[3],
       value: String(seconds).padStart(2, '0'),
     },
   ];
@@ -120,6 +122,7 @@ function MoonIcon() {
 function TransitionSection({
   dayImageSrc,
   isNightMode,
+  language = 'nl',
   mobileDayImageSrc,
   mobileNightImageSrc,
   nightImageSrc,
@@ -131,6 +134,8 @@ function TransitionSection({
   pinnedSolutionId,
   solutions,
 }) {
+  const copy = uiText[language] ?? uiText.nl;
+  const homeLogoSrc = language === 'en' ? HOME_LOGO_EN_SRC : HOME_LOGO_SRC;
   const sectionRef = useRef(null);
   const revealRef = useRef(null);
   const cardRef = useRef(null);
@@ -152,7 +157,9 @@ function TransitionSection({
   const [progressValue, setProgressValue] = useState(0);
   const [revealSize, setRevealSize] = useState({ width: 0, height: 0 });
   const [imageSize, setImageSize] = useState({ width: 3074, height: 2045 });
-  const [countdownParts, setCountdownParts] = useState(() => getCountdownParts());
+  const [countdownParts, setCountdownParts] = useState(() =>
+    getCountdownParts(copy.countdownUnits),
+  );
   const [shouldLoadNightAssets, setShouldLoadNightAssets] = useState(() => isNightMode);
 
   const hoveredSolution = useMemo(
@@ -227,14 +234,16 @@ function TransitionSection({
   }, [isMobileLayout]);
 
   useEffect(() => {
+    setCountdownParts(getCountdownParts(copy.countdownUnits));
+
     const intervalId = window.setInterval(() => {
-      setCountdownParts(getCountdownParts());
+      setCountdownParts(getCountdownParts(copy.countdownUnits));
     }, 1000);
 
     return () => {
       window.clearInterval(intervalId);
     };
-  }, []);
+  }, [copy.countdownUnits]);
 
   useEffect(() => {
     if (!isNightMode || shouldLoadNightAssets) {
@@ -679,7 +688,7 @@ function TransitionSection({
                     sizes="100vw"
                   />
                   <img
-                    alt="Sportpark van de Toekomst in daglicht"
+                    alt={copy.heroDayAlt}
                     className={styles.parkImage}
                     decoding="async"
                     data-pin-no-hover="true"
@@ -723,7 +732,7 @@ function TransitionSection({
                       sizes="100vw"
                     />
                     <img
-                      alt="Sportpark van de Toekomst in avondverlichting"
+                      alt={copy.heroNightAlt}
                       className={`${styles.parkImage} ${
                         usesFallbackNightImage ? styles.fallbackNightImage : ''
                       }`}
@@ -755,7 +764,7 @@ function TransitionSection({
             <div className={styles.topUi}>
               <div className={styles.countdownBar} style={countdownStyle}>
                 <span className={styles.countdownLabel}>
-                  Dagen tot deadline grondstoffenbeleid 2030:
+                  {copy.countdownLabel}
                 </span>
 
                 <div className={styles.countdownItems}>
@@ -774,14 +783,14 @@ function TransitionSection({
                     isNightMode ? styles.themeStatusActive : ''
                   }`}
                 >
-                  Solar {isNightMode ? 'aan' : 'uit'}
+                  {isNightMode ? copy.solarOn : copy.solarOff}
                 </span>
 
                 <button
                   aria-label={
                     isNightMode
-                      ? 'Schakel naar dagweergave'
-                      : 'Schakel naar avondweergave'
+                      ? copy.switchToDay
+                      : copy.switchToNight
                   }
                   aria-pressed={isNightMode}
                   className={`${styles.themeToggle} ${
@@ -806,7 +815,7 @@ function TransitionSection({
               className={styles.scrollCue}
               style={{ opacity: scrollCueOpacity }}
             >
-              <span className={styles.scrollCueLabel}>Scroll verder</span>
+              <span className={styles.scrollCueLabel}>{copy.scrollFurther}</span>
               <span className={styles.scrollCueArrow}>
                 <span className={styles.scrollCueStem} />
                 <span className={styles.scrollCueHead} />
@@ -902,13 +911,13 @@ function TransitionSection({
                   <div className={styles.popupImageShade} />
 
                   <div className={styles.popupTitleBadge}>
-                    <span className={styles.popupLabel}>Oplossing</span>
+                    <span className={styles.popupLabel}>{copy.hotspotLabel}</span>
                     <h3>{displayedSolution.title}</h3>
                   </div>
 
                   {isPinned ? (
                     <button
-                      aria-label="Sluit hotspotinformatie"
+                      aria-label={copy.closeHotspot}
                       className={styles.closeButton}
                       type="button"
                       onClick={() => {
@@ -922,14 +931,14 @@ function TransitionSection({
                 </div>
 
                 <div className={styles.popupFooter}>
-                  <span className={styles.popupFooterLabel}>Bekijk oplossing</span>
+                  <span className={styles.popupFooterLabel}>{copy.viewSolution}</span>
 
                   <button
                     className={styles.popupLink}
                     type="button"
                     onClick={() => onJumpToSolution(displayedSolution.id)}
                   >
-                    <span>Ga naar oplossing</span>
+                    <span>{copy.goToSolution}</span>
                     <svg
                       aria-hidden="true"
                       className={styles.popupLinkIcon}
@@ -957,7 +966,7 @@ function TransitionSection({
             className={`${styles.scrollCue} ${styles.homeScrollCue}`}
             style={{ opacity: homeScrollCueOpacity }}
           >
-            <span className={styles.scrollCueLabel}>Scroll verder</span>
+            <span className={styles.scrollCueLabel}>{copy.scrollFurther}</span>
             <span className={styles.scrollCueArrow}>
               <span className={styles.scrollCueStem} />
               <span className={styles.scrollCueHead} />
@@ -966,12 +975,12 @@ function TransitionSection({
 
           <div className={styles.homeBrand} style={introCardStyle}>
             <img
-              alt="GreenMatter - Het sportpark van de toekomst"
+              alt={copy.homeLogoAlt}
               className={styles.homeBrandLogo}
               decoding="async"
               fetchpriority="high"
               height={HOME_LOGO_HEIGHT}
-              src={HOME_LOGO_SRC}
+              src={homeLogoSrc}
               width={HOME_LOGO_WIDTH}
             />
           </div>

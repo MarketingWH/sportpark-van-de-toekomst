@@ -462,6 +462,7 @@ Met vriendelijke groet,`,
               : copy.defaultProductButton;
           const hasPossibleSolutions =
             solutionsWithPossibleSolutions.has(solution.id) &&
+            !(language === 'en' && solution.id === 'speeltoestellen') &&
             Array.isArray(solution.benefits) &&
             solution.benefits.length > 0;
           const hasExpandableContent =

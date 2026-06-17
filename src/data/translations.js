@@ -86,12 +86,12 @@ const solutionTranslations = {
     title: 'Water engineering',
     description: 'Bank protection, retaining walls, access bridge, jetty',
     summary:
-      'We see water not as a boundary, but as an opportunity. With circular water engineering solutions, canals, ponds and banks become valuable parts of the sport park of the future. They strengthen the connection between sport, nature and recreation, turning water into a place to experience, meet and unwind.',
+      'We do not see water as a boundary, but as an opportunity. Circular water engineering solutions such as; canals, ponds and banks become valuable parts of the sport park of the future. They strengthen the connection between sport, nature and recreation, turning water into a place to experience, meet and unwind.',
     benefits: [
-      '[Bank protection](https://greenmatter.nl/oplossingen/walbeschoeiing/) – A durable, low-maintenance bank finish that prevents erosion and lasts significantly longer than traditional timber thanks to circular synthetic turf material.',
-      '[Retaining wall](https://greenmatter.nl/oplossingen/damwand/) – A robust circular construction for stable watersides and managing height differences.',
-      '[Access bridge](https://greenmatter.nl/oplossingen/toegangsbrug/) – A circular bridge that connects different parts of the sport park safely and attractively.',
-      '[Jetties](https://greenmatter.nl/oplossingen/vissteiger/) – An inviting place by the water where relaxation, meeting and nature experience come together.',
+      '[Bank protection](https://greenmatter.nl/en/solutions/river-bank-protection/) – A durable, low-maintenance bank finish that prevents erosion and lasts significantly longer than traditional timber thanks to circular synthetic turf material.',
+      '[Retaining wall](https://greenmatter.nl/en/solutions/combi-pile-planking/) – A robust circular construction for stable watersides and managing height differences.',
+      '[Access bridge](https://greenmatter.nl/en/solutions/access-bridge/) – A circular bridge that connects different parts of the sport park safely and attractively.',
+      '[Fishing pier](https://greenmatter.nl/en/solutions/fishing-pier/) – An inviting place by the water where relaxation, meeting and nature experience come together.',
     ],
     buttonText: 'More about bank protection',
   },
@@ -113,7 +113,7 @@ const solutionTranslations = {
     description: 'Decking board',
     summary: [
       'The sport park of the future is more than a place for sport alone. Decking along the water creates attractive routes and places to stay, walk and enjoy the surroundings.',
-      'With our decking boards, you create durable terraces, jetties and walking routes with a natural look. The boards are low-maintenance and resistant to intensive use and changing weather conditions.',
+      'With our decking boards, you create durable terraces, fishing piers and walking routes with a natural look. The boards are low-maintenance and resistant to intensive use and changing weather conditions.',
     ],
   },
   fitnesspark: {
@@ -124,7 +124,7 @@ const solutionTranslations = {
       'With the GreenMatter Fitness Park, you create a versatile outdoor training area where strength, condition and health come together.',
     ],
     benefits: [
-      'Fitnesspark ATHLETIC – A complete outdoor fitness solution that invites young and old to move and train outdoors in an accessible way.',
+      'Fitnesspark ATHLETIC – A complete outdoor circular fitness solution that invites young and old to move and train outdoors in an accessible way.',
     ],
   },
   dugout: {
@@ -136,11 +136,11 @@ const solutionTranslations = {
     ],
   },
   kantplanken: {
-    title: 'GreenMatter edge boards',
-    description: 'Circular edge boards',
+    title: 'GreenMatter side boards',
+    description: 'Circular side boards',
     summary: [
-      'The strength of a future-proof sport park is often in the details. Edge boards create a neat and durable boundary along sports fields and fencing.',
-      'With our edge board, you choose a circular solution designed to last for years. Unlike traditional timber edging, these boards do not rot and retain their shape and appearance.',
+      'The strength of a future-proof sport park is often in the details. Side boards create a neat and durable boundary along sports fields and fencing.',
+      'With our side board, you choose a circular solution designed to last for years. Unlike traditional timber edging, these circular boards do not rot and retain their shape and appearance.',
     ],
   },
   'ecoraster-pad': {
@@ -165,11 +165,11 @@ const solutionTranslations = {
       'By combining water-permeable paving, sustainable lighting, greenery and circular outdoor furniture, you create a comfortable meeting place with a premium appearance.',
     ],
     benefits: [
-      '[Ecoraster grass grids](https://greenmatter.nl/oplossingen/ecoraster-grastegels/) – Permeable paving that lets rainwater infiltrate and prevents puddles.',
-      '[Solar lighting](https://greenmatter.nl/oplossingen/solar/) – Energy-efficient solar lighting for extra atmosphere and safety.',
-      '[Berlin Field Green planter](https://greenmatter.nl/oplossingen/plantenbak-berlijn-field-green/) – Durable planters for a greener and more inviting look.',
-      '[Picnic set](https://greenmatter.nl/oplossingen/picknicktafel-4-banks/) – Robust picnic tables for relaxed moments beside the field.',
-      '[Team table](https://greenmatter.nl/oplossingen/teamtafel/) – A central meeting point for teams, volunteers and visitors.',
+      '[Ecoraster grass grids](https://greenmatter.nl/en/solutions/ecoraster-grass-tiles-xxl/) – Permeable paving that lets rainwater infiltrate and prevents puddles.',
+      '[Solar lighting](https://greenmatter.nl/en/solutions/solar/) – Energy-efficient solar lighting for extra atmosphere and safety.',
+      '[Berlin Field Green planter](https://greenmatter.nl/en/solutions/planter-berlin-field-green/) – Durable planters for a greener and more inviting look.',
+      '[Picnic set](https://greenmatter.nl/en/solutions/picknicktable-4-benches/) – Robust picnic tables for relaxed moments beside the field.',
+      '[Team table](https://greenmatter.nl/en/solutions/team-table/) – A central meeting point for teams, volunteers and visitors.',
     ],
     buttonText: 'Our climate-adaptive terrace',
   },
@@ -190,9 +190,9 @@ const solutionTranslations = {
       'By combining the bicycle parking system with solar lighting and Ecoraster grass grids, a safe and clear parking facility is created.',
     ],
     benefits: [
-      '[Bicycle parking system](https://greenmatter.nl/oplossingen/fietsparkeersysteem/) – A modular system for safe and organised bicycle parking.',
-      '[Solar lighting](https://greenmatter.nl/oplossingen/solar/) – Energy-efficient solar lighting for extra safety and comfort.',
-      '[Ecoraster grass grids](https://greenmatter.nl/oplossingen/ecoraster-grastegels/) – Permeable paving that lets rainwater infiltrate naturally.',
+      '[Bicycle parking system](https://greenmatter.nl/en/solutions/bicycle-parking-system/) – A modular system for safe and organised bicycle parking.',
+      '[Solar lighting](https://greenmatter.nl/en/solutions/solar/) – Energy-efficient solar lighting for extra safety and comfort.',
+      '[Ecoraster grass tiles](https://greenmatter.nl/en/solutions/ecoraster-grasstiles/) – Permeable paving that lets rainwater infiltrate naturally.',
     ],
     buttonText: 'Our climate-adaptive bicycle parking',
   },
@@ -209,12 +209,12 @@ const solutionTranslations = {
     description:
       'GreenMatter Ecoraster Bloxx, GreenMatter Ecoraster grass grids, solar lighting',
     summary: [
-      'In the sport park of the future, the parking area is more than a practical facility. It is a first impression that shows how sustainability and climate adaptation come together.',
-      'By combining solar lighting with Ecoraster grass grids, you create a low-maintenance parking area that reduces water nuisance, limits heat stress and keeps visitors safe in the evening.',
+      'In the sport park of the future, the parking area is more than a practical facility. It is a first impression that shows how sustainability and climate adaptation comes together.',
+      'By combining solar lighting with Ecoraster grass tiles, you create a low-maintenance parking area that reduces water nuisance, limits heat stress and keeps visitors safe in the evening.',
     ],
     benefits: [
-      '[Ecoraster grass grids](https://greenmatter.nl/oplossingen/ecoraster-grastegels/) – Water-permeable parking solutions that let rainwater infiltrate naturally and create a greener look.',
-      '[Solar lighting](https://greenmatter.nl/oplossingen/solar/) – Energy-efficient solar lighting for a safe parking environment without a grid connection.',
+      '[Ecoraster grass grids](https://greenmatter.nl/en/solutions/ecoraster-grasstiles/) – Water-permeable parking solutions that let rainwater infiltrate naturally and create a greener look.',
+      '[Solar lighting](https://greenmatter.nl/en/solutions/solar/) – Energy-efficient solar lighting for a safe parking environment without a grid connection.',
     ],
     buttonText: 'Our climate-adaptive parking area',
   },

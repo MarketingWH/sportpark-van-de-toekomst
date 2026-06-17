@@ -114,6 +114,16 @@
     filter 180ms ease;
 }
 
+.desktopCtaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  width: fit-content;
+  max-width: 100%;
+}
+
 .mobileMailCta {
   display: none;
 }
@@ -325,15 +335,11 @@
 
 @media (min-width: 861px) {
   .solutionNavBar {
-    grid-template-columns: max-content max-content;
-    align-items: center;
-    justify-content: start;
-    column-gap: 0.75rem;
-    row-gap: 0.95rem;
+    display: block;
+    gap: 0;
   }
 
   .solutionNav {
-    grid-column: 1 / -1;
     align-items: center;
     flex-wrap: nowrap;
     gap: 0.55rem;
@@ -347,20 +353,25 @@
     scroll-behavior: auto;
     overscroll-behavior-x: contain;
     -webkit-overflow-scrolling: touch;
+    margin-bottom: 0.95rem;
   }
 
   .solutionNav:active {
     cursor: grabbing;
   }
 
-  .solutionNavDragging {
-    cursor: grabbing;
-    user-select: none;
-  }
+.solutionNavDragging {
+  cursor: grabbing;
+  user-select: none;
+}
 
-  .solutionNav::-webkit-scrollbar {
-    display: none;
-  }
+.solutionNavDragging .solutionChip {
+  pointer-events: none;
+}
+
+.solutionNav::-webkit-scrollbar {
+  display: none;
+}
 
   .solutionChip {
     flex: 0 0 auto;
@@ -456,6 +467,10 @@
   }
 
   .mailChip {
+    display: none;
+  }
+
+  .desktopCtaRow {
     display: none;
   }
 

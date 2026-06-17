@@ -387,18 +387,20 @@ Met vriendelijke groet,`,
             ))}
           </div>
 
-          <a className={styles.mailChip} href={mailSelectionHref}>
-            {mailCtaText}
-          </a>
+          <div className={styles.desktopCtaRow}>
+            <a className={styles.mailChip} href={mailSelectionHref}>
+              {mailCtaText}
+            </a>
 
-          <a
-            className={`${styles.mailChip} ${styles.whitepaperChip}`}
-            href={whitepaperUrl}
-            rel="noreferrer"
-            target="_blank"
-          >
-            Download whitepaper
-          </a>
+            <a
+              className={`${styles.mailChip} ${styles.whitepaperChip}`}
+              href={whitepaperUrl}
+              rel="noreferrer"
+              target="_blank"
+            >
+              Download whitepaper
+            </a>
+          </div>
         </div>
 
         <div className={styles.mobileCtaGroup}>

@@ -194,7 +194,7 @@ const solutionTranslations = {
       '[Solar lighting](https://greenmatter.nl/en/solutions/solar/) – Energy-efficient solar lighting for extra safety and comfort.',
       '[Ecoraster grass tiles](https://greenmatter.nl/en/solutions/ecoraster-grasstiles/) – Permeable paving that lets rainwater infiltrate naturally.',
     ],
-    buttonText: 'Our climate-adaptive bicycle parking',
+    buttonText: 'View bicycle parking',
   },
   'solar-woodle': {
     title: 'GreenMatter Solar Woodle',

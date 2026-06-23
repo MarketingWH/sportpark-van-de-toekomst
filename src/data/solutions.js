@@ -546,7 +546,7 @@ export const solutions = [
       '[Ecoraster (gras)tegels](https://greenmatter.nl/oplossingen/ecoraster-grastegels/) – Waterdoorlatende verharding die regenwater natuurlijk infiltreert en plasvorming voorkomt.',
     ],
     media: fietsenstallingMedia,
-    buttonText: 'Ons klimaatadaptieve fietsenstalling',
+    buttonText: 'Bekijk fietsenstalling',
     url: 'https://greenmatter.nl/wp-content/uploads/2026/05/Flyer-GreenMatter-Circulaire-en-klimaatadaptieve-fietsenstalling.pdf',
   },
   {

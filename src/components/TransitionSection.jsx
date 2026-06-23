@@ -589,9 +589,14 @@ function TransitionSection({
   const cardClassName = displayedSolution
     ? [
         styles.popup,
+        ['solar-woodle', 'speeltoestellen'].includes(displayedSolution.id)
+          ? styles.laptopLiftPopup
+          : '',
         displayedSolution.x > 55 ? styles.alignRight : styles.alignLeft,
         displayedSolution.y > 58 ? styles.alignTop : styles.alignBottom,
-      ].join(' ')
+      ]
+        .filter(Boolean)
+        .join(' ')
     : styles.popup;
 
   const revealStyle = {

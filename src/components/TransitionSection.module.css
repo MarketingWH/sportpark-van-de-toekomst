@@ -606,6 +606,82 @@
   flex: none;
 }
 
+@media (max-width: 1500px) and (min-width: 761px), (max-height: 820px) and (min-width: 761px) {
+  .topUi {
+    top: 0.9rem;
+    left: 8.7rem;
+    right: 1rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.65rem;
+  }
+
+  .countdownBar {
+    grid-column: 1;
+    justify-self: center;
+    max-width: min(58rem, 100%);
+    gap: 0.44rem;
+    min-height: 2.62rem;
+    padding: 0.2rem 0.34rem 0.2rem 0.58rem;
+  }
+
+  .countdownLabel {
+    max-width: 24rem;
+    overflow: hidden;
+    font-size: 0.86rem;
+    text-overflow: ellipsis;
+  }
+
+  .countdownItems {
+    gap: 0.32rem;
+  }
+
+  .countdownItem {
+    min-width: 6.55rem;
+    min-height: 2.12rem;
+    padding: 0.4rem 0.58rem;
+  }
+
+  .countdownValue,
+  .countdownUnit {
+    font-size: 0.82rem;
+  }
+
+  .themeControls {
+    grid-column: 2;
+  }
+
+  .themeStatus {
+    min-height: 2.62rem;
+    padding: 0.58rem 0.78rem;
+    font-size: 0.84rem;
+  }
+
+  .themeToggle {
+    width: 5.1rem;
+    height: 2.62rem;
+    padding: 0.26rem;
+  }
+
+  .themeToggleThumb {
+    top: 0.26rem;
+    left: 0.26rem;
+    width: calc(50% - 0.26rem);
+    height: calc(100% - 0.52rem);
+  }
+
+  .themeToggleNight .themeToggleThumb {
+    transform: translateX(2.2rem);
+  }
+
+  .laptopLiftPopup.alignRight.alignBottom {
+    transform: translate(calc(-100% - 1rem), calc(-100% - 1rem));
+  }
+
+  .laptopLiftPopup.alignLeft.alignBottom {
+    transform: translate(1rem, calc(-100% - 1rem));
+  }
+}
+
 @keyframes pulse {
   0%,
   100% {

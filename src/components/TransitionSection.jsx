@@ -1,4 +1,4 @@
-import { useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { uiText } from '../data/translations';
 import styles from './TransitionSection.module.css';
@@ -153,6 +153,7 @@ function TransitionSection({
       : false,
   );
   const [mobileViewportMode, setMobileViewportMode] = useState('start');
+  const [isHomeIntroExpanded, setIsHomeIntroExpanded] = useState(false);
   const [hoveredSolutionId, setHoveredSolutionId] = useState(null);
   const [progressValue, setProgressValue] = useState(0);
   const [revealSize, setRevealSize] = useState({ width: 0, height: 0 });
@@ -636,6 +637,9 @@ function TransitionSection({
     opacity: 1,
     pointerEvents: progressValue < 0.3 ? 'auto' : 'none',
   };
+
+  const [homeIntroLead, ...homeIntroExtraParagraphs] = copy.homeIntroParagraphs;
+
   const viewportClassName = [
     styles.viewport,
     isMobileLayout ? styles.viewportMobile : '',
@@ -978,16 +982,51 @@ function TransitionSection({
             </span>
           </div>
 
+          <img
+            alt={copy.homeLogoAlt}
+            className={styles.homeCornerLogo}
+            decoding="async"
+            fetchpriority="high"
+            height={HOME_LOGO_HEIGHT}
+            src={homeLogoSrc}
+            style={introCardStyle}
+            width={HOME_LOGO_WIDTH}
+          />
+
           <div className={styles.homeBrand} style={introCardStyle}>
-            <img
-              alt={copy.homeLogoAlt}
-              className={styles.homeBrandLogo}
-              decoding="async"
-              fetchpriority="high"
-              height={HOME_LOGO_HEIGHT}
-              src={homeLogoSrc}
-              width={HOME_LOGO_WIDTH}
-            />
+            <article className={styles.homeIntroCard}>
+              <span className={styles.homeIntroEyebrow}>
+                {copy.homeIntroMotto}
+              </span>
+              <h1>{copy.homeIntroTitle}</h1>
+              <div className={styles.homeIntroText}>
+                <p>{homeIntroLead}</p>
+                <AnimatePresence initial={false}>
+                  {isHomeIntroExpanded ? (
+                    <motion.div
+                      animate={{ height: 'auto', opacity: 1 }}
+                      className={styles.homeIntroExpanded}
+                      exit={{ height: 0, opacity: 0 }}
+                      initial={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      {homeIntroExtraParagraphs.map((paragraph) => (
+                        <p key={paragraph}>{paragraph}</p>
+                      ))}
+                    </motion.div>
+                  ) : null}
+                </AnimatePresence>
+              </div>
+              {homeIntroExtraParagraphs.length > 0 ? (
+                <button
+                  className={styles.homeIntroToggle}
+                  type="button"
+                  onClick={() => setIsHomeIntroExpanded((value) => !value)}
+                >
+                  {isHomeIntroExpanded ? copy.readLess : copy.readMore}
+                </button>
+              ) : null}
+            </article>
           </div>
         </div>
       </div>

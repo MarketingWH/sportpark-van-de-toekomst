@@ -149,21 +149,103 @@
 .homeBrand {
   position: relative;
   z-index: 1;
-  pointer-events: none;
-  width: min(62rem, calc(100% - 2rem));
+  pointer-events: auto;
+  width: min(38rem, calc(100% - 2rem));
   display: grid;
   justify-items: center;
-  gap: 1.4rem;
-  text-align: center;
+  text-align: left;
   will-change: transform, opacity;
 }
 
-.homeBrandLogo {
-  width: min(52rem, 88vw);
-  max-width: 100%;
+.homeCornerLogo {
+  position: absolute;
+  top: calc(1rem + env(safe-area-inset-top, 0px));
+  left: calc(1rem + env(safe-area-inset-left, 0px));
+  z-index: 7;
+  width: min(14rem, 24vw);
+  max-width: calc(100% - 8.5rem);
   height: auto;
   display: block;
-  filter: drop-shadow(0 1.2rem 2rem rgba(33, 42, 34, 0.08));
+  filter: drop-shadow(0 0.85rem 1.35rem rgba(23, 34, 27, 0.08));
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.homeIntroCard {
+  display: grid;
+  gap: 0.78rem;
+  max-width: 35rem;
+  padding: clamp(1.1rem, 2.2vw, 1.55rem);
+  border: 1px solid rgba(23, 50, 30, 0.08);
+  border-radius: 1.55rem;
+  background:
+    linear-gradient(180deg, rgba(255, 252, 246, 0.92), rgba(240, 234, 222, 0.9)),
+    #f6f1e8;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.52),
+    0 1.4rem 3rem rgba(23, 34, 27, 0.12);
+  color: #17211d;
+  backdrop-filter: blur(16px);
+}
+
+.homeIntroEyebrow {
+  color: #7e9f52;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.homeIntroCard h1 {
+  margin: 0;
+  font-size: clamp(1.75rem, 3vw, 2.65rem);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+
+.homeIntroText {
+  display: grid;
+  gap: 0.68rem;
+}
+
+.homeIntroExpanded {
+  display: grid;
+  gap: 0.68rem;
+  overflow: hidden;
+}
+
+.homeIntroText p {
+  margin: 0;
+  color: rgba(23, 33, 29, 0.75);
+  font-size: clamp(0.88rem, 1.05vw, 0.98rem);
+  line-height: 1.56;
+}
+
+.homeIntroToggle {
+  justify-self: start;
+  min-height: 2.32rem;
+  padding: 0.5rem 0.88rem;
+  border: 1px solid rgba(23, 50, 30, 0.14);
+  border-radius: 0.86rem;
+  background: rgba(246, 241, 232, 0.52);
+  color: #0f3a21;
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(126, 159, 82, 0.12);
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.homeIntroToggle:hover {
+  border-color: rgba(23, 50, 30, 0.22);
+  background: rgba(232, 226, 214, 0.72);
+  transform: translateY(-1px);
 }
 
 .scrollHint {
@@ -680,6 +762,38 @@
   .laptopLiftPopup.alignLeft.alignBottom {
     transform: translate(1rem, calc(-100% - 1rem));
   }
+
+  .homeBrand {
+    width: min(34rem, calc(100% - 2rem));
+  }
+
+  .homeCornerLogo {
+    width: min(12rem, 20vw);
+  }
+
+  .homeIntroCard {
+    max-width: 31rem;
+    padding: 1rem 1.08rem;
+    border-radius: 1.25rem;
+    gap: 0.58rem;
+  }
+
+  .homeIntroCard h1 {
+    font-size: clamp(1.45rem, 2.5vw, 2rem);
+  }
+
+  .homeIntroText {
+    gap: 0.48rem;
+  }
+
+  .homeIntroExpanded {
+    gap: 0.48rem;
+  }
+
+  .homeIntroText p {
+    font-size: 0.82rem;
+    line-height: 1.42;
+  }
 }
 
 @keyframes pulse {
@@ -743,11 +857,28 @@
 
   .homeBrand {
     width: calc(100% - 1.5rem);
-    gap: 1rem;
+    justify-items: center;
+    text-align: left;
   }
 
-  .homeBrandLogo {
-    width: min(44rem, 94vw);
+  .homeCornerLogo {
+    top: calc(0.75rem + env(safe-area-inset-top, 0px));
+    left: calc(0.75rem + env(safe-area-inset-left, 0px));
+    width: min(10.5rem, 34vw);
+    max-width: calc(100% - 7.5rem);
+  }
+
+  .homeIntroCard {
+    width: 100%;
+    max-width: 34rem;
+  }
+
+  .homeIntroCard h1 {
+    font-size: clamp(1.55rem, 5.5vw, 2.2rem);
+  }
+
+  .homeIntroText p {
+    font-size: 0.88rem;
   }
 
   .scrollCue {
@@ -934,6 +1065,32 @@
     height: 2rem;
   }
 
+  .homeIntroCard {
+    max-width: 21rem;
+    max-height: 48svh;
+    overflow: auto;
+    padding: 0.95rem;
+    border-radius: 1.15rem;
+    gap: 0.55rem;
+  }
+
+  .homeIntroCard h1 {
+    font-size: clamp(1.4rem, 7vw, 1.85rem);
+  }
+
+  .homeIntroText {
+    gap: 0.46rem;
+  }
+
+  .homeIntroExpanded {
+    gap: 0.46rem;
+  }
+
+  .homeIntroText p {
+    font-size: 0.8rem;
+    line-height: 1.42;
+  }
+
   .hotspot {
     margin-top: -1rem;
     margin-left: -1rem;
@@ -1005,8 +1162,9 @@
     width: calc(100% - 2.25rem);
   }
 
-  .homeBrandLogo {
-    width: min(30rem, 84vw);
+  .homeCornerLogo {
+    width: 9.5rem;
+    max-width: calc(100% - 7rem);
   }
 
   .topUi {

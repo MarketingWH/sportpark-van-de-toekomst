@@ -73,7 +73,7 @@
   z-index: 6;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  align-items: start;
+  align-items: center;
   pointer-events: none;
 }
 
@@ -81,6 +81,7 @@
   position: relative;
   z-index: 1;
   grid-column: 2;
+  grid-row: 1;
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
@@ -326,8 +327,9 @@
 .themeControls {
   position: relative;
   z-index: 1;
-  grid-column: 3;
-  justify-self: end;
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
   display: flex;
   align-items: center;
   gap: 0.45rem;
@@ -525,11 +527,11 @@
 }
 
 .hotspotPreview {
-  z-index: 1;
+  z-index: 7;
 }
 
 .hotspotActive {
-  z-index: 2;
+  z-index: 8;
   --hotspot-scale: 1.06;
 }
 
@@ -691,14 +693,15 @@
 @media (max-width: 1500px) and (min-width: 761px), (max-height: 820px) and (min-width: 761px) {
   .topUi {
     top: 0.9rem;
-    left: 8.7rem;
+    left: 1rem;
     right: 1rem;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
     gap: 0.65rem;
   }
 
   .countdownBar {
-    grid-column: 1;
+    grid-column: 2;
     justify-self: center;
     max-width: min(58rem, 100%);
     gap: 0.44rem;
@@ -729,7 +732,8 @@
   }
 
   .themeControls {
-    grid-column: 2;
+    grid-column: 1;
+    justify-self: start;
   }
 
   .themeStatus {
@@ -943,11 +947,13 @@
     left: 0.75rem;
     right: 0.75rem;
     grid-template-columns: 1fr;
+    align-items: center;
     gap: 0.48rem;
   }
 
   .countdownBar {
     grid-column: auto;
+    grid-row: auto;
     left: auto;
     top: auto;
     width: 100%;
@@ -993,9 +999,10 @@
 
   .themeControls {
     grid-column: auto;
+    grid-row: auto;
     justify-self: stretch;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
     gap: 0.4rem;
     width: 100%;

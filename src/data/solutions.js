@@ -229,7 +229,7 @@ const fietsenstallingMedia = folderMedia(
 );
 
 const solarWoodleMedia = [
-  youtubeMedia('https://www.youtube.com/watch?v=A0rrS0pytiA', 'GreenMatter Solar Woodle video'),
+  youtubeMedia('https://www.youtube.com/watch?v=A0rrS0pytiA', 'GreenMatter Solar video'),
   ...folderMedia(
     'Greenmatter Solar Woodle',
     [
@@ -238,7 +238,7 @@ const solarWoodleMedia = [
       '20260207_182835.jpg',
       'Solar woodle deata.jpg',
     ],
-    'GreenMatter Solar Woodle',
+    'GreenMatter Solar',
     'Solar',
   ),
 ];
@@ -551,7 +551,7 @@ export const solutions = [
   },
   {
     id: 'solar-woodle',
-    title: 'GreenMatter Solar Woodle',
+    title: 'GreenMatter Solar',
     description:
       'Onze circulaire en door zon aangedreven verlichting',
     summary:

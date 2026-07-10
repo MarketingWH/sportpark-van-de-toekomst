@@ -213,7 +213,7 @@ const solutionTranslations = {
     buttonText: 'View bicycle parking',
   },
   'solar-woodle': {
-    title: 'GreenMatter Solar Woodle',
+    title: 'GreenMatter Solar',
     description: 'Our circular solar-powered lighting',
     summary: [
       'In the sport park of the future, lighting plays an important role in safety, sustainability and usability. Solar lighting illuminates paths, parking areas and meeting places without a grid connection.',

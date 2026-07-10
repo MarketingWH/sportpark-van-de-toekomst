@@ -25,7 +25,7 @@ const mobileFilterLabels = {
   terras: 'Terras',
   fietsenstalling: 'Fietsenstalling',
   parkeerplaats: 'Parkeerplaats',
-  'solar-woodle': 'Solar Woodle',
+  'solar-woodle': 'Solar',
 };
 
 const mobileFilterLabelsEn = {
@@ -38,7 +38,7 @@ const mobileFilterLabelsEn = {
   terras: 'Terrace',
   fietsenstalling: 'Bike parking',
   parkeerplaats: 'Parking',
-  'solar-woodle': 'Solar Woodle',
+  'solar-woodle': 'Solar',
 };
 
 const whitepaperUrl =

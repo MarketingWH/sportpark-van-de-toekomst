@@ -620,6 +620,7 @@ function TransitionSection({
 
   const introCardStyle = {
     opacity: introOpacity,
+    pointerEvents: progressValue < 0.3 ? 'auto' : 'none',
     transform: `translate3d(0, ${introY}px, 0) scale(${introScale})`,
     transformOrigin: 'center center',
   };
@@ -787,14 +788,6 @@ function TransitionSection({
               </div>
 
               <div className={styles.themeControls} style={themeToggleStyle}>
-                <span
-                  className={`${styles.themeStatus} ${
-                    isNightMode ? styles.themeStatusActive : ''
-                  }`}
-                >
-                  {isNightMode ? copy.solarOn : copy.solarOff}
-                </span>
-
                 <button
                   aria-label={
                     isNightMode
@@ -816,6 +809,14 @@ function TransitionSection({
                     <MoonIcon />
                   </span>
                 </button>
+
+                <span
+                  className={`${styles.themeStatus} ${
+                    isNightMode ? styles.themeStatusActive : ''
+                  }`}
+                >
+                  {isNightMode ? copy.solarOn : copy.solarOff}
+                </span>
               </div>
             </div>
 

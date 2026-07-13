@@ -246,7 +246,7 @@ const solarWoodleMedia = [
 const parkeerplaatsMedia = [
   youtubeMedia(
     'https://www.youtube.com/watch?v=OV8bCw6BQw4',
-    'Klimaatadaptatieve parkeerplaats video',
+    'Klimaatadaptieve parkeerplaats video',
   ),
   ...folderMedia(
     'Klimaatadaptieve parkeerplaats',
@@ -264,7 +264,7 @@ const parkeerplaatsMedia = [
       'GreenMatter_ecoraster_(gras)tegels__05__GreenMatter-Ecoraster-GME50-grastegel-eco.jpg',
       'IMG_0124.jpg',
     ],
-    'Klimaatadaptatieve parkeerplaats',
+    'Klimaatadaptieve parkeerplaats',
     'Parkeerplaats',
   ),
 ];
@@ -527,7 +527,7 @@ export const solutions = [
   },
   {
     id: 'fietsenstalling',
-    title: 'Klimaatadaptatieve fietsenstalling',
+    title: 'Klimaatadaptieve fietsenstalling',
     description:
       'Fietsparkeersysteem, solar verlichting, ecoraster (gras)tegels',
     summary:
@@ -575,7 +575,7 @@ export const solutions = [
   },
   {
     id: 'parkeerplaats',
-    title: 'Klimaatadaptatieve parkeerplaats',
+    title: 'Klimaatadaptieve parkeerplaats',
     description:
       'GreenMatter Ecoraster bloxx, GreenMatter Ecoraster (gras)tegels, solar verlichting',
     summary:

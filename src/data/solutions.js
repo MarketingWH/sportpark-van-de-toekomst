@@ -129,7 +129,7 @@ const fitnessparkMedia = [
   ...folderMedia(
     'GreenMatter fitnesspark',
     [
-      'GreenMatter Fitnesspark (1).jpg',
+      'GreenMatter Fitnesspark (1).jpg.jpg',
       'GreenMatter fitnesspark.webp',
       'WhatsApp Image 2025-11-26 at 16.13.05 (1).jpg',
       'GreenMatter-QR-FIT-beweegbank-header_2.jpg',

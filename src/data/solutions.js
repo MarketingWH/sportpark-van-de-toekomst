@@ -224,7 +224,7 @@ const fietsenstallingMedia = folderMedia(
     'IMG_4358.JPG.jpg',
     'IMG_4361.JPG.jpg',
   ],
-  'Klimaatadaptatieve fietsenstalling',
+  'Klimaatadaptieve fietsenstalling',
   'Fietsenstalling',
 );
 

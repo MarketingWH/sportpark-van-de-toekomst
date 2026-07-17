@@ -52,11 +52,11 @@ function youtubeMedia(url, title) {
 }
 
 const waterbouwMedia = [
-  youtubeMedia('https://www.youtube.com/watch?v=d2LiHRxQ_KM', 'Waterbouw - Brug video'),
-  youtubeMedia(
+   youtubeMedia(
     'https://www.youtube.com/watch?v=30fEoV5cv7k',
     'Waterbouw - Walbeschoeiing video',
   ),
+  youtubeMedia('https://www.youtube.com/watch?v=d2LiHRxQ_KM', 'Waterbouw - Brug video'),
   youtubeMedia(
     'https://www.youtube.com/watch?v=cIMAjaQevi8',
     'Waterbouw - Vissteiger video',

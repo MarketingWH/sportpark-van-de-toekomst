@@ -103,6 +103,7 @@ const modulaireSportvloerenMedia = [
   ...folderMedia(
     'Modulaire sportvloeren',
     [
+      'GreenMatter modulaire sportvloer.jpg',
       'Modulaire sportvloer Haarlem OG.webp',
       'GreenMatter-modulaire-sportvloer-groen-Tilburg_1.jpg',
       'modulaire sportvloer.webp',

@@ -126,7 +126,10 @@ const vlonderplankenMedia = folderMedia(
 );
 
 const fitnessparkMedia = [
-  
+  youtubeMedia(
+    'https://www.youtube.com/watch?v=OqDQR3d1mNM',
+    'GreenMatter fitnesspark video',
+  ),
   youtubeMedia(
     'https://youtu.be/LavjD7gX5pk',
     'GreenMatter fitnesspark 02',
@@ -222,17 +225,23 @@ const speeltoestellenMedia = [
   ),
 ];
 
-const fietsenstallingMedia = folderMedia(
-  'Klimaatadaptieve fietsenstalling',
-  [
-    'Klimaatadaptieve fietsenstalling.webp',
-    'Klimaatadaptieve fietsenstalling 2.webp',
-    'IMG_4358.JPG.jpg',
-    'IMG_4361.JPG.jpg',
-  ],
-  'Klimaatadaptieve fietsenstalling',
-  'Fietsenstalling',
-);
+const fietsenstallingMedia = [
+  youtubeMedia(
+    'https://www.youtube.com/watch?v=P_kq-3Itfsg',
+    'Klimaatadaptieve fietsenstalling video',
+  ),
+  ...folderMedia(
+    'Klimaatadaptieve fietsenstalling',
+    [
+      'Klimaatadaptieve fietsenstalling.webp',
+      'Klimaatadaptieve fietsenstalling 2.webp',
+      'IMG_4358.JPG.jpg',
+      'IMG_4361.JPG.jpg',
+    ],
+    'Klimaatadaptieve fietsenstalling',
+    'Fietsenstalling',
+  ),
+];
 
 const solarWoodleMedia = [
   youtubeMedia('https://www.youtube.com/watch?v=A0rrS0pytiA', 'GreenMatter Solar video'),

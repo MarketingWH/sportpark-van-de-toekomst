@@ -1,5 +1,6 @@
 const parkImage = '/sportpark-photo-2026-05-19-1280.webp?v=1';
 const defaultButtonText = 'Bekijk productpagina';
+const showVideosPendingApproval = false;
 
 const videoExtensions = new Set(['mp4', 'webm', 'mov', 'm4v', 'ogg']);
 
@@ -126,10 +127,14 @@ const vlonderplankenMedia = folderMedia(
 );
 
 const fitnessparkMedia = [
-  youtubeMedia(
-    'https://www.youtube.com/watch?v=OqDQR3d1mNM',
-    'GreenMatter fitnesspark video',
-  ),
+  ...(showVideosPendingApproval
+    ? [
+        youtubeMedia(
+          'https://www.youtube.com/watch?v=OqDQR3d1mNM',
+          'GreenMatter fitnesspark video',
+        ),
+      ]
+    : []),
   youtubeMedia(
     'https://youtu.be/LavjD7gX5pk',
     'GreenMatter fitnesspark 02',
@@ -226,10 +231,14 @@ const speeltoestellenMedia = [
 ];
 
 const fietsenstallingMedia = [
-  youtubeMedia(
-    'https://www.youtube.com/watch?v=P_kq-3Itfsg',
-    'Klimaatadaptieve fietsenstalling video',
-  ),
+  ...(showVideosPendingApproval
+    ? [
+        youtubeMedia(
+          'https://www.youtube.com/watch?v=P_kq-3Itfsg',
+          'Klimaatadaptieve fietsenstalling video',
+        ),
+      ]
+    : []),
   ...folderMedia(
     'Klimaatadaptieve fietsenstalling',
     [

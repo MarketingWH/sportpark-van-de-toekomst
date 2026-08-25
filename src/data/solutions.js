@@ -129,10 +129,6 @@ const fitnessparkMedia = [
     'https://www.youtube.com/watch?v=OqDQR3d1mNM',
     'GreenMatter fitnesspark video',
   ),
-  youtubeMedia(
-    'https://youtu.be/LavjD7gX5pk',
-    'GreenMatter fitnesspark 02',
-  ),
   youtubeMedia('https://www.youtube.com/watch?v=uKLZc567DdQ', 'GreenMatter fitnesspark video'),
   
   ...folderMedia(

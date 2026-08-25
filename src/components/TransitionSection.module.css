@@ -63,6 +63,8 @@
   z-index: 4;
   display: grid;
   place-items: center;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .topUi {
@@ -96,6 +98,7 @@
   background: rgba(18, 32, 27, 0.58);
   box-shadow: 0 1rem 2rem rgba(20, 25, 18, 0.16);
   backdrop-filter: blur(14px);
+  opacity: 0;
   pointer-events: none;
 }
 
@@ -155,6 +158,9 @@
   display: grid;
   justify-items: center;
   text-align: left;
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transform-origin: center center;
   will-change: transform, opacity;
 }
 
@@ -168,7 +174,10 @@
   height: auto;
   display: block;
   filter: drop-shadow(0 0.85rem 1.35rem rgba(23, 34, 27, 0.08));
+  opacity: 1;
   pointer-events: none;
+  transform: translate3d(0, 0, 0) scale(1);
+  transform-origin: center center;
   will-change: transform, opacity;
 }
 
@@ -262,7 +271,12 @@
   left: 50%;
   z-index: 2;
   max-width: 100%;
+  width: 58vw;
+  height: 40vh;
   overflow: hidden;
+  border-radius: 34px;
+  box-shadow: 0 28px 72px rgba(6, 12, 12, 0.46);
+  opacity: 0;
   transform: translate(-50%, -50%);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0)),
@@ -282,6 +296,9 @@
 
 .parkImageStage {
   z-index: 1;
+  opacity: 0;
+  transform: translate3d(0, 28px, 0) scale(1);
+  transform-origin: center center;
   will-change: transform, opacity;
 }
 
@@ -315,6 +332,7 @@
     radial-gradient(circle at center, rgba(4, 8, 8, 0.02), rgba(4, 8, 8, 0.26)),
     linear-gradient(180deg, rgba(4, 8, 8, 0.02), rgba(4, 8, 8, 0.18));
   pointer-events: none;
+  opacity: 0.08;
 }
 
 .outroShade {
@@ -322,6 +340,7 @@
   background:
     linear-gradient(180deg, rgba(7, 12, 12, 0) 48%, rgba(7, 12, 12, 0.16) 78%, rgba(7, 12, 12, 0.36) 100%);
   pointer-events: none;
+  opacity: 0;
 }
 
 .themeControls {
@@ -337,7 +356,8 @@
   transition:
     opacity 220ms ease,
     transform 220ms ease;
-  pointer-events: auto;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .themeToggle {
@@ -451,7 +471,12 @@
 .homeScrollCue {
   z-index: 5;
   color: #17321e;
+  opacity: 1;
   text-shadow: none;
+}
+
+.parkScrollCue {
+  opacity: 0;
 }
 
 .homeScrollCue .scrollCueStem {
@@ -496,10 +521,14 @@
 
 .hotspotLayer {
   z-index: 4;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .hotspot {
   position: absolute;
+  left: var(--hotspot-initial-left);
+  top: var(--hotspot-initial-top);
   z-index: 6;
   margin-top: -1.1rem;
   margin-left: -1.1rem;

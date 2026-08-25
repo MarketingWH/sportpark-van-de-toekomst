@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { uiText } from '../data/translations';
 import styles from './TransitionSection.module.css';
 
@@ -138,7 +138,22 @@ function TransitionSection({
   const homeLogoSrc = language === 'en' ? HOME_LOGO_EN_SRC : HOME_LOGO_SRC;
   const sectionRef = useRef(null);
   const revealRef = useRef(null);
+  const imageStageRef = useRef(null);
+  const vignetteRef = useRef(null);
+  const outroShadeRef = useRef(null);
+  const countdownRef = useRef(null);
+  const themeControlsRef = useRef(null);
+  const parkScrollCueRef = useRef(null);
+  const homeScrollCueRef = useRef(null);
+  const hotspotLayerRef = useRef(null);
+  const hotspotRefs = useRef(new Map());
+  const introLayerRef = useRef(null);
+  const homeLogoRef = useRef(null);
+  const homeBrandRef = useRef(null);
   const cardRef = useRef(null);
+  const applyProgressRef = useRef(null);
+  const progressRef = useRef(0);
+  const displayedSolutionRef = useRef(null);
   const closeTimeoutRef = useRef(null);
   const suppressCloseUntilRef = useRef(0);
   const isPinnedRef = useRef(false);
@@ -155,8 +170,7 @@ function TransitionSection({
   const [mobileViewportMode, setMobileViewportMode] = useState('start');
   const [isHomeIntroExpanded, setIsHomeIntroExpanded] = useState(false);
   const [hoveredSolutionId, setHoveredSolutionId] = useState(null);
-  const [progressValue, setProgressValue] = useState(0);
-  const [revealSize, setRevealSize] = useState({ width: 0, height: 0 });
+  const [isInteractive, setIsInteractive] = useState(false);
   const [imageSize, setImageSize] = useState({ width: 3074, height: 2045 });
   const [countdownParts, setCountdownParts] = useState(() =>
     getCountdownParts(copy.countdownUnits),
@@ -177,6 +191,227 @@ function TransitionSection({
     }
 
     let rafId = 0;
+    let sectionTop = 0;
+    let sectionHeight = 1;
+    let viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+    let scrollSpan = 1;
+
+    const measureSection = () => {
+      if (!sectionRef.current) {
+        return;
+      }
+
+      const rect = sectionRef.current.getBoundingClientRect();
+      viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+      sectionTop = rect.top + window.scrollY;
+      sectionHeight = sectionRef.current.offsetHeight;
+      scrollSpan = Math.max(sectionHeight - viewportHeight, 1);
+    };
+
+    const updateProgressStyles = (nextProgress) => {
+      progressRef.current = nextProgress;
+
+      const introOpacity = interpolateSeries(
+        nextProgress,
+        [0, 0.16, 0.34, 0.44],
+        [1, 1, 0.24, 0],
+      );
+      const introY = interpolate(
+        nextProgress,
+        0,
+        1,
+        0,
+        reduceMotion ? -20 : -86,
+      );
+      const introScale = interpolate(
+        nextProgress,
+        0,
+        0.38,
+        1,
+        reduceMotion ? 0.988 : 0.94,
+      );
+      const revealOpacity = interpolateSeries(
+        nextProgress,
+        [0.04, 0.18, 0.32],
+        [0, 0.24, 1],
+      );
+      const revealWidth = interpolateSeries(
+        nextProgress,
+        [0, 0.58, 0.86, 1],
+        [58, 100, 100, 100],
+      );
+      const revealHeight = interpolateSeries(
+        nextProgress,
+        [0, 0.58, 0.86, 1],
+        [40, 100, 100, 100],
+      );
+      const revealRadius = interpolateSeries(
+        nextProgress,
+        [0, 0.46, 0.66, 1],
+        [34, 18, 0, 0],
+      );
+      const revealShadow = interpolateSeries(
+        nextProgress,
+        [0, 0.64, 1],
+        [0.46, 0.18, 0.1],
+      );
+      const imageScale = interpolateSeries(
+        nextProgress,
+        [0, 0.56, 0.82, 1],
+        reduceMotion
+          ? [1, 1.006, 1.01, 1.005]
+          : [1, 1.018, 1.028, 1.014],
+      );
+      const imageY = interpolateSeries(
+        nextProgress,
+        [0, 0.56, 0.82, 1],
+        reduceMotion
+          ? [8, 2, -2, -4]
+          : [28, 2, -6, -12],
+      );
+      const imageOpacity = interpolateSeries(
+        nextProgress,
+        [0.08, 0.24, 0.38],
+        [0, 0.42, 1],
+      );
+      const vignetteOpacity = interpolateSeries(
+        nextProgress,
+        [0, 0.74, 1],
+        [0.08, 0.18, 0.3],
+      );
+      const outroShadeOpacity = interpolateSeries(nextProgress, [0.82, 1], [0, 1]);
+      const hotspotLayerOpacity = interpolateSeries(
+        nextProgress,
+        [0.66, 0.74, 1],
+        [0, 1, 1],
+      );
+      const homeScrollCueOpacity = interpolateSeries(
+        nextProgress,
+        [0, 0.18, 0.28, 0.38],
+        [1, 1, 0.45, 0],
+      );
+      const scrollCueOpacity = interpolateSeries(
+        nextProgress,
+        [0.64, 0.72, 0.9, 0.98],
+        [0, 1, 1, 0],
+      );
+      const controlsOpacity = interpolateSeries(nextProgress, [0.16, 0.3, 1], [0, 1, 1]);
+      const nextIsInteractive = nextProgress >= 0.66;
+
+      if (revealRef.current) {
+        Object.assign(revealRef.current.style, {
+          opacity: String(revealOpacity),
+          width: `${revealWidth}vw`,
+          height: `${revealHeight}vh`,
+          borderRadius: `${revealRadius}px`,
+          boxShadow: `0 28px 72px rgba(6, 12, 12, ${revealShadow})`,
+        });
+      }
+
+      if (imageStageRef.current) {
+        Object.assign(imageStageRef.current.style, {
+          opacity: String(imageOpacity),
+          transform: `translate3d(0, ${imageY}px, 0) scale(${imageScale})`,
+          transformOrigin: 'center center',
+        });
+      }
+
+      const introTransform = `translate3d(0, ${introY}px, 0) scale(${introScale})`;
+
+      for (const element of [homeLogoRef.current, homeBrandRef.current]) {
+        if (element) {
+          Object.assign(element.style, {
+            opacity: String(introOpacity),
+            pointerEvents: nextProgress < 0.3 ? 'auto' : 'none',
+            transform: introTransform,
+            transformOrigin: 'center center',
+          });
+        }
+      }
+
+      if (introLayerRef.current) {
+        introLayerRef.current.style.pointerEvents = nextProgress < 0.3 ? 'auto' : 'none';
+      }
+
+      if (vignetteRef.current) {
+        vignetteRef.current.style.opacity = String(vignetteOpacity);
+      }
+
+      if (outroShadeRef.current) {
+        outroShadeRef.current.style.opacity = String(outroShadeOpacity);
+      }
+
+      if (countdownRef.current) {
+        countdownRef.current.style.opacity = String(controlsOpacity);
+      }
+
+      if (themeControlsRef.current) {
+        Object.assign(themeControlsRef.current.style, {
+          opacity: String(controlsOpacity),
+          pointerEvents: revealOpacity > 0.16 ? 'auto' : 'none',
+        });
+      }
+
+      if (parkScrollCueRef.current) {
+        parkScrollCueRef.current.style.opacity = String(scrollCueOpacity);
+      }
+
+      if (homeScrollCueRef.current) {
+        homeScrollCueRef.current.style.opacity = String(homeScrollCueOpacity);
+      }
+
+      if (hotspotLayerRef.current) {
+        Object.assign(hotspotLayerRef.current.style, {
+          opacity: String(hotspotLayerOpacity),
+          pointerEvents: nextIsInteractive ? 'auto' : 'none',
+        });
+      }
+
+      const viewportWidth = document.documentElement.clientWidth;
+      const viewportHeight = window.innerHeight;
+      const width = (viewportWidth * revealWidth) / 100;
+      const height = (viewportHeight * revealHeight) / 100;
+      const coverScale = Math.max(width / imageSize.width, height / imageSize.height);
+      const coverWidth = imageSize.width * coverScale;
+      const coverHeight = imageSize.height * coverScale;
+      const offsetX = (width - coverWidth) / 2;
+      const offsetY = (height - coverHeight) / 2;
+      const centerX = width / 2;
+      const centerY = height / 2;
+
+      const positionElement = (element, hotspot) => {
+        if (!element || !hotspot) {
+          return;
+        }
+
+        const hotspotX =
+          isMobileLayout && typeof hotspot.mobileX === 'number'
+            ? hotspot.mobileX
+            : hotspot.x;
+        const hotspotY =
+          isMobileLayout && typeof hotspot.mobileY === 'number'
+            ? hotspot.mobileY
+            : hotspot.y;
+        const baseX = offsetX + (hotspotX / 100) * coverWidth;
+        const baseY = offsetY + (hotspotY / 100) * coverHeight;
+
+        element.style.left = `${centerX + imageScale * (baseX - centerX)}px`;
+        element.style.top = `${centerY + imageScale * (baseY - centerY) + imageY}px`;
+      };
+
+      for (const solution of solutions) {
+        positionElement(hotspotRefs.current.get(solution.id), solution);
+      }
+
+      positionElement(cardRef.current, displayedSolutionRef.current);
+
+      if (isInteractiveRef.current !== nextIsInteractive) {
+        isInteractiveRef.current = nextIsInteractive;
+        setIsInteractive(nextIsInteractive);
+      }
+    };
+
+    applyProgressRef.current = updateProgressStyles;
 
     const updateProgress = () => {
       rafId = 0;
@@ -185,14 +420,16 @@ function TransitionSection({
         return;
       }
 
-      const rect = sectionRef.current.getBoundingClientRect();
-      const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
-      const scrollSpan = Math.max(sectionRef.current.offsetHeight - viewportHeight, 1);
-      const nextProgress = Math.min(Math.max(-rect.top / scrollSpan, 0), 1);
+      const rectTop = sectionTop - window.scrollY;
+      const rectBottom = rectTop + sectionHeight;
+      const nextProgress = Math.min(
+        Math.max((window.scrollY - sectionTop) / scrollSpan, 0),
+        1,
+      );
 
       if (isMobileLayout) {
         const nextViewportMode =
-          rect.bottom <= viewportHeight ? 'released' : rect.top <= 0 ? 'fixed' : 'start';
+          rectBottom <= viewportHeight ? 'released' : rectTop <= 0 ? 'fixed' : 'start';
 
         setMobileViewportMode((currentValue) =>
           currentValue === nextViewportMode ? currentValue : nextViewportMode,
@@ -203,13 +440,7 @@ function TransitionSection({
         );
       }
 
-      setProgressValue((currentValue) => {
-        if (Math.abs(currentValue - nextProgress) < 0.001) {
-          return currentValue;
-        }
-
-        return nextProgress;
-      });
+      updateProgressStyles(nextProgress);
     };
 
     const requestUpdate = () => {
@@ -218,10 +449,16 @@ function TransitionSection({
       }
     };
 
+    const requestMeasuredUpdate = () => {
+      measureSection();
+      requestUpdate();
+    };
+
+    measureSection();
     requestUpdate();
     window.addEventListener('scroll', requestUpdate, { passive: true });
-    window.addEventListener('resize', requestUpdate);
-    window.visualViewport?.addEventListener('resize', requestUpdate);
+    window.addEventListener('resize', requestMeasuredUpdate);
+    window.visualViewport?.addEventListener('resize', requestMeasuredUpdate);
 
     return () => {
       if (rafId) {
@@ -229,10 +466,16 @@ function TransitionSection({
       }
 
       window.removeEventListener('scroll', requestUpdate);
-      window.removeEventListener('resize', requestUpdate);
-      window.visualViewport?.removeEventListener('resize', requestUpdate);
+      window.removeEventListener('resize', requestMeasuredUpdate);
+      window.visualViewport?.removeEventListener('resize', requestMeasuredUpdate);
+      applyProgressRef.current = null;
     };
-  }, [isMobileLayout]);
+  }, [imageSize.height, imageSize.width, isMobileLayout, reduceMotion, solutions]);
+
+  useLayoutEffect(() => {
+    displayedSolutionRef.current = displayedSolution;
+    applyProgressRef.current?.(progressRef.current);
+  }, [displayedSolution]);
 
   useEffect(() => {
     setCountdownParts(getCountdownParts(copy.countdownUnits));
@@ -279,35 +522,10 @@ function TransitionSection({
   }, [isPinned]);
 
   useEffect(() => {
-    isInteractiveRef.current = progressValue >= 0.66;
-  }, [progressValue]);
-
-  useEffect(() => {
     if (pinnedSolutionId !== null) {
       setHoveredSolutionId(null);
     }
   }, [pinnedSolutionId]);
-
-  useEffect(() => {
-    if (!revealRef.current || typeof ResizeObserver === 'undefined') {
-      return undefined;
-    }
-
-    const observer = new ResizeObserver(([entry]) => {
-      if (!entry) {
-        return;
-      }
-
-      const { width, height } = entry.contentRect;
-      setRevealSize({ width, height });
-    });
-
-    observer.observe(revealRef.current);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -398,142 +616,6 @@ function TransitionSection({
     }, 220);
   };
 
-  const coverMetrics = useMemo(() => {
-    if (!revealSize.width || !revealSize.height || !imageSize.width || !imageSize.height) {
-      return null;
-    }
-
-    const scale = Math.max(
-      revealSize.width / imageSize.width,
-      revealSize.height / imageSize.height,
-    );
-
-    const width = imageSize.width * scale;
-    const height = imageSize.height * scale;
-
-    return {
-      width,
-      height,
-      offsetX: (revealSize.width - width) / 2,
-      offsetY: (revealSize.height - height) / 2,
-    };
-  }, [imageSize.height, imageSize.width, revealSize.height, revealSize.width]);
-
-  /*
-    Belangrijk:
-    Hieronder gebruiken mobiel en desktop dezelfde animatie-flow.
-    isMobileLayout wordt dus NIET meer gebruikt om de animatie anders te maken.
-    Alleen mobiele afbeeldingen en mobiele hotspot-coördinaten blijven bestaan.
-  */
-
-  const introOpacity = interpolateSeries(
-    progressValue,
-    [0, 0.16, 0.34, 0.44],
-    [1, 1, 0.24, 0],
-  );
-
-  const introY = interpolate(
-    progressValue,
-    0,
-    1,
-    0,
-    reduceMotion ? -20 : -86,
-  );
-
-  const introScale = interpolate(
-    progressValue,
-    0,
-    0.38,
-    1,
-    reduceMotion ? 0.988 : 0.94,
-  );
-
-  const revealOpacity = interpolateSeries(
-    progressValue,
-    [0.04, 0.18, 0.32],
-    [0, 0.24, 1],
-  );
-
-  const revealWidth = interpolateSeries(
-    progressValue,
-    [0, 0.58, 0.86, 1],
-    [58, 100, 100, 100],
-  );
-
-  const revealHeight = interpolateSeries(
-    progressValue,
-    [0, 0.58, 0.86, 1],
-    [40, 100, 100, 100],
-  );
-
-  const revealRadius = interpolateSeries(
-    progressValue,
-    [0, 0.46, 0.66, 1],
-    [34, 18, 0, 0],
-  );
-
-  const revealShadow = interpolateSeries(
-    progressValue,
-    [0, 0.64, 1],
-    [0.46, 0.18, 0.1],
-  );
-
-  const imageScale = interpolateSeries(
-    progressValue,
-    [0, 0.56, 0.82, 1],
-    reduceMotion
-      ? [1, 1.006, 1.01, 1.005]
-      : [1, 1.018, 1.028, 1.014],
-  );
-
-  const imageY = interpolateSeries(
-    progressValue,
-    [0, 0.56, 0.82, 1],
-    reduceMotion
-      ? [8, 2, -2, -4]
-      : [28, 2, -6, -12],
-  );
-
-  const imageOpacity = interpolateSeries(
-    progressValue,
-    [0.08, 0.24, 0.38],
-    [0, 0.42, 1],
-  );
-
-  const vignetteOpacity = interpolateSeries(
-    progressValue,
-    [0, 0.74, 1],
-    [0.08, 0.18, 0.3],
-  );
-
-  const outroShadeOpacity = interpolateSeries(
-    progressValue,
-    [0.82, 1],
-    [0, 1],
-  );
-
-  const hotspotLayerOpacity = interpolateSeries(
-    progressValue,
-    [0.66, 0.74, 1],
-    [0, 1, 1],
-  );
-
-  const homeScrollCueOpacity = interpolateSeries(
-    progressValue,
-    [0, 0.18, 0.28, 0.38],
-    [1, 1, 0.45, 0],
-  );
-
-  const scrollCueOpacity = interpolateSeries(
-    progressValue,
-    [0.64, 0.72, 0.9, 0.98],
-    [0, 1, 1, 0],
-  );
-
-  const visualScale = imageScale;
-  const visualTranslateY = imageY;
-  const isInteractive = progressValue >= 0.66;
-
   const shouldRenderNightImage = shouldLoadNightAssets || isNightMode;
   const usesFallbackNightImage = shouldRenderNightImage && nightImageSrc === dayImageSrc;
 
@@ -557,33 +639,6 @@ function TransitionSection({
     onPinSolution(hotspotId);
   };
 
-  const getRenderedPoint = (hotspot) => {
-    const hotspotX =
-      isMobileLayout && typeof hotspot.mobileX === 'number' ? hotspot.mobileX : hotspot.x;
-
-    const hotspotY =
-      isMobileLayout && typeof hotspot.mobileY === 'number' ? hotspot.mobileY : hotspot.y;
-
-    if (!coverMetrics) {
-      return {
-        left: `${hotspotX}%`,
-        top: `${hotspotY}%`,
-      };
-    }
-
-    const baseX = coverMetrics.offsetX + (hotspotX / 100) * coverMetrics.width;
-    const baseY = coverMetrics.offsetY + (hotspotY / 100) * coverMetrics.height;
-    const centerX = revealSize.width / 2;
-    const centerY = revealSize.height / 2;
-
-    return {
-      left: `${centerX + visualScale * (baseX - centerX)}px`,
-      top: `${centerY + visualScale * (baseY - centerY) + visualTranslateY}px`,
-    };
-  };
-
-  const cardPlacement = displayedSolution ? getRenderedPoint(displayedSolution) : undefined;
-
   const previewMedia =
     displayedSolution?.media?.find((item) => item?.type === 'image' && item?.src) ?? null;
 
@@ -599,45 +654,6 @@ function TransitionSection({
         .filter(Boolean)
         .join(' ')
     : styles.popup;
-
-  const revealStyle = {
-    opacity: revealOpacity,
-    width: `${revealWidth}vw`,
-    height: `${revealHeight}vh`,
-    borderRadius: `${revealRadius}px`,
-    boxShadow: `0 28px 72px rgba(6, 12, 12, ${revealShadow})`,
-  };
-
-  const imageStyle = {
-    transform: `translate3d(0, ${imageY}px, 0) scale(${imageScale})`,
-    transformOrigin: 'center center',
-  };
-
-  const imageStageStyle = {
-    opacity: imageOpacity,
-    ...imageStyle,
-  };
-
-  const introCardStyle = {
-    opacity: introOpacity,
-    pointerEvents: progressValue < 0.3 ? 'auto' : 'none',
-    transform: `translate3d(0, ${introY}px, 0) scale(${introScale})`,
-    transformOrigin: 'center center',
-  };
-
-  const themeToggleStyle = {
-    opacity: interpolateSeries(progressValue, [0.16, 0.3, 1], [0, 1, 1]),
-    pointerEvents: revealOpacity > 0.16 ? 'auto' : 'none',
-  };
-
-  const countdownStyle = {
-    opacity: interpolateSeries(progressValue, [0.16, 0.3, 1], [0, 1, 1]),
-  };
-
-  const introLayerStyle = {
-    opacity: 1,
-    pointerEvents: progressValue < 0.3 ? 'auto' : 'none',
-  };
 
   const [homeIntroLead, ...homeIntroExtraParagraphs] = copy.homeIntroParagraphs;
 
@@ -668,9 +684,8 @@ function TransitionSection({
           <div
             ref={revealRef}
             className={styles.parkReveal}
-            style={revealStyle}
           >
-            <div className={styles.parkImageStage} style={imageStageStyle}>
+            <div ref={imageStageRef} className={styles.parkImageStage}>
               <div
                 className={`${styles.parkImageLayer} ${
                   !isNightMode ? styles.parkImageLayerVisible : ''
@@ -762,17 +777,17 @@ function TransitionSection({
             </div>
 
             <div
+              ref={vignetteRef}
               className={styles.vignette}
-              style={{ opacity: vignetteOpacity }}
             />
 
             <div
+              ref={outroShadeRef}
               className={styles.outroShade}
-              style={{ opacity: outroShadeOpacity }}
             />
 
             <div className={styles.topUi}>
-              <div className={styles.countdownBar} style={countdownStyle}>
+              <div ref={countdownRef} className={styles.countdownBar}>
                 <span className={styles.countdownLabel}>
                   {copy.countdownLabel}
                 </span>
@@ -787,7 +802,7 @@ function TransitionSection({
                 </div>
               </div>
 
-              <div className={styles.themeControls} style={themeToggleStyle}>
+              <div ref={themeControlsRef} className={styles.themeControls}>
                 <button
                   aria-label={
                     isNightMode
@@ -821,9 +836,9 @@ function TransitionSection({
             </div>
 
             <div
+              ref={parkScrollCueRef}
               aria-hidden="true"
-              className={styles.scrollCue}
-              style={{ opacity: scrollCueOpacity }}
+              className={`${styles.scrollCue} ${styles.parkScrollCue}`}
             >
               <span className={styles.scrollCueLabel}>{copy.scrollFurther}</span>
               <span className={styles.scrollCueArrow}>
@@ -833,14 +848,11 @@ function TransitionSection({
             </div>
 
             <div
+              ref={hotspotLayerRef}
               aria-hidden={!isInteractive}
               className={`${styles.hotspotLayer} ${
                 isInteractive ? styles.hotspotLayerVisible : ''
               }`}
-              style={{
-                opacity: hotspotLayerOpacity,
-                pointerEvents: isInteractive ? 'auto' : 'none',
-              }}
             >
               {solutions.map((hotspot, index) => {
                 const isPreview = displayedSolution?.id === hotspot.id;
@@ -849,6 +861,13 @@ function TransitionSection({
                 return (
                   <button
                     key={hotspot.id}
+                    ref={(element) => {
+                      if (element) {
+                        hotspotRefs.current.set(hotspot.id, element);
+                      } else {
+                        hotspotRefs.current.delete(hotspot.id);
+                      }
+                    }}
                     aria-expanded={isPinnedHotspot}
                     aria-label={hotspot.title}
                     className={`${styles.hotspot} ${
@@ -856,7 +875,16 @@ function TransitionSection({
                     } ${isPinnedHotspot ? styles.hotspotActive : ''}`}
                     data-hotspot-trigger="true"
                     style={{
-                      ...getRenderedPoint(hotspot),
+                      '--hotspot-initial-left': `${
+                        isMobileLayout && typeof hotspot.mobileX === 'number'
+                          ? hotspot.mobileX
+                          : hotspot.x
+                      }%`,
+                      '--hotspot-initial-top': `${
+                        isMobileLayout && typeof hotspot.mobileY === 'number'
+                          ? hotspot.mobileY
+                          : hotspot.y
+                      }%`,
                       transitionDelay: `${index * 70}ms`,
                     }}
                     tabIndex={isInteractive ? 0 : -1}
@@ -895,7 +923,6 @@ function TransitionSection({
               <article
                 ref={cardRef}
                 className={cardClassName}
-                style={{ ...cardPlacement, pointerEvents: 'auto' }}
                 onMouseEnter={clearPendingClose}
                 onMouseLeave={scheduleClose}
                 onPointerEnter={clearPendingClose}
@@ -970,11 +997,11 @@ function TransitionSection({
           </div>
         </div>
 
-        <div className={styles.introLayer} style={introLayerStyle}>
+        <div ref={introLayerRef} className={styles.introLayer}>
           <div
+            ref={homeScrollCueRef}
             aria-hidden="true"
             className={`${styles.scrollCue} ${styles.homeScrollCue}`}
-            style={{ opacity: homeScrollCueOpacity }}
           >
             <span className={styles.scrollCueLabel}>{copy.scrollFurther}</span>
             <span className={styles.scrollCueArrow}>
@@ -984,17 +1011,17 @@ function TransitionSection({
           </div>
 
           <img
+            ref={homeLogoRef}
             alt={copy.homeLogoAlt}
             className={styles.homeCornerLogo}
             decoding="async"
             fetchpriority="high"
             height={HOME_LOGO_HEIGHT}
             src={homeLogoSrc}
-            style={introCardStyle}
             width={HOME_LOGO_WIDTH}
           />
 
-          <div className={styles.homeBrand} style={introCardStyle}>
+          <div ref={homeBrandRef} className={styles.homeBrand}>
             <article className={styles.homeIntroCard}>
               <span className={styles.homeIntroEyebrow}>
                 {copy.homeIntroMotto}

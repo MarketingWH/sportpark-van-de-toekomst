@@ -148,8 +148,8 @@ const fitnessparkMedia = [
 const dugoutMedia = folderMedia(
   'GreenMatter dug-Out',
   [
-    'GM Dug Out.webp',
     'GreenMatter Dug-out.webp',
+    'GM Dug Out.webp',
   ],
   'GreenMatter dug-out',
   'Dug-out',

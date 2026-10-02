@@ -434,7 +434,8 @@ Met vriendelijke groet,`,
             <a
               className={`${styles.mailChip} ${styles.whitepaperChip}`}
               href={casefolderUrl}
-              download
+              rel="noreferrer"
+              target="_blank"
             >
               {copy.casefolderButton}
             </a>
@@ -457,7 +458,8 @@ Met vriendelijke groet,`,
           <a
             className={`${styles.mobileMailCta} ${styles.mobileWhitepaperCta} ${styles.mobileCasefolderCta}`}
             href={casefolderUrl}
-            download
+            rel="noreferrer"
+            target="_blank"
           >
             {copy.casefolderButton}
           </a>

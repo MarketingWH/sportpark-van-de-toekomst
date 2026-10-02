@@ -43,6 +43,7 @@ const mobileFilterLabelsEn = {
 
 const whitepaperUrl =
   'https://greenmatter.nl/wp-content/uploads/2025/01/Whitepaper-GreenMatter.pdf';
+const casefolderUrl = '/downloads/casefolder-onze-gezellen-2026.pdf';
 
 function renderInlineText(content, keyPrefix = 'inline') {
   if (typeof content !== 'string') {
@@ -430,6 +431,13 @@ Met vriendelijke groet,`,
             >
               {copy.whitepaperButton}
             </a>
+            <a
+              className={`${styles.mailChip} ${styles.whitepaperChip}`}
+              href={casefolderUrl}
+              download
+            >
+              {copy.casefolderButton}
+            </a>
           </div>
         </div>
 
@@ -445,6 +453,13 @@ Met vriendelijke groet,`,
             target="_blank"
           >
             {copy.mobileWhitepaperButton}
+          </a>
+          <a
+            className={`${styles.mobileMailCta} ${styles.mobileWhitepaperCta} ${styles.mobileCasefolderCta}`}
+            href={casefolderUrl}
+            download
+          >
+            {copy.casefolderButton}
           </a>
         </div>
       </div>

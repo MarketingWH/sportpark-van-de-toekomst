@@ -397,6 +397,12 @@
 }
 
 @media (max-width: 1080px) {
+  .mobileCasefolderCta {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+  }
+
   .solutionPanel {
     grid-template-columns: 1fr;
   }

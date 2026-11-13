@@ -17,6 +17,121 @@ function mediaPath(relativeFolder, fileName) {
   return `/${segments.map((segment) => encodeURIComponent(segment)).join('/')}`;
 }
 
+// Alt-teksten per bestandsnaam: beschrijf wat er op de foto te zien is.
+// Voeg je een nieuwe foto toe, zet hem dan ook hier.
+const altTexts = {
+  "GreenMatter walbeschoeiing (1).JPG":
+    "Walbeschoeiing van gerecycled kunstgras langs een bosvijver",
+  "20221123_122007.jpg":
+    "Voetgangersbrug met leuningen van gerecycled kunstgras, gezien vanaf het pad",
+  "20241206 GM - Gemeente Haarlem - Groene Brug.jpg":
+    "Circulaire toegangsbrug over een begroeide sloot in Haarlem",
+  "Combi damwanden Bosbaan oktober 2021  (6).jpg":
+    "Combi-damwand langs het water van de Bosbaan in Amsterdam, met grasberm en fietspad",
+  "GM Vissteiger (1).JPG":
+    "Vissteiger van GreenMatter aan een vijver tussen het riet",
+  "GreenMatter modulaire sportvloer.jpg":
+    "Luchtfoto van een basketbalveld en fitnesszone met modulaire sportvloer in een park",
+  "Modulaire sportvloer Haarlem OG.webp":
+    "Sportveld met modulaire sportvloer en hekwerk op sportpark Onze Gezellen in Haarlem",
+  "GreenMatter-modulaire-sportvloer-groen-Tilburg_1.jpg":
+    "Omheind veld met modulaire sportvloer, voetbaldoelen en basketbalbord in Tilburg",
+  "modulaire sportvloer.webp":
+    "Circulaire picknickbanken naast een sportveld met modulaire sportvloer",
+  "GreenMatter-modulaire-sportvloer-3x3-basketball-court_8.jpg":
+    "Luchtfoto van een 3x3-basketbalveld met modulaire sportvloer tussen kunstgrasvelden",
+  "GreenMatter-modulaire-sportvloer-Tilburg-1_3.jpg":
+    "Luchtfoto van een omheind trapveld met modulaire sportvloer in Tilburg",
+  "Heer-vrankenstraat.JPG_4.jpg":
+    "Bovenaanzicht van een multisportveld met modulaire sportvloer en gekleurde belijning",
+  "GreenMatter-vlonderplanken.JPG_1.jpg":
+    "Gebogen wandelpad van vlonderplanken door een natuurgebied",
+  "GreenMatter fitnesspark goeie.webp":
+    "Calisthenics-rek van gerecycled kunstgras op een grasveld",
+  "GreenMatter fitnesspark.webp":
+    "Fitnesspark met beweegbank en trainingsrekken naast een sportpark",
+  "WhatsApp Image 2025-11-26 at 16.13.05 (1).jpg":
+    "Rekstok met palen van gerecycled kunstgras in het gras",
+  "GreenMatter-QR-FIT-beweegbank-header_2.jpg":
+    "QR-FIT beweegbank onder bomen, met een telefoon die de oefeningen toont",
+  "WhatsApp Image 2025-11-26 at 16.13.04 (4).jpg":
+    "Twee parallelle rekstokken voor oefeningen in een park",
+  "GreenMatter Dug-out.webp":
+    "Dug-out met zwarte wanden van gerecycled kunstgras langs een kunstgrasveld",
+  "GM Dug Out.webp":
+    "Binnenkant van een dug-out met zitbank langs het veld",
+  "P1100463.JPG.jpg":
+    "Zwarte kantplanken onder een hekwerk langs een kunstgrasveld",
+  "20210601 GM - Kantplanken voetbal.jpg":
+    "Kantplank tussen kunstgras en hekwerk langs een voetbalveld",
+  "Kantplanken Pernis.jpg":
+    "Kantplanken langs een kunstgrasveld in Pernis",
+  "kantplanken-2_1.jpg":
+    "Kantplank als scheiding tussen kunstgras en het betegelde looppad",
+  "Site3-e1678799514614_5.jpg":
+    "Close-up van een kantplank onderaan een hekwerk",
+  "DJI_0206 pad.JPG":
+    "Luchtfoto van een looppad met Ecoraster-tegels tussen twee kunstgrasvelden",
+  "Ecoraster bloxx met picknicktafels.jpg":
+    "Terras van Ecoraster Bloxx bij een clubhuis, met circulaire picknicktafels en parasols",
+  "groenste terras.jpg":
+    "Groen terras met bloembakken, jonge bomen en zitplekken naast een sportveld",
+  "74c0a87b-b12a-4218-8b80-ed05da2ca4c3.jpg":
+    "Circulaire picknicktafels voor een sportkantine",
+  "Bloembakken (2).jpg":
+    "Grote circulaire bloembakken met planten voor een clubgebouw",
+  "DJI_0219.JPG.jpg":
+    "Luchtfoto van een terras met picknicktafels en bloembakken naast het kunstgrasveld",
+  "GM ecoraster bloxx met bloembak.jpg":
+    "Circulaire bloembak op een terras van Ecoraster Bloxx-tegels",
+  "20250909 GM - Ecoraster spellen (2).jpg":
+    "Ecoraster-tegels met gekleurde vlakken en pionnen, gebruikt als spelveld",
+  "Speeltoestel.jpg":
+    "Speeltoestel van W&H Play met torens en glijbaan in een zandbak",
+  "Speeltoestel2.jpg":
+    "Speeltoestel van W&H Play op een recreatieterrein aan het water",
+  "Klimaatadaptieve fietsenstalling.webp":
+    "Rijen fietsenrekken van gerecycled kunstgras op waterdoorlatende verharding",
+  "Klimaatadaptieve fietsenstalling 2.webp":
+    "Lege fietsenstalling met solar lantaarnpaal naast een sportpark",
+  "IMG_4358.JPG.jpg":
+    "Fietsen in een circulaire fietsenstalling langs het hekwerk van een sportpark",
+  "IMG_4361.JPG.jpg":
+    "Circulaire fietsenrekken met geparkeerde fietsen op grindgevulde tegels",
+  "20240311 Solar - persoon 4505_2 (web).jpg":
+    "Persoon loopt in het donker over een pad dat verlicht wordt door een solar lamp",
+  "Solar paal (1).jpg":
+    "Solar paaltjes rond een zitkuil in een groen landschap",
+  "20260207_182835.jpg":
+    "Solar verlichting die in de avond een grasveld en zitplek verlicht",
+  "Solar woodle deata.jpg":
+    "Close-up van een solar paal met ingebouwd zonnepaneel",
+  "20260423 Ecoraster Bloxx - Nederlands kenteken_2.jpg":
+    "Parkeerplaats met groene grastegels en lichte Ecoraster Bloxx-vakken, met geparkeerde auto’s",
+  "PP_Parkplatz-06-18-15_bearbeitet_1600x1200-1024x777.jpg":
+    "Bovenaanzicht van een auto op een parkeervak met Ecoraster-grastegels",
+  "20241121 GM - Ecoraster (Gras)Tegels - Insta (2).jpg":
+    "Close-up van Ecoraster-tegels waar gras en planten doorheen groeien",
+  "20260331 GM - Klimaatadaptief parkeerterrein Delft.jpg":
+    "Luchtfoto van de aanleg van een klimaatadaptief parkeerterrein naast een sportveld in Delft",
+  "Alternatief vor header.jpg":
+    "Ecoraster-tegels gevuld met grind en lichte tegelvakken voor parkeerplaatsen",
+  "bewerkt.jpg":
+    "Elektrische auto geparkeerd op een groen parkeervak met Ecoraster-tegels",
+  "DJI_0024.JPG.jpg":
+    "Pas aangelegd parkeerterrein met Ecoraster-grastegels langs bomen",
+  "DJI_0028.JPG.jpg":
+    "Aanleg van Ecoraster-grastegels op een zandbed naast een sportveld",
+  "Ecoraster_8.jpg":
+    "Parkeervakken met grastegels, omlijnd met grijze Ecoraster-tegels",
+  "Ecoraster-tegel_5.jpg":
+    "Invalidenparkeerplaats van rode Ecoraster-tegels met rolstoelsymbool",
+  "GreenMatter_ecoraster_(gras)tegels__05__GreenMatter-Ecoraster-GME50-grastegel-eco.jpg":
+    "Close-up van gras dat door een Ecoraster-grastegel groeit",
+  "IMG_0124.jpg":
+    "Parkeerterrein met rode en grijze Ecoraster-tegels en grindgevulde vakken",
+};
+
 function folderMedia(relativeFolder, fileNames, title, labelPrefix = 'Foto') {
   return fileNames.map((fileName, index) => {
     const extension = fileName.split('.').pop()?.toLowerCase() ?? '';
@@ -36,7 +151,8 @@ function folderMedia(relativeFolder, fileNames, title, labelPrefix = 'Foto') {
     return {
       ...shared,
       type: 'image',
-      alt: `${title} - ${labelPrefix.toLowerCase()} ${index + 1}`,
+      alt:
+        altTexts[fileName] ?? `${title}, foto ${index + 1}`,
       objectPosition: 'center center',
     };
   });
@@ -51,16 +167,10 @@ function youtubeMedia(url, title) {
 }
 
 const waterbouwMedia = [
-   youtubeMedia(
-    'https://www.youtube.com/watch?v=30fEoV5cv7k',
-    'Waterbouw - Walbeschoeiing video',
-  ),
-  youtubeMedia('https://www.youtube.com/watch?v=d2LiHRxQ_KM', 'Waterbouw - Brug video'),
-  youtubeMedia(
-    'https://www.youtube.com/watch?v=cIMAjaQevi8',
-    'Waterbouw - Vissteiger video',
-  ),
-  youtubeMedia('https://www.youtube.com/watch?v=BQ1up2yy4so', 'Waterbouw - Damwand video'),
+   youtubeMedia('https://www.youtube.com/watch?v=30fEoV5cv7k', 'Proef met GreenMatter walbeschoeiing in Amsterdam'),
+  youtubeMedia('https://www.youtube.com/watch?v=d2LiHRxQ_KM', 'GreenMatter toegangsbrug in Amsterdam'),
+  youtubeMedia('https://www.youtube.com/watch?v=cIMAjaQevi8', 'De eerste GreenMatter vissteiger op een sportpark in Amsterdam'),
+  youtubeMedia('https://www.youtube.com/watch?v=BQ1up2yy4so', 'Gemeente Amsterdam kiest voor GreenMatter startvlotten op de Bosbaan'),
   ...folderMedia(
     'Waterbouw/Walbeschoeiing',
     ['GreenMatter walbeschoeiing (1).JPG'],
@@ -91,14 +201,8 @@ const waterbouwMedia = [
 ];
 
 const modulaireSportvloerenMedia = [
-  youtubeMedia(
-    'https://www.youtube.com/watch?v=GfaEm3qliAY',
-    'Modulaire sportvloeren video 1',
-  ),
-  youtubeMedia(
-    'https://www.youtube.com/watch?v=o4dprA2wwCQ',
-    'Modulaire sportvloeren video 2',
-  ),
+  youtubeMedia('https://www.youtube.com/watch?v=GfaEm3qliAY', 'Modulaire sportvloer van gerecycled kunstgras in Tilburg'),
+  youtubeMedia('https://www.youtube.com/watch?v=o4dprA2wwCQ', 'Circulair sporten in Rotterdam'),
   ...folderMedia(
     'Modulaire sportvloeren',
     [
@@ -125,11 +229,8 @@ const vlonderplankenMedia = folderMedia(
 );
 
 const fitnessparkMedia = [
-  youtubeMedia(
-    'https://www.youtube.com/watch?v=OqDQR3d1mNM',
-    'GreenMatter fitnesspark video',
-  ),
-  youtubeMedia('https://www.youtube.com/watch?v=uKLZc567DdQ', 'GreenMatter fitnesspark video'),
+  youtubeMedia('https://www.youtube.com/watch?v=OqDQR3d1mNM', 'Van versleten kunstgras naar calisthenics-monkeybar'),
+  youtubeMedia('https://www.youtube.com/watch?v=uKLZc567DdQ', 'GreenMatter fitnessvlonders op Sportpark Middenmeer in Amsterdam'),
   
   ...folderMedia(
     'GreenMatter fitnesspark',
@@ -156,7 +257,7 @@ const dugoutMedia = folderMedia(
 );
 
 const kantplankenMedia = [
-  youtubeMedia('https://www.youtube.com/watch?v=Wtb5tms_QZc', 'GreenMatter kantplanken video'),
+  youtubeMedia('https://www.youtube.com/watch?v=Wtb5tms_QZc', 'GreenMatter kantplanken 2.0 bij sportclub Geinburgia'),
   ...folderMedia(
     'GreenMatter kantplanken',
     [
@@ -173,10 +274,7 @@ const kantplankenMedia = [
 ];
 
 const ecorasterPadMedia = [
-  youtubeMedia(
-    'https://www.youtube.com/watch?v=BwAZAEGyKwE',
-    'Waterdoorlatende tegels van Ecoraster video',
-  ),
+  youtubeMedia('https://www.youtube.com/watch?v=BwAZAEGyKwE', 'Leidse sportvereniging klaar voor de toekomst met GreenMatter grastegels'),
   ...folderMedia(
     'Waterdoorlatende tegels van ecoraster',
     ['DJI_0206 pad.JPG'],
@@ -186,7 +284,7 @@ const ecorasterPadMedia = [
 ];
 
 const terrasMedia = [
-  youtubeMedia('https://www.youtube.com/watch?v=2pCCWXfbRPU', 'Klimaatadaptief terras video'),
+  youtubeMedia('https://www.youtube.com/watch?v=2pCCWXfbRPU', 'Het klimaatadaptieve terras'),
   ...folderMedia(
     'Klimaatadaptief terras',
     [
@@ -204,11 +302,11 @@ const terrasMedia = [
 ];
 
 const speeltoestellenMedia = [
- youtubeMedia('https://www.youtube.com/watch?v=3LOkswUYy_Q', 'Leisure Lands'),
+ youtubeMedia('https://www.youtube.com/watch?v=3LOkswUYy_Q', 'Circulaire speeltoestellen van W&H Play op de recreatieparken van Leisurelands'),
   {
     type: 'youtube',
     url: 'https://www.youtube.com/watch?v=UHa9XNbhOQ0',
-    title: 'Speeltoestellen video',
+    title: 'Het eerste W&H Play-speeltoestel in Amsterdam',
   },
   ...folderMedia(
     'Speeltoestellen',
@@ -222,10 +320,7 @@ const speeltoestellenMedia = [
 ];
 
 const fietsenstallingMedia = [
-  youtubeMedia(
-    'https://www.youtube.com/watch?v=P_kq-3Itfsg',
-    'Klimaatadaptieve fietsenstalling video',
-  ),
+  youtubeMedia('https://www.youtube.com/watch?v=P_kq-3Itfsg', 'Circulaire en klimaatadaptieve fietsenstalling bij Onze Gezellen'),
   ...folderMedia(
     'Klimaatadaptieve fietsenstalling',
     [
@@ -240,7 +335,7 @@ const fietsenstallingMedia = [
 ];
 
 const solarWoodleMedia = [
-  youtubeMedia('https://www.youtube.com/watch?v=A0rrS0pytiA', 'GreenMatter Solar video'),
+  youtubeMedia('https://www.youtube.com/watch?v=A0rrS0pytiA', 'Zo wordt GreenMatter Solar toegepast'),
   ...folderMedia(
     'Greenmatter Solar Woodle',
     [
@@ -255,10 +350,7 @@ const solarWoodleMedia = [
 ];
 
 const parkeerplaatsMedia = [
-  youtubeMedia(
-    'https://www.youtube.com/watch?v=OV8bCw6BQw4',
-    'Klimaatadaptieve parkeerplaats video',
-  ),
+  youtubeMedia('https://www.youtube.com/watch?v=OV8bCw6BQw4', 'Klimaatadaptief parkeerterrein van oude kunstgrasvelden'),
   ...folderMedia(
     'Klimaatadaptieve parkeerplaats',
     [
@@ -304,15 +396,17 @@ const parkeerplaatsMedia = [
 export const solutions = [
   {
     id: 'waterbouw',
+    goals: [],
+    // impact: [{ value: '…', label: '…' }], // vul in met door GreenMatter onderbouwde cijfers
     title: 'Waterbouw',
     description:
       'Walbeschoeiing, damwand, toegangsbrug, vissteiger',
     summary:
-      'Wij zien water niet als een grens, maar als een kans. Met  circulaire waterbouwoplossingen transformeer je sloten, vijvers en oevers tot waardevolle onderdelen van het sportpark van de toekomst. Ze versterken de verbinding tussen sport, natuur en recreatie en maken van het water een plek om te beleven, te ontmoeten en te ontspannen.',
+      'Houten beschoeiing rot weg en oevers kalven af. Met circulaire waterbouwoplossingen maak je van sloten, vijvers en oevers juist een sterk onderdeel van het sportpark. Ze verbinden sport, natuur en recreatie: het water wordt een plek om te beleven, te ontmoeten en te ontspannen.',
     x: 13,
     y: 62.1,
     benefits: [
-      '[Walbeschoeiing](https://greenmatter.nl/oplossingen/walbeschoeiing/) – Een duurzame en onderhoudsarme oeverafwerking die afkalving voorkomt en, dankzij het circulaire kunstgras , aanzienlijk langer meegaat dan traditionele houten beschoeiing. Hierdoor blijft de oever jarenlang stabiel en verzorgd met minimale onderhoudskosten.',
+      '[Walbeschoeiing](https://greenmatter.nl/oplossingen/walbeschoeiing/) – Een duurzame en onderhoudsarme oeverafwerking die afkalving voorkomt en, dankzij het circulaire kunstgras, aanzienlijk langer meegaat dan traditionele houten beschoeiing. Hierdoor blijft de oever jarenlang stabiel en verzorgd met minimale onderhoudskosten.',
       '[Damwand](https://greenmatter.nl/oplossingen/damwand/) – Een robuuste circulaire constructie voor stabiele waterkanten en het opvangen van hoogteverschillen. ',
       '[Toegangsbrug](https://greenmatter.nl/oplossingen/toegangsbrug/) – Een circulaire brug die verschillende delen van het sportpark op een veilige en aantrekkelijke manier met elkaar verbindt. ',
       '[Steigers](https://greenmatter.nl/oplossingen/vissteiger/) – Een uitnodigende plek aan het water waar ontspanning, ontmoeting en natuurbeleving samenkomen.',
@@ -325,11 +419,13 @@ export const solutions = [
   },
   {
     id: 'modulaire-sportvloeren',
+    goals: ['inclusie', 'sport'],
+    // impact: [{ value: '…', label: '…' }], // vul in met door GreenMatter onderbouwde cijfers
     title: 'Modulaire sportvloeren',
     description:
       'GreenMatter Ultimate, GreenMatter Ultimate Plus',
     summary: [
-          'Een modern sportpark is meer dan een plek om te sporten. Het is een ontmoetingsplek waar jong en oud, beginners en gevorderden, recreanten en topsporters samen actief kunnen zijn. Inclusiviteit speelt daarbij een centrale rol. Met onze modulaire sportvloer creëer je een veelzijdige en toegankelijke sportvoorziening die uitnodigt tot bewegen, ontmoeten en samen sporten.',
+          'Een kale asfaltplaat of een verouderd veldje trekt vooral de vaste clubsporters. Een modulaire sportvloer maakt er een ontmoetingsplek van waar jong en oud, beginners en gevorderden, recreanten en topsporters samen actief zijn. Met onze modulaire sportvloer creëer je een veelzijdige en toegankelijke sportvoorziening die uitnodigt tot bewegen, ontmoeten en samen sporten.',
           'Dankzij het modulaire karakter kan de vloer volledig worden afgestemd op de wensen van de omgeving en de gebruikers. Zo zijn er verschillende sporten die de gebruiker kan beoefenen op onze modulaire sportvloeren, denk hierbij sporten zoals; 3X3 basketbal, padel, picklebal, zaalhockey en nog veel meer!',
           'De sportvloer is onderhoudsarm en gaat jarenlang mee. Zo ontstaat een duurzame sportomgeving die flexibiliteit, prestaties en inclusiviteit samenbrengt. De sportvloer is beschikbaar in twee uitvoeringen: Ultimate en Ultimate Plus. Beide systemen combineren hoogwaardige sporttechnische eigenschappen met een lange levensduur en minimaal onderhoud. Hiernaast kunnen de tegels apart van elkaar besteld worden in andere kleuren. Zo ontstaat er een leuke mogelijkheid om bepaalde patronen aan de veldjes toe te voegen.',
     ],
@@ -347,12 +443,14 @@ export const solutions = [
   },
   {
     id: 'vlonderplanken',
+    goals: [],
+    // impact: [{ value: '…', label: '…' }], // vul in met door GreenMatter onderbouwde cijfers
     title: 'GreenMatter vlonderplanken',
     description:
       'Vlonderplank',
     summary:
     [
-      'Het sportpark van de toekomst is meer dan alleen een plek om te sporten. Vlonders langs het water creëren aantrekkelijke plekken om te wandelen, te verblijven en te genieten van de omgeving. Zo ontstaat een toegankelijke en inclusieve buitenruimte voor jong en oud.',
+      'Houten vlonders worden glad, splinteren en rotten. Vlonders langs het water moeten juist uitnodigen om te wandelen, te verblijven en te genieten van de omgeving, voor jong en oud.',
       'Met onze vlonderplanken  realiseer je duurzame terrassen, steigers en wandelroutes met een natuurlijke uitstraling. De planken zijn onderhoudsarm en bestand tegen intensief gebruik en uiteenlopende weersomstandigheden. Daarmee vormen ze een toekomstbestendige oplossing voor iedere buitenruimte.',
     ],
     x: 50.8,
@@ -370,12 +468,14 @@ export const solutions = [
   },
   {
     id: 'fitnesspark',
+    goals: ['inclusie', 'sport'],
+    // impact: [{ value: '…', label: '…' }], // vul in met door GreenMatter onderbouwde cijfers
     title: 'GreenMatter fitnesspark',
     description:
       'Het GreenMatter Fitnesspark',
     summary:
     [
-      'Het sportpark van de toekomst is een plek waar iedereen in beweging kan komen. Jong en oud, beginners en ervaren sporters, recreanten en fanatieke sporters: inclusiviteit staat centraal. Outdoor fitnesstoestellen maken sporten laagdrempelig en toegankelijk voor een brede doelgroep en dragen zo bij aan een gezonde en vitale leefomgeving.',
+      'Veel mensen willen bewegen, maar niet lid worden van een club. Outdoor fitnesstoestellen maken sporten laagdrempelig en toegankelijk voor een brede doelgroep en dragen zo bij aan een gezonde en vitale leefomgeving.',
       'Met het GreenMatter Fitnesspark creëer je een veelzijdige beweegplek waar kracht, conditie en gezondheid samenkomen. De toestellen zijn geschikt voor warming-ups, krachttraining, revalidatie en recreatief gebruik en vormen daarmee een waardevolle aanvulling op ieder toekomstbestendig sportpark.',
     ],
     x: 58.4,
@@ -405,12 +505,14 @@ export const solutions = [
   },
   {
     id: 'dugout',
+    goals: ['sport'],
+    // impact: [{ value: '…', label: '…' }], // vul in met door GreenMatter onderbouwde cijfers
     title: 'GreenMatter dug-out',
     description:
       'Onze circulaire dug-out',
     summary:
     [
-      'De GreenMatter dug-out biedt spelers, coaches en begeleiders een comfortabele en beschutte plek langs het veld. Extra bijzonder is dat deze dug-out kan worden vervaardigd uit circulaire materialen die afkomstig zijn van versleten sportvelden dat er direct naast ligt. Zo krijgt oud materiaal een nieuw leven en wordt circulariteit letterlijk zichtbaar op het sportpark.',
+      'De GreenMatter dug-out biedt spelers, coaches en begeleiders een comfortabele en beschutte plek langs het veld. Extra bijzonder is dat deze dug-out kan worden vervaardigd uit circulaire materialen die afkomstig zijn van versleten sportvelden die er direct naast liggen. Zo krijgt oud materiaal een nieuw leven en wordt circulariteit letterlijk zichtbaar op het sportpark.',
       'Bekijk met een druk op de onderstaande knop hoe een dug-out van het veld van vandaag de sportomgeving van morgen vormt.',
     ],
       
@@ -443,11 +545,13 @@ export const solutions = [
   },
   {
     id: 'kantplanken',
+    goals: ['sport'],
+    // impact: [{ value: '…', label: '…' }], // vul in met door GreenMatter onderbouwde cijfers
     title: 'GreenMatter kantplanken',
     description:
       'Circulaire kantplanken',
     summary:
-    ['De kracht van een toekomstbestendig sportpark zit vaak in de afwerking. Juist de subtiele elementen bepalen hoe strak, duurzaam en onderhoudsvriendelijk een buitenruimte functioneert. Kantplanken zorgen voor een nette en duurzame afscheiding langs sportvelden en hekwerken. Daarnaast helpen ze om infill binnen het veld te houden en de verspreiding van microplastics tegen te gaan, waardoor ze bijdragen aan een verzorgde, veilige en toekomstbestendige sportomgeving.', 
+    ['Infill die van het veld spoelt, belandt in de sloot. Kantplanken houden het instrooimateriaal binnen het veld en gaan zo de verspreiding van microplastics tegen. Ook zorgen ze voor een nette en duurzame afscheiding langs sportvelden en hekwerken.', 
     'Met onze kantplank  kies je voor een circulaire oplossing die ontworpen is om jarenlang mee te gaan. In tegenstelling tot traditionele houten opsluitingen rotten deze kantplanken niet en behouden ze hun vorm en uitstraling, zelfs bij intensief gebruik en wisselende weersomstandigheden.',
    ],
       
@@ -466,12 +570,15 @@ export const solutions = [
   },
   {
     id: 'ecoraster-pad',
+    goals: ['klimaatadaptatie', 'inclusie'],
+    downloads: [{ type: 'bestek', label: 'Bestekomschrijving Ecoraster Bloxx', url: 'https://www.greenmatter.nl/wp-content/uploads/2024/06/Bestekomschrijving-GreenMatter-Ecoraster-Bloxx.pdf' }, { type: 'bestek', label: 'Bestekomschrijving Ecoraster (gras)tegels', url: 'https://www.greenmatter.nl/wp-content/uploads/2024/06/Bestekomschrijving-GreenMatter-Ecoraster-grastegels.pdf' }],
+    // impact: [{ value: '…', label: '…' }], // vul in met door GreenMatter onderbouwde cijfers
     title: 'Pad met de GreenMatter Ecoraster als ondergrond',
     description:
       'GreenMatter ecoraster bloxx, GreenMatter ecoraster (gras)tegels, GreenMatter ecoraster (gras)tegels XXL',
     summary:
-    ['In het sportpark van de toekomst verbinden looppaden sportvelden, ontmoetingsplekken en recreatieve zones met elkaar. Ze zorgen voor comfortabele en toegankelijke routes voor iedereen en dragen dankzij waterdoorlatende materialen bij aan een klimaatadaptieve en toekomstbestendige inrichting.',
-      'Met onze ecoraster-oplossingen  realiseer je paden die waterdoorlatend, onderhoudsarm en duurzaam zijn. Regenwater kan direct in de bodem infiltreren, waardoor plassen worden voorkomen en het sportpark beter bestand is tegen extreme weersomstandigheden. Zo dragen looppaden niet alleen bij aan gebruiksgemak, maar ook aan een inclusieve en toekomstbestendige openbare ruimte.',
+    ['Na een flinke bui staan de paden op veel sportparken blank. Met onze Ecoraster-oplossingen leg je looppaden aan die water doorlaten: regenwater zakt direct de bodem in en er blijven geen plassen staan.',
+      'Zo verbind je sportvelden, ontmoetingsplekken en recreatieve zones met routes die het hele jaar comfortabel zijn. De paden zijn onderhoudsarm en maken het sportpark beter bestand tegen extreme weersomstandigheden.',
 
     ],
       
@@ -487,12 +594,15 @@ export const solutions = [
   },
   {
     id: 'terras',
+    goals: ['klimaatadaptatie'],
+    // impact: [{ value: '…', label: '…' }], // vul in met door GreenMatter onderbouwde cijfers
+    downloads: [{ type: 'flyer', url: 'https://greenmatter.nl/wp-content/uploads/2026/05/Flyer-GreenMatter-Circulair-en-klimaatadaptief-terras.pdf' }, { type: 'bestek', label: 'Bestekomschrijving Ecoraster Bloxx', url: 'https://www.greenmatter.nl/wp-content/uploads/2024/06/Bestekomschrijving-GreenMatter-Ecoraster-Bloxx.pdf' }, { type: 'bestek', label: 'Bestekomschrijving Ecoraster (gras)tegels', url: 'https://www.greenmatter.nl/wp-content/uploads/2024/06/Bestekomschrijving-GreenMatter-Ecoraster-grastegels.pdf' }],
     title: 'Klimaatadaptief terras',
     description:
       'Picknicktafel 2 banks, picknicktafel 4 banks, teamtafel, mobiele bank met rugleuning, bloembak',
     summary:
     [
-      'Een toekomstbestendig sportpark draait niet alleen om sport, maar ook om beleving. Het terras vormt de plek waar wedstrijden worden nabesproken, vrijwilligers samenkomen en supporters genieten van het uitzicht op het veld. Met onze circulaire en klimaatadaptieve terrasoplossingen  creëer je een sfeervolle buitenruimte die uitnodigt tot ontmoeten, ontspannen en verbinden.',
+      'Op een kaal terras waar na elke bui plassen staan, blijft na de wedstrijd niemand hangen. Het terras is juist de plek waar wedstrijden worden nabesproken, vrijwilligers samenkomen en supporters genieten van het uitzicht op het veld. Met onze circulaire en klimaatadaptieve terrasoplossingen  creëer je een sfeervolle buitenruimte die uitnodigt tot ontmoeten, ontspannen en verbinden.',
       'Door waterdoorlatende verharding, duurzame verlichting, groen en circulair buitenmeubilair slim te combineren, ontstaat een comfortabele ontmoetingsplek met een hoogwaardige uitstraling. Veel producten worden vervaardigd uit gerecycled kunstgras van versleten sportvelden, waardoor het sportpark letterlijk een tweede leven krijgt in de inrichting van het terras.',
     ],
       
@@ -513,9 +623,11 @@ export const solutions = [
   },
   {
     id: 'speeltoestellen',
+    goals: ['inclusie'],
+    // impact: [{ value: '…', label: '…' }], // vul in met door GreenMatter onderbouwde cijfers
     title: 'Speeltoestellen',
     description:
-      'W&H Play',
+      'Van [W&H Play](https://whplay.nl/)',
     summary:
     [
       'Sporten begint met spelen. Door kinderen al op jonge leeftijd uit te dagen om te klimmen, balanceren en ontdekken, ontstaat spelenderwijs de basis voor een leven lang bewegen. In het sportpark van de toekomst zijn speeltoestellen daarom veel meer dan een extra voorziening: ze vormen een belangrijke schakel in het stimuleren van beweging, ontwikkeling en inclusiviteit.',
@@ -533,17 +645,20 @@ export const solutions = [
       'Sluit goed aan op een groene, circulaire en toekomstbestendige buitenruimte.',
     ],
     media: speeltoestellenMedia,
-    buttonText: defaultButtonText,
+    buttonText: 'Naar W&H Play',
     url: 'https://whplay.nl/',
   },
   {
     id: 'fietsenstalling',
+    goals: ['klimaatadaptatie'],
+    // impact: [{ value: '…', label: '…' }], // vul in met door GreenMatter onderbouwde cijfers
+    downloads: [{ type: 'flyer', url: 'https://greenmatter.nl/wp-content/uploads/2026/05/Flyer-GreenMatter-Circulaire-en-klimaatadaptieve-fietsenstalling.pdf' }, { type: 'bestek', label: 'Bestekomschrijving Ecoraster (gras)tegels', url: 'https://www.greenmatter.nl/wp-content/uploads/2024/06/Bestekomschrijving-GreenMatter-Ecoraster-grastegels.pdf' }],
     title: 'Klimaatadaptieve fietsenstalling',
     description:
       'Fietsparkeersysteem, solar verlichting, ecoraster (gras)tegels',
     summary:
     [
-      'In het sportpark van de toekomst begint duurzaamheid al bij aankomst. De circulaire en klimaatadaptieve fietsenstalling van GreenMatter combineert oplossingen voor veilig fietsparkeren, waterbeheer en energiezuinige verlichting in één doordacht totaalconcept. Deze oplossing is speciaal ontwikkeld voor sportparken waar circulariteit, klimaatadaptatie en gebruiksgemak centraal staan.',
+      'Fietsen die kriskras over het terrein staan, zorgen voor overlast en onveilige situaties. De circulaire en klimaatadaptieve fietsenstalling van GreenMatter combineert veilig fietsparkeren, waterbeheer en verlichting op zonne-energie in één concept, speciaal ontwikkeld voor sportparken.',
       'Door het fietsparkeersysteem te combineren met solar verlichting en ecoraster (gras)tegels ontstaat een veilige en overzichtelijke stallingsvoorziening. ',
     ],
       
@@ -562,12 +677,14 @@ export const solutions = [
   },
   {
     id: 'solar-woodle',
+    goals: [],
+    // impact: [{ value: '…', label: '…' }], // vul in met door GreenMatter onderbouwde cijfers
     title: 'GreenMatter Solar',
     description:
       'Onze circulaire en door zon aangedreven verlichting',
     summary:
     [
-      'In het sportpark van de toekomst speelt verlichting een belangrijke rol in veiligheid, duurzaamheid en gebruiksgemak. Met de solar verlichting verlicht je wandelpaden, parkeerplaatsen en ontmoetingsplekken zonder aansluiting op het elektriciteitsnet. Overdag wordt zonne-energie opgeslagen, zodat het sportpark ook in de avond veilig en aantrekkelijk blijft.',
+      'Een donker pad of parkeerterrein voelt in de avond onveilig, en een kabel naar het elektriciteitsnet trekken is duur. Met de solar verlichting verlicht je wandelpaden, parkeerplaatsen en ontmoetingsplekken zonder aansluiting op het elektriciteitsnet. Overdag wordt zonne-energie opgeslagen, zodat het sportpark ook in de avond veilig en aantrekkelijk blijft.',
       'Deze oplossing combineert innovatieve technologie met een minimale ecologische voetafdruk en maakt het mogelijk om ook op moeilijk bereikbare locaties eenvoudig verlichting te plaatsen. ',
     ],
       
@@ -586,12 +703,15 @@ export const solutions = [
   },
   {
     id: 'parkeerplaats',
+    goals: ['klimaatadaptatie'],
+    // impact: [{ value: '…', label: '…' }], // vul in met door GreenMatter onderbouwde cijfers
+    downloads: [{ type: 'flyer', url: 'https://greenmatter.nl/wp-content/uploads/2026/05/Flyer-GreenMatter-Circulaire-en-klimaatadaptieve-parkeerplaatsen.pdf' }, { type: 'bestek', label: 'Bestekomschrijving Ecoraster Bloxx', url: 'https://www.greenmatter.nl/wp-content/uploads/2024/06/Bestekomschrijving-GreenMatter-Ecoraster-Bloxx.pdf' }, { type: 'bestek', label: 'Bestekomschrijving Ecoraster (gras)tegels', url: 'https://www.greenmatter.nl/wp-content/uploads/2024/06/Bestekomschrijving-GreenMatter-Ecoraster-grastegels.pdf' }],
     title: 'Klimaatadaptieve parkeerplaats',
     description:
       'GreenMatter Ecoraster bloxx, GreenMatter Ecoraster (gras)tegels, solar verlichting',
     summary:
     [
-      'In het sportpark van de toekomst is de parkeerplaats veel meer dan een praktische voorziening. Het is een visitekaartje dat direct laat zien hoe duurzaamheid en klimaatadaptatie samenkomen. Met deze innovatieve parkeeroplossingen van GreenMatter ontstaat een circulaire en veilige parkeeromgeving waarin regenwater natuurlijk infiltreert en verlichting volledig werkt op zonne-energie.',
+      'Een parkeerterrein van asfalt of klinkers voert regenwater af naar het riool en warmt in de zomer flink op. Met de parkeeroplossingen van GreenMatter zakt regenwater ter plekke de grond in en werkt de verlichting volledig op zonne-energie. Zo laat de plek die bezoekers als eerste zien, meteen zien waar het sportpark voor staat.',
       'Door solar verlichting te combineren met ecoraster (gras)tegels realiseer je een onderhoudsarme parkeerplaats die wateroverlast voorkomt, hittestress vermindert en bezoekers ook in de avonduren veilig laat parkeren.',
     ],
       

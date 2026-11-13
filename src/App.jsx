@@ -1,16 +1,38 @@
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
-import { useMemo, useState } from 'react';
+import { MotionConfig } from 'framer-motion';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './App.module.css';
+import CaseSection from './components/CaseSection';
+import DownloadsSection from './components/DownloadsSection';
+import RequestForm from './components/RequestForm';
+import SiteFooter from './components/SiteFooter';
+import SiteHeader from './components/SiteHeader';
 import SolutionShowcaseSection from './components/SolutionShowcaseSection';
 import TransitionSection from './components/TransitionSection';
 import { solutions } from './data/solutions';
 import { localizeSolutions, uiText } from './data/translations';
 
+const SELECTION_STORAGE_KEY = 'sportpark-selectie';
+
+function readStoredSelection() {
+  try {
+    const stored = JSON.parse(window.localStorage.getItem(SELECTION_STORAGE_KEY) ?? '[]');
+    const knownIds = new Set(solutions.map((solution) => solution.id));
+    return Array.isArray(stored) ? stored.filter((id) => knownIds.has(id)) : [];
+  } catch {
+    return [];
+  }
+}
+
 function App() {
   const [selectedSolutionId, setSelectedSolutionId] = useState(null);
   const [isNightMode, setIsNightMode] = useState(false);
+  const [isRainMode, setIsRainMode] = useState(false);
   const [language, setLanguage] = useState('nl');
+  const [selectedIds, setSelectedIds] = useState(() =>
+    typeof window === 'undefined' ? [] : readStoredSelection(),
+  );
 
   const localizedSolutions = useMemo(
     () => localizeSolutions(solutions, language),
@@ -18,7 +40,26 @@ function App() {
   );
 
   const copy = uiText[language];
-  const targetLanguage = language === 'nl' ? 'en' : 'nl';
+
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(SELECTION_STORAGE_KEY, JSON.stringify(selectedIds));
+    } catch {
+      // Opslaan is een extraatje; zonder localStorage werkt alles gewoon.
+    }
+  }, [selectedIds]);
+
+  const toggleSelected = useCallback((solutionId) => {
+    setSelectedIds((current) =>
+      current.includes(solutionId)
+        ? current.filter((id) => id !== solutionId)
+        : [...current, solutionId],
+    );
+  }, []);
 
   const selectedSolution = useMemo(
     () =>
@@ -35,7 +76,13 @@ function App() {
     const target = document.getElementById(`solution-${solutionId}`);
 
     if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const prefersReducedMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches;
+      target.scrollIntoView({
+        behavior: prefersReducedMotion ? 'auto' : 'smooth',
+        block: 'start',
+      });
     }
   };
 
@@ -58,28 +105,26 @@ function App() {
   };
 
   return (
-    <>
-      <div className={styles.page}>
-        <button
-          aria-label={copy.languageLabel}
-          className={styles.languageToggle}
-          type="button"
-          onClick={() =>
-            setLanguage((currentLanguage) =>
-              currentLanguage === 'nl' ? 'en' : 'nl',
-            )
-          }
-        >
-          <span aria-hidden="true" className={styles.languageCode}>
-            {targetLanguage.toUpperCase()}
-          </span>
-          <span>{copy.languageToggle}</span>
-        </button>
+    <MotionConfig reducedMotion="user">
+      <a className={styles.skipLink} href="#oplossingen">
+        {copy.skipLink}
+      </a>
 
-        <main className={styles.main}>
+      <SiteHeader
+        copy={copy}
+        language={language}
+        selectedCount={selectedIds.length}
+        onToggleLanguage={() =>
+          setLanguage((currentLanguage) => (currentLanguage === 'nl' ? 'en' : 'nl'))
+        }
+      />
+
+      <div className={styles.page}>
+        <main className={styles.main} id="main">
           <TransitionSection
             dayImageSrc="/sportpark-photo-2026-05-19.jpg?v=2"
             isNightMode={isNightMode}
+            isRainMode={isRainMode}
             language={language}
             mobileDayImageSrc="/sportpark-photo-mobile-2026-05-28-1200.jpg?v=1"
             mobileNightImageSrc="/sportpark-photo-mobile-night-2026-05-28-1200.jpg?v=1"
@@ -88,6 +133,7 @@ function App() {
             onJumpToSolution={jumpToSolution}
             onPinSolution={pinSolution}
             onToggleNightMode={() => setIsNightMode((currentValue) => !currentValue)}
+            onToggleRainMode={() => setIsRainMode((currentValue) => !currentValue)}
             pinnedSolution={selectedSolution}
             pinnedSolutionId={selectedSolutionId}
             solutions={localizedSolutions}
@@ -96,14 +142,29 @@ function App() {
           <SolutionShowcaseSection
             activeSolutionId={selectedSolutionId}
             language={language}
-            onSelectSolution={jumpToSolution}
+            selectedIds={selectedIds}
             solutions={localizedSolutions}
+            onToggleSelected={toggleSelected}
+          />
+
+          <CaseSection copy={copy} />
+
+          <DownloadsSection copy={copy} language={language} solutions={localizedSolutions} />
+
+          <RequestForm
+            copy={copy}
+            language={language}
+            selectedIds={selectedIds}
+            solutions={localizedSolutions}
+            onToggleSelected={toggleSelected}
           />
         </main>
+
+        <SiteFooter copy={copy} />
       </div>
       <Analytics />
       <SpeedInsights />
-    </>
+    </MotionConfig>
   );
 }
 

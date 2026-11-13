@@ -6,6 +6,16 @@
 @import '@fontsource/sora/700.css';
 
 :root {
+  /* Knoppen: pilvorm, zoals de GreenMatter-huisstijl */
+  --button-radius: 999px;
+  --button-radius-inner: 999px;
+  /* Tekstblokken, kaarten en panelen: afgerond zoals de GreenMatter-huisstijl (~20px) */
+  --card-radius: 1.25rem;
+  --card-radius-inner: 1rem;
+  /* Groene actieknop (offerte aanvragen, versturen) */
+  --cta-green: linear-gradient(180deg, #5f9137, #467326);
+  --cta-green-border: rgba(60, 100, 30, 0.5);
+  --cta-green-shadow: 0 0.6rem 1.4rem rgba(70, 115, 38, 0.28);
   color-scheme: light;
   font-family: 'Manrope', 'Segoe UI Variable', 'Segoe UI', sans-serif;
   line-height: 1.5;
@@ -68,4 +78,27 @@ a {
 
 ::selection {
   background: rgba(134, 191, 120, 0.24);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+section[id] {
+  scroll-margin-top: 4.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

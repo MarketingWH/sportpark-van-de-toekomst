@@ -511,3 +511,14 @@
     width: 1.45rem;
   }
 }
+
+/* Minder ronde labelknoppen (ronde play/pijlen blijven rond) */
+.youtubeBadge,
+.youtubeCloseButton {
+  border-radius: var(--button-radius);
+}
+
+/* Minder ronde mediablokken */
+.mediaFrame {
+  border-radius: var(--card-radius-inner);
+}

@@ -27,7 +27,130 @@ export const uiText = {
     homeIntroMotto: 'MOVE MORE, WASTE LESS',
     solutionsHeading: 'Oplossingen in detail',
     solutionsIntro:
-      'Bekijk hier op je gemak al onze oplossingen die wij passend vinden voor het sportpark van de toekomst. Ben je geïnspireerd geraakt? Klik dan hieronder de oplossingen aan die jou interesseren en gebruik daarna de mailknop. We maken het je makkelijk: er staat meteen een mailtje met jouw aangeklikte oplossingen klaar.',
+      'Filter op het doel waar jouw gemeente of vereniging aan werkt. Zet de oplossingen die je aanspreken in "mijn sportpark" en vraag in één keer informatie of een offerte aan.',
+    countdownExplain:
+      'Het Rijk wil dat Nederland in 2030 de helft minder primaire grondstoffen gebruikt. Wat je nu aanlegt of vervangt, telt daarvoor mee.',
+    countdownInfoLabel: 'Wat betekent deze deadline?',
+    countdownSr: (days) =>
+      `Nog ${days} dagen tot 2030, het jaar waarin Nederland de helft minder primaire grondstoffen moet gebruiken.`,
+    skipLink: 'Direct naar de oplossingen',
+    menu: 'Menu',
+    closeMenu: 'Sluit menu',
+    navLabel: 'Hoofdmenu',
+    navItems: {
+      oplossingen: 'Oplossingen',
+      cases: 'Cases',
+      downloads: 'Downloads',
+      contact: 'Contact',
+    },
+    basketEmpty: 'Mijn sportpark',
+    basketLabel: (count) =>
+      `${count} ${count === 1 ? 'oplossing' : 'oplossingen'} gekozen`,
+    basketAria: (count) =>
+      `Mijn sportpark: ${count} ${count === 1 ? 'oplossing' : 'oplossingen'} gekozen. Ga naar het aanvraagformulier.`,
+    addToPark: 'Zet in mijn sportpark',
+    addedToPark: 'In mijn sportpark',
+    addToParkAria: (title) => `Zet ${title} in mijn sportpark`,
+    removeFromParkAria: (title) => `Haal ${title} uit mijn sportpark`,
+    readMoreAbout: (name) => `Meer over ${name}`,
+    readLessAbout: (name) => `Minder over ${name}`,
+    goalsLabel: 'Filter op doel',
+    goalAll: 'Alle doelen',
+    goals: {
+      klimaatadaptatie: 'Klimaatadaptatie',
+      inclusie: 'Inclusie',
+      sport: 'Sport',
+    },
+    chipsLabel: 'Kies oplossingen voor mijn sportpark',
+    noResults: 'Geen oplossingen voor dit doel.',
+    impactHeading: 'Impact',
+    downloadsHeading: 'Voor bestek en ontwerp',
+    rainOn: 'Regenbui aan',
+    rainOff: 'Regenbui uit',
+    switchRainOn: 'Laat het regenen op het sportpark',
+    switchRainOff: 'Stop de regenbui',
+    rainCaption:
+      'Op de Ecoraster-tegels zakt het regenwater direct de grond in. Het loopt niet naar het riool en er blijven geen plassen staan.',
+    rainMarker: 'Water zakt weg',
+    form: {
+      heading: 'Informatie of offerte aanvragen',
+      intro:
+        'Vul het formulier in, dan neemt GreenMatter binnen twee werkdagen contact met je op. De oplossingen die je hebt gekozen staan er al in.',
+      selectionLabel: 'Gekozen oplossingen',
+      selectionEmpty:
+        'Je hebt nog niets gekozen. Klik hieronder aan wat je interesseert, of zet oplossingen in "mijn sportpark".',
+      name: 'Naam',
+      email: 'E-mailadres',
+      phone: 'Telefoonnummer (optioneel)',
+      organisation: 'Organisatie',
+      role: 'Ik ben',
+      roles: {
+        gemeente: 'Gemeente',
+        vereniging: 'Sportvereniging',
+        architect: 'Architect of ontwerper',
+        aannemer: 'Aannemer of hovenier',
+        anders: 'Anders',
+      },
+      phase: 'Projectfase',
+      phases: {
+        orientatie: 'Oriëntatie',
+        ontwerp: 'Schetsontwerp of ontwerp',
+        bestek: 'Bestek of aanbesteding',
+        uitvoering: 'Uitvoering',
+      },
+      choose: 'Maak een keuze',
+      message: 'Toelichting (optioneel)',
+      messagePlaceholder: 'Bijvoorbeeld de locatie, het aantal m² of je planning.',
+      submit: 'Verstuur aanvraag',
+      sending: 'Bezig met versturen…',
+      success:
+        'Bedankt! Je aanvraag is verstuurd. GreenMatter neemt binnen twee werkdagen contact met je op.',
+      error:
+        'Versturen lukte niet. Je mailprogramma opent nu met je aanvraag erin. Werkt dat ook niet? Mail naar info@greenmatter.nl of bel +31 (0)252 683 300.',
+      required: 'verplicht',
+      privacy: 'We gebruiken je gegevens alleen om je aanvraag te beantwoorden. Lees de',
+      privacyLink: 'privacyverklaring',
+    },
+    caseSection: {
+      eyebrow: 'Case',
+      heading: 'Onze Gezellen, Haarlem',
+      intro:
+        'Op sportpark Onze Gezellen lag eerst alleen een asfaltplaat. In opdracht van SRO Kennemerland kwamen er een 3x3-basketbalveld, outdoor fitness, een fietsenstalling en een parkeerplaats, gemaakt van gerecycled kunstgras.',
+      stats: [
+        { value: '7.157 kg', label: 'versleten kunstgras opnieuw toegepast' },
+        { value: '4', label: 'voorzieningen: 3x3-basketbal, fitness, fietsenstalling, parkeren' },
+        { value: 'Iedereen', label: 'het park is nu ook open voor wie niet bij een club sport' },
+      ],
+      quote:
+        'We hebben vooraf niet gedacht dat we zoveel kilo’s kunstgrasafval weer een nieuw leven konden geven.',
+      quoteAuthor: 'Jordy Kwaaitaal',
+      quoteRole: 'projectleider, SRO Kennemerland',
+      cta: 'Lees de volledige casefolder (pdf)',
+      imageAlt: 'Modulaire sportvloer met 3x3-basketbalveld op sportpark Onze Gezellen in Haarlem',
+    },
+    downloadsSection: {
+      heading: 'Downloads',
+      intro:
+        'Technische flyers en achtergrond voor beleidsmedewerkers, bestekschrijvers en ontwerpers.',
+      whitepaper: 'Whitepaper GreenMatter',
+      whitepaperNote: 'Achtergrond over circulair kunstgras en hergebruik',
+      casefolder: 'Casefolder Onze Gezellen',
+      casefolderNote: 'Aanpak, cijfers en interviews',
+      flyerNote: 'Flyer met productoverzicht',
+      bestekNote: 'Bestektekst voor aanbesteding en ontwerp',
+      previous: 'Vorige downloads',
+      next: 'Volgende downloads',
+    },
+    footer: {
+      tagline: 'Het sportpark van de toekomst is een initiatief van GreenMatter B.V.',
+      contactHeading: 'Contact',
+      officesHeading: 'Vestigingen',
+      linksHeading: 'Meer',
+      privacy: 'Privacyverklaring',
+      terms: 'Leveringsvoorwaarden',
+      website: 'greenmatter.nl',
+      whplay: 'W&H Play',
+    },
     quoteButton: 'Offerte aanvragen',
     quoteButtonWithCount: (count) =>
       `Offerte aanvragen • ${count} ${count === 1 ? 'product' : 'producten'}`,
@@ -77,7 +200,130 @@ Met vriendelijke groet,`,
     homeIntroMotto: 'MOVE MORE, WASTE LESS',
     solutionsHeading: 'Solutions in detail',
     solutionsIntro:
-      'Explore the solutions we see as a strong fit for the sport park of the future. Inspired by what you see? Select the solutions that interest you below and use the mail button. We make it easy: your email will already include the selected solutions.',
+      'Filter by the goal your municipality or club is working on. Add the solutions you like to "my sport park" and request information or a quote in one go.',
+    countdownExplain:
+      'The Dutch government wants the country to use half as many primary raw materials by 2030. What you build or replace now counts towards that.',
+    countdownInfoLabel: 'What does this deadline mean?',
+    countdownSr: (days) =>
+      `${days} days left until 2030, the year the Netherlands must use half as many primary raw materials.`,
+    skipLink: 'Skip to the solutions',
+    menu: 'Menu',
+    closeMenu: 'Close menu',
+    navLabel: 'Main menu',
+    navItems: {
+      oplossingen: 'Solutions',
+      cases: 'Cases',
+      downloads: 'Downloads',
+      contact: 'Contact',
+    },
+    basketEmpty: 'My sport park',
+    basketLabel: (count) =>
+      `${count} ${count === 1 ? 'solution' : 'solutions'} selected`,
+    basketAria: (count) =>
+      `My sport park: ${count} ${count === 1 ? 'solution' : 'solutions'} selected. Go to the request form.`,
+    addToPark: 'Add to my sport park',
+    addedToPark: 'In my sport park',
+    addToParkAria: (title) => `Add ${title} to my sport park`,
+    removeFromParkAria: (title) => `Remove ${title} from my sport park`,
+    readMoreAbout: (name) => `More about ${name}`,
+    readLessAbout: (name) => `Less about ${name}`,
+    goalsLabel: 'Filter by goal',
+    goalAll: 'All goals',
+    goals: {
+      klimaatadaptatie: 'Climate adaptation',
+      inclusie: 'Inclusion',
+      sport: 'Sport',
+    },
+    chipsLabel: 'Choose solutions for my sport park',
+    noResults: 'No solutions for this goal.',
+    impactHeading: 'Impact',
+    downloadsHeading: 'For specifications and design',
+    rainOn: 'Rain on',
+    rainOff: 'Rain off',
+    switchRainOn: 'Make it rain on the sport park',
+    switchRainOff: 'Stop the rain',
+    rainCaption:
+      'On the Ecoraster tiles, rainwater soaks straight into the ground. It does not run to the sewer and no puddles are left behind.',
+    rainMarker: 'Water soaks away',
+    form: {
+      heading: 'Request information or a quote',
+      intro:
+        'Fill in the form and GreenMatter will contact you within two working days. The solutions you selected are already included.',
+      selectionLabel: 'Selected solutions',
+      selectionEmpty:
+        'You have not selected anything yet. Tick what interests you below, or add solutions to "my sport park".',
+      name: 'Name',
+      email: 'Email address',
+      phone: 'Phone number (optional)',
+      organisation: 'Organisation',
+      role: 'I am a',
+      roles: {
+        gemeente: 'Municipality',
+        vereniging: 'Sports club',
+        architect: 'Architect or designer',
+        aannemer: 'Contractor or landscaper',
+        anders: 'Other',
+      },
+      phase: 'Project phase',
+      phases: {
+        orientatie: 'Exploring',
+        ontwerp: 'Sketch or design',
+        bestek: 'Specification or tender',
+        uitvoering: 'Construction',
+      },
+      choose: 'Choose one',
+      message: 'Notes (optional)',
+      messagePlaceholder: 'For example the location, the area in m² or your planning.',
+      submit: 'Send request',
+      sending: 'Sending…',
+      success:
+        'Thank you! Your request has been sent. GreenMatter will contact you within two working days.',
+      error:
+        'Sending failed. Your email program will now open with your request. Not working either? Email info@greenmatter.nl or call +31 (0)252 683 300.',
+      required: 'required',
+      privacy: 'We only use your details to answer your request. Read the',
+      privacyLink: 'privacy statement',
+    },
+    caseSection: {
+      eyebrow: 'Case',
+      heading: 'Onze Gezellen, Haarlem',
+      intro:
+        'Sport park Onze Gezellen used to have nothing but an asphalt slab. Commissioned by SRO Kennemerland, it now has a 3x3 basketball court, outdoor fitness, bicycle parking and a car park, made from recycled synthetic turf.',
+      stats: [
+        { value: '7,157 kg', label: 'of worn-out synthetic turf reused' },
+        { value: '4', label: 'facilities: 3x3 basketball, fitness, bike parking, car park' },
+        { value: 'Everyone', label: 'the park is now open to people who do not play at a club' },
+      ],
+      quote:
+        'We never expected to give so many kilos of synthetic turf waste a new life.',
+      quoteAuthor: 'Jordy Kwaaitaal',
+      quoteRole: 'project leader, SRO Kennemerland (translated)',
+      cta: 'Read the full case folder (pdf, Dutch)',
+      imageAlt: 'Modular sports floor with a 3x3 basketball court at sport park Onze Gezellen in Haarlem',
+    },
+    downloadsSection: {
+      heading: 'Downloads',
+      intro:
+        'Technical flyers and background for policy officers, specification writers and designers.',
+      whitepaper: 'GreenMatter whitepaper',
+      whitepaperNote: 'Background on circular synthetic turf and reuse',
+      casefolder: 'Case folder Onze Gezellen',
+      casefolderNote: 'Approach, figures and interviews (Dutch)',
+      flyerNote: 'Flyer with product overview (Dutch)',
+      bestekNote: 'Specification text for tenders and design (Dutch)',
+      previous: 'Previous downloads',
+      next: 'Next downloads',
+    },
+    footer: {
+      tagline: 'The sport park of the future is an initiative of GreenMatter B.V.',
+      contactHeading: 'Contact',
+      officesHeading: 'Offices',
+      linksHeading: 'More',
+      privacy: 'Privacy statement',
+      terms: 'Terms of delivery',
+      website: 'greenmatter.nl',
+      whplay: 'W&H Play',
+    },
     quoteButton: 'Request a quote',
     quoteButtonWithCount: (count) =>
       `Request a quote • ${count} ${count === 1 ? 'product' : 'products'}`,
@@ -106,7 +352,7 @@ const solutionTranslations = {
     title: 'Water engineering',
     description: 'Bank protection, retaining walls, access bridge, jetty',
     summary:
-      'We do not see water as a boundary, but as an opportunity. Circular water engineering solutions such as; canals, ponds and banks become valuable parts of the sport park of the future. They strengthen the connection between sport, nature and recreation, turning water into a place to experience, meet and unwind.',
+      'Timber bank protection rots and banks erode. With circular water engineering, ditches, ponds and banks become a strong part of the sport park instead. They connect sport, nature and recreation, turning water into a place to experience, meet and unwind.',
     benefits: [
       '[Bank protection](https://greenmatter.nl/en/solutions/river-bank-protection/) – A durable, low-maintenance bank finish that prevents erosion and lasts significantly longer than traditional timber thanks to circular synthetic turf material.',
       '[Retaining wall](https://greenmatter.nl/en/solutions/combi-pile-planking/) – A robust circular construction for stable watersides and managing height differences.',
@@ -119,7 +365,7 @@ const solutionTranslations = {
     title: 'Modular sports flooring',
     description: 'GreenMatter Ultimate, GreenMatter Ultimate Plus',
     summary: [
-      'A modern sport park is more than a place to train. It is a meeting place where young and old, beginners and advanced athletes, recreational users and top-level players can be active together.',
+      'A bare asphalt slab or an outdated pitch mostly attracts regular club members. A modular sports floor turns it into a meeting place where young and old, beginners and top athletes are active together.',
       'Thanks to the modular design, the floor can be tailored to the needs of the location and its users. Sports such as 3x3 basketball, padel, pickleball and indoor hockey can all be supported.',
       'The sports floor is low-maintenance and built to last. It creates a durable sports environment that combines flexibility, performance and inclusivity.',
     ],
@@ -132,7 +378,7 @@ const solutionTranslations = {
     title: 'GreenMatter decking boards',
     description: 'Decking board',
     summary: [
-      'The sport park of the future is more than a place for sport alone. Decking along the water creates attractive routes and places to stay, walk and enjoy the surroundings.',
+      'Timber decking gets slippery, splinters and rots. Decking along the water should invite people to walk, stay and enjoy the surroundings.',
       'With our decking boards, you create durable terraces, fishing piers and walking routes with a natural look. The boards are low-maintenance and resistant to intensive use and changing weather conditions.',
     ],
   },
@@ -140,7 +386,7 @@ const solutionTranslations = {
     title: 'GreenMatter fitness park',
     description: 'The GreenMatter Fitness Park',
     summary: [
-      'The sport park of the future is a place where everyone can get moving. Outdoor fitness equipment makes exercise accessible to a broad target group and contributes to a healthy, active living environment.',
+      'Many people want to exercise without joining a club. Outdoor fitness equipment makes exercise accessible to a broad target group and contributes to a healthy, active living environment.',
       'With the GreenMatter Fitness Park, you create a versatile outdoor training area where strength, condition and health come together.',
     ],
     benefits: [
@@ -159,7 +405,7 @@ const solutionTranslations = {
     title: 'GreenMatter side boards',
     description: 'Circular side boards',
     summary: [
-      'The strength of a future-proof sport park is often in the details. Side boards create a neat and durable boundary along sports fields and fencing.',
+      'Infill that washes off the pitch ends up in the ditch. Side boards keep it on the field, which limits the spread of microplastics, and create a neat, durable boundary along pitches and fencing.',
       'With our side board, you choose a circular solution designed to last for years. Unlike traditional timber edging, these circular boards do not rot and retain their shape and appearance.',
     ],
   },
@@ -168,7 +414,7 @@ const solutionTranslations = {
     description:
       'GreenMatter Ecoraster Bloxx, GreenMatter Ecoraster grass grids, GreenMatter Ecoraster XXL grass grids',
     summary: [
-      'In the sport park of the future, walking paths connect sports fields, meeting places and recreational zones. They create comfortable, accessible routes for everyone.',
+      'After a heavy shower, the paths on many sport parks are under water. Ecoraster paths let water through, so it soaks straight into the ground and no puddles remain.',
       'With our Ecoraster solutions, you create permeable, low-maintenance and durable paths. Rainwater can infiltrate directly into the soil, helping the sport park cope with extreme weather.',
     ],
     benefits: [
@@ -181,7 +427,7 @@ const solutionTranslations = {
     description:
       '2-bank picnic table, 4-bank picnic table, team table, mobile bench with backrest, planter',
     summary: [
-      'A future-proof sport park is not just about sport, but also about experience. The terrace is where matches are discussed, volunteers gather and supporters enjoy the view of the pitch.',
+      'Nobody stays after the match on a bare terrace full of puddles. Yet the terrace is where matches are discussed, volunteers gather and supporters enjoy the view of the pitch.',
       'By combining water-permeable paving, sustainable lighting, greenery and circular outdoor furniture, you create a comfortable meeting place with a premium appearance.',
     ],
     benefits: [
@@ -195,18 +441,19 @@ const solutionTranslations = {
   },
   speeltoestellen: {
     title: 'Play equipment',
-    description: 'W&H Play',
+    description: 'By [W&H Play](https://whplay.nl/)',
     summary: [
       'Sport starts with play. By encouraging children to climb, balance and discover from an early age, a foundation is created for lifelong movement.',
       'With durable W&H Play equipment, you create a safe and inviting play area where children can be active while families remain connected to the sport park.',
       'Click the button below for more information about W&H Play.',
     ],
+    buttonText: 'Go to W&H Play',
   },
   fietsenstalling: {
     title: 'Climate-adaptive bicycle parking',
     description: 'Bicycle parking system, solar lighting, Ecoraster grass grids',
     summary: [
-      'In the sport park of the future, sustainability starts on arrival. GreenMatter’s circular and climate-adaptive bicycle parking combines safe bicycle storage, water management and energy-efficient lighting in one concept.',
+      'Bikes parked all over the grounds cause nuisance and unsafe situations. GreenMatter’s circular and climate-adaptive bicycle parking combines safe bicycle storage, water management and solar lighting in one concept.',
       'By combining the bicycle parking system with solar lighting and Ecoraster grass grids, a safe and clear parking facility is created.',
     ],
     benefits: [
@@ -220,7 +467,7 @@ const solutionTranslations = {
     title: 'GreenMatter Solar',
     description: 'Our circular solar-powered lighting',
     summary: [
-      'In the sport park of the future, lighting plays an important role in safety, sustainability and usability. Solar lighting illuminates paths, parking areas and meeting places without a grid connection.',
+      'A dark path or car park feels unsafe in the evening, and running a cable to the grid is expensive. Solar lighting illuminates paths, parking areas and meeting places without a grid connection.',
       'This solution combines innovative technology with a minimal ecological footprint and makes it easy to install lighting in hard-to-reach locations.',
     ],
   },
@@ -229,7 +476,7 @@ const solutionTranslations = {
     description:
       'GreenMatter Ecoraster Bloxx, GreenMatter Ecoraster grass grids, solar lighting',
     summary: [
-      'In the sport park of the future, the parking area is more than a practical facility. It is a first impression that shows how sustainability and climate adaptation comes together.',
+      'An asphalt or brick car park sends rainwater to the sewer and heats up in summer. With GreenMatter parking solutions, rainwater soaks into the ground on site and the lighting runs entirely on solar power.',
       'By combining solar lighting with Ecoraster grass tiles, you create a low-maintenance parking area that reduces water nuisance, limits heat stress and keeps visitors safe in the evening.',
     ],
     benefits: [

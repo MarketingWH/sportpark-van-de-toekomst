@@ -45,6 +45,9 @@ function getYouTubeEmbedUrl(item, autoplay = false) {
 
   const params = new URLSearchParams({
     autoplay: autoplay ? '1' : '0',
+    cc_load_policy: '1',
+    cc_lang_pref: 'nl',
+    hl: 'nl',
     controls: '1',
     fs: '1',
     iv_load_policy: '3',
@@ -194,6 +197,8 @@ function MediaSlider({ media, title }) {
           playerVars: {
             autoplay: 1,
             controls: 1,
+            cc_lang_pref: 'nl',
+            cc_load_policy: 1,
             enablejsapi: 1,
             fs: 1,
             iv_load_policy: 3,

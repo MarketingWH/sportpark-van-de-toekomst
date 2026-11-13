@@ -1,6 +1,7 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { uiText } from '../data/translations';
+import RainCanvas from './RainCanvas';
 import styles from './TransitionSection.module.css';
 
 const COUNTDOWN_TARGET = new Date(2030, 0, 1, 0, 0, 0).getTime();
@@ -13,6 +14,8 @@ const DESKTOP_DAY_HEIGHT = 936;
 const DESKTOP_NIGHT_WIDTH = 5504;
 const DESKTOP_NIGHT_HEIGHT = 3072;
 const MOBILE_BREAKPOINT = '(max-width: 760px)';
+// Oplossingen met Ecoraster-tegels: hier zie je in de regenbui-modus het water wegzakken.
+const RAIN_INFILTRATION_IDS = new Set(['ecoraster-pad', 'terras', 'fietsenstalling', 'parkeerplaats']);
 const HERO_DAY_WEBP_SRC_SET =
   '/sportpark-photo-2026-05-19-1280.webp?v=1 1280w, /sportpark-photo-2026-05-19-1680.webp?v=1 1680w';
 const HERO_DAY_MOBILE_WEBP_SRC_SET =
@@ -119,9 +122,29 @@ function MoonIcon() {
   );
 }
 
+function RainIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 20 20">
+      <path
+        d="M5.6 11.2a3.6 3.6 0 0 1-.4-7.2 4.6 4.6 0 0 1 8.8 1.3 3 3 0 0 1 .4 5.9Z"
+        fill="currentColor"
+      />
+      <path
+        d="m6.4 13.6-1 2.4M10.2 13.6l-1 2.4M14 13.6l-1 2.4"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.6"
+      />
+    </svg>
+  );
+}
+
 function TransitionSection({
   dayImageSrc,
   isNightMode,
+  isRainMode = false,
+  onToggleRainMode,
   language = 'nl',
   mobileDayImageSrc,
   mobileNightImageSrc,
@@ -142,6 +165,33 @@ function TransitionSection({
   const vignetteRef = useRef(null);
   const outroShadeRef = useRef(null);
   const countdownRef = useRef(null);
+  const [isCountdownInfoOpen, setIsCountdownInfoOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isCountdownInfoOpen) {
+      return undefined;
+    }
+
+    const close = (event) => {
+      if (event.type === 'keydown' && event.key !== 'Escape') {
+        return;
+      }
+
+      if (event.type === 'pointerdown' && countdownRef.current?.contains(event.target)) {
+        return;
+      }
+
+      setIsCountdownInfoOpen(false);
+    };
+
+    document.addEventListener('pointerdown', close);
+    document.addEventListener('keydown', close);
+
+    return () => {
+      document.removeEventListener('pointerdown', close);
+      document.removeEventListener('keydown', close);
+    };
+  }, [isCountdownInfoOpen]);
   const themeControlsRef = useRef(null);
   const parkScrollCueRef = useRef(null);
   const homeScrollCueRef = useRef(null);
@@ -788,11 +838,14 @@ function TransitionSection({
 
             <div className={styles.topUi}>
               <div ref={countdownRef} className={styles.countdownBar}>
-                <span className={styles.countdownLabel}>
+                <span aria-hidden="true" className={styles.countdownLabel}>
                   {copy.countdownLabel}
                 </span>
+                <span className={styles.srOnly}>
+                  {copy.countdownSr(countdownParts[0]?.value ?? '')}
+                </span>
 
-                <div className={styles.countdownItems}>
+                <div aria-hidden="true" className={styles.countdownItems}>
                   {countdownParts.map((item) => (
                     <div key={item.label} className={styles.countdownItem}>
                       <span className={styles.countdownValue}>{item.value}</span>
@@ -800,6 +853,28 @@ function TransitionSection({
                     </div>
                   ))}
                 </div>
+
+                <button
+                  aria-controls="countdown-uitleg"
+                  aria-expanded={isCountdownInfoOpen}
+                  aria-label={copy.countdownInfoLabel}
+                  className={`${styles.countdownInfo} ${
+                    isCountdownInfoOpen ? styles.countdownInfoActive : ''
+                  }`}
+                  title={copy.countdownInfoLabel}
+                  type="button"
+                  onClick={() => setIsCountdownInfoOpen((value) => !value)}
+                >
+                  i
+                </button>
+
+                <p
+                  className={styles.countdownExplain}
+                  hidden={!isCountdownInfoOpen}
+                  id="countdown-uitleg"
+                >
+                  {copy.countdownExplain}
+                </p>
               </div>
 
               <div ref={themeControlsRef} className={styles.themeControls}>
@@ -832,8 +907,32 @@ function TransitionSection({
                 >
                   {isNightMode ? copy.solarOn : copy.solarOff}
                 </span>
+
+                {onToggleRainMode ? (
+                  <button
+                    aria-label={isRainMode ? copy.switchRainOff : copy.switchRainOn}
+                    aria-pressed={isRainMode}
+                    className={`${styles.rainToggle} ${isRainMode ? styles.rainToggleActive : ''}`}
+                    type="button"
+                    onClick={onToggleRainMode}
+                  >
+                    <RainIcon />
+                    <span>{isRainMode ? copy.rainOn : copy.rainOff}</span>
+                  </button>
+                ) : null}
               </div>
             </div>
+
+            {isRainMode ? (
+              <>
+                <div aria-hidden="true" className={styles.rainOverlay}>
+                  <RainCanvas reduceMotion={Boolean(reduceMotion)} />
+                </div>
+                <p className={styles.rainCaption} role="status">
+                  {copy.rainCaption}
+                </p>
+              </>
+            ) : null}
 
             <div
               ref={parkScrollCueRef}
@@ -914,6 +1013,13 @@ function TransitionSection({
                   >
                     <span className={styles.hotspotCore} />
                     <span className={styles.hotspotPulse} />
+                    {isRainMode && RAIN_INFILTRATION_IDS.has(hotspot.id) ? (
+                      <span aria-hidden="true" className={styles.rainMarker}>
+                        <span className={styles.rainRipple} />
+                        <span className={styles.rainRipple} />
+                        <span className={styles.rainMarkerLabel}>{copy.rainMarker}</span>
+                      </span>
+                    ) : null}
                   </button>
                 );
               })}

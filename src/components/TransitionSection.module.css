@@ -199,7 +199,7 @@
 }
 
 .homeIntroEyebrow {
-  color: #7e9f52;
+  color: #4d6b2a;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -229,7 +229,7 @@
 .homeIntroText p {
   margin: 0;
   color: rgba(23, 33, 29, 0.75);
-  font-size: clamp(0.88rem, 1.05vw, 0.98rem);
+  font-size: clamp(1rem, 1.1vw, 1.0625rem);
   line-height: 1.56;
 }
 
@@ -242,7 +242,7 @@
   background: rgba(246, 241, 232, 0.52);
   color: #0f3a21;
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 1rem;
   line-height: 1;
   cursor: pointer;
   box-shadow: inset 0 0 0 1px rgba(126, 159, 82, 0.12);
@@ -259,7 +259,7 @@
 }
 
 .scrollHint {
-  color: #7e9f52;
+  color: #4d6b2a;
   font-size: 0.86rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -668,7 +668,7 @@
 
 .popupLabel {
   color: rgba(234, 240, 227, 0.78);
-  font-size: 0.62rem;
+  font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -690,7 +690,7 @@
 
 .popupFooterLabel {
   color: rgba(238, 244, 233, 0.7);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -708,7 +708,7 @@
   color: #fffef9;
   cursor: pointer;
   font: inherit;
-  font-size: 0.84rem;
+  font-size: 0.9rem;
   font-weight: 600;
   text-align: right;
 }
@@ -721,7 +721,7 @@
 
 @media (max-width: 1500px) and (min-width: 761px), (max-height: 820px) and (min-width: 761px) {
   .topUi {
-    top: 0.9rem;
+    top: 4.4rem;
     left: 1rem;
     right: 1rem;
     grid-template-columns: auto minmax(0, 1fr);
@@ -824,7 +824,7 @@
   }
 
   .homeIntroText p {
-    font-size: 0.82rem;
+    font-size: 1rem;
     line-height: 1.42;
   }
 }
@@ -911,7 +911,7 @@
   }
 
   .homeIntroText p {
-    font-size: 0.88rem;
+    font-size: 1rem;
   }
 
   .scrollCue {
@@ -1123,7 +1123,7 @@
   }
 
   .homeIntroText p {
-    font-size: 0.8rem;
+    font-size: 1rem;
     line-height: 1.42;
   }
 
@@ -1170,13 +1170,13 @@
   }
 
   .popupLink {
-    font-size: 0.8rem;
+    font-size: 0.86rem;
     justify-content: flex-end;
     text-align: right;
   }
 
   .popupFooterLabel {
-    font-size: 0.66rem;
+    font-size: 0.74rem;
   }
 
   .closeButton {
@@ -1278,5 +1278,456 @@
 
   .popupLink {
     font-size: 0.78rem;
+  }
+}
+
+
+/* --- Upgrade nov 2026 --- */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.hotspot:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px #17321e;
+}
+
+.homeIntroToggle:focus-visible,
+.themeToggle:focus-visible,
+.rainToggle:focus-visible,
+.popupLink:focus-visible,
+.closeButton:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px #17321e;
+}
+
+.homeIntroToggle:focus-visible {
+  outline-color: #2f69af;
+  box-shadow: none;
+}
+
+/* Regenbui-modus */
+.rainToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 3rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid rgba(255, 248, 235, 0.16);
+  border-radius: 999px;
+  background: rgba(18, 32, 27, 0.58);
+  box-shadow: 0 1rem 2rem rgba(20, 25, 18, 0.16);
+  color: rgba(244, 238, 228, 0.94);
+  font-size: 0.92rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  backdrop-filter: blur(14px);
+  transition: background-color 200ms ease;
+}
+
+.rainToggle svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.rainToggleActive {
+  background: rgba(47, 105, 175, 0.86);
+  color: #ffffff;
+}
+
+.rainOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  /* Donkere, grijze regenlucht: minder verzadigd en wat donkerder */
+  background:
+    linear-gradient(180deg, rgba(52, 64, 78, 0.42) 0%, rgba(52, 64, 78, 0.22) 45%, rgba(40, 50, 62, 0.3) 100%);
+  animation: rainFadeIn 0.6s ease-out;
+}
+
+.rainOverlay::before {
+  /* Haalt wat kleur uit het park, zoals bij een grijze regenlucht */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgb(120, 128, 136);
+  mix-blend-mode: saturation;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.rainOverlay canvas {
+  position: relative;
+  z-index: 1;
+}
+
+.rainOverlay::after {
+  /* Lichte nevel aan de horizon */
+  content: '';
+  position: absolute;
+  inset: 0 0 55% 0;
+  background: linear-gradient(180deg, rgba(200, 210, 222, 0.28), rgba(200, 210, 222, 0));
+  pointer-events: none;
+}
+
+@keyframes rainFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.rainCaption {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(4.5rem, 10vh, 6rem);
+  z-index: 6;
+  width: min(36rem, calc(100% - 2rem));
+  margin: 0;
+  padding: 0.75rem 1.1rem;
+  border-radius: 1rem;
+  background: rgba(16, 46, 82, 0.88);
+  color: #ffffff;
+  font-size: 1rem;
+  line-height: 1.45;
+  text-align: center;
+  transform: translateX(-50%);
+  box-shadow: 0 1rem 2rem rgba(10, 20, 30, 0.25);
+}
+
+.rainMarker {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.rainRipple {
+  position: absolute;
+  inset: -0.6rem;
+  border: 2px solid rgba(120, 190, 255, 0.95);
+  border-radius: 50%;
+  animation: rainRipple 1.8s ease-out infinite;
+}
+
+.rainRipple + .rainRipple {
+  animation-delay: 0.9s;
+}
+
+@keyframes rainRipple {
+  from { transform: scale(0.5); opacity: 1; }
+  to { transform: scale(2.4); opacity: 0; }
+}
+
+.rainMarkerLabel {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 50%;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(16, 46, 82, 0.9);
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+@media (max-width: 1500px) and (min-width: 761px), (max-height: 820px) and (min-width: 761px) {
+  .themeControls {
+    grid-row: 1;
+  }
+
+  .countdownBar {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: start;
+  }
+
+  .rainToggle {
+    min-height: 2.62rem;
+    padding: 0.5rem 0.78rem;
+    font-size: 0.84rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .topUi {
+    top: calc(max(0.75rem, env(safe-area-inset-top)) + 3rem);
+    right: 0.75rem;
+  }
+
+  .themeControls {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .rainToggle {
+    min-height: 2.45rem;
+    padding: 0.45rem 0.7rem;
+    font-size: 0.76rem;
+  }
+
+  .rainCaption {
+    bottom: 4rem;
+    font-size: 0.9rem;
+  }
+
+  .rainMarkerLabel {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rainRipple {
+    animation: none;
+  }
+
+  .rainRipple {
+    transform: scale(1.6);
+    opacity: 0.8;
+  }
+}
+
+/* Infoknop bij de countdown: uitleg pas tonen als iemand erom vraagt */
+.countdownInfo {
+  flex: 0 0 auto;
+  display: inline-grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  margin-left: 0.1rem;
+  border: 1px solid rgba(244, 238, 228, 0.35);
+  border-radius: 50%;
+  background: rgba(244, 239, 230, 0.12);
+  color: #f4efe6;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background-color 180ms ease;
+}
+
+.countdownInfo:hover,
+.countdownInfoActive {
+  background: rgba(244, 239, 230, 0.28);
+}
+
+.countdownInfo:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.countdownExplain {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 8;
+  width: min(26rem, calc(100vw - 2rem));
+  margin: 0;
+  padding: 0.8rem 1rem;
+  border-radius: 1rem;
+  background: rgba(18, 32, 27, 0.94);
+  color: #f4efe6;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  text-align: left;
+  box-shadow: 0 1rem 2rem rgba(10, 16, 12, 0.3);
+  pointer-events: auto;
+}
+
+.countdownExplain[hidden] {
+  display: none;
+}
+
+/* Bovenbalk park op desktop/tablet: knoppen en een compacte countdown op één rij,
+   links van het vaste menu. Past het niet, dan loopt de countdown door naar een
+   tweede rij. */
+@media (min-width: 761px) {
+  .topUi {
+    top: clamp(1rem, 2vw, 1.45rem);
+    left: clamp(1rem, 2vw, 1.45rem);
+    right: calc(clamp(1rem, 2vw, 1.45rem) + 27rem);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+  }
+
+  .themeControls {
+    order: 1;
+    flex: 0 0 auto;
+  }
+
+  .countdownBar {
+    order: 2;
+    flex: 0 1 auto;
+    gap: 0.4rem;
+    min-height: 2.75rem;
+    padding: 0.22rem 0.3rem 0.22rem 0.8rem;
+  }
+
+  .countdownLabel {
+    max-width: none;
+    overflow: visible;
+    font-size: 0.9rem;
+  }
+
+  .countdownItems {
+    gap: 0.25rem;
+  }
+
+  .countdownItem {
+    min-width: 0;
+    min-height: 2.2rem;
+    padding: 0.38rem 0.62rem;
+    gap: 0.3rem;
+  }
+
+  .countdownValue,
+  .countdownUnit {
+    font-size: 0.86rem;
+  }
+}
+
+/* Smallere desktops/tablets: rij onder het menu, over de volle breedte */
+@media (max-width: 1279px) and (min-width: 761px) {
+  .topUi {
+    top: calc(clamp(1rem, 2vw, 1.45rem) + 3.3rem);
+    right: clamp(1rem, 2vw, 1.45rem);
+  }
+}
+
+/* Uitlijning met het vaste menu rechtsboven: zelfde bovenrand (1rem),
+   zelfde hoogte (2.75rem) en dezelfde tekstgrootte als die knoppen. */
+@media (min-width: 761px) {
+  .topUi {
+    top: 1rem;
+    left: 1rem;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .themeControls {
+    gap: 0.45rem;
+  }
+
+  .themeToggle {
+    width: 5.1rem;
+    height: 2.75rem;
+    padding: 0.26rem;
+  }
+
+  .themeToggleThumb {
+    top: 0.26rem;
+    left: 0.26rem;
+    width: calc(50% - 0.26rem);
+    height: calc(100% - 0.52rem);
+  }
+
+  .themeToggleNight .themeToggleThumb {
+    transform: translateX(2.2rem);
+  }
+
+  .themeStatus,
+  .rainToggle {
+    min-height: 2.75rem;
+    height: 2.75rem;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .countdownBar {
+    height: 2.75rem;
+    min-height: 2.75rem;
+    padding: 0 0.3rem 0 0.85rem;
+  }
+
+  .countdownLabel {
+    font-size: 0.95rem;
+  }
+
+  .countdownItem {
+    min-height: 0;
+    height: 2.15rem;
+    padding: 0 0.62rem;
+  }
+
+  .countdownValue,
+  .countdownUnit {
+    font-size: 0.9rem;
+  }
+
+  .countdownInfo {
+    width: 2.15rem;
+    height: 2.15rem;
+  }
+}
+
+@media (max-width: 1279px) and (min-width: 761px) {
+  .topUi {
+    top: calc(1rem + 2.75rem + 0.45rem);
+  }
+}
+
+/* Minder ronde knoppen in het park */
+.themeToggle,
+.themeStatus,
+.rainToggle,
+.countdownBar,
+.homeIntroToggle,
+.popupLink {
+  border-radius: var(--button-radius);
+}
+
+.themeToggleThumb,
+.countdownItem,
+.countdownInfo {
+  border-radius: var(--button-radius-inner);
+}
+
+@media (max-width: 760px) {
+  .countdownBar {
+    border-radius: var(--button-radius);
+  }
+
+  .countdownItem {
+    border-radius: var(--button-radius-inner);
+  }
+}
+
+/* Minder ronde tekstblokken in het park */
+.homeIntroCard,
+.popup {
+  border-radius: var(--card-radius);
+}
+
+.popupTitleBadge,
+.rainCaption,
+.countdownExplain {
+  border-radius: var(--card-radius-inner);
+}
+
+.rainMarkerLabel {
+  border-radius: var(--button-radius-inner);
+}
+
+@media (max-width: 860px) {
+  .homeIntroCard,
+  .popup {
+    border-radius: var(--card-radius);
   }
 }

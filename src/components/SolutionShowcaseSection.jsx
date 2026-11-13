@@ -41,9 +41,23 @@ const mobileFilterLabelsEn = {
   'solar-woodle': 'Solar',
 };
 
-const whitepaperUrl =
+const goalIds = ['klimaatadaptatie', 'inclusie', 'sport'];
+const brandPrefixes = ['GreenMatter', 'W&H', 'Ecoraster', 'Solar', 'Dug'];
+
+export function getShortSolutionName(solution, language) {
+  const labels = language === 'en' ? mobileFilterLabelsEn : mobileFilterLabels;
+  const name = labels[solution.id] ?? solution.title;
+
+  if (brandPrefixes.some((prefix) => name.startsWith(prefix))) {
+    return name;
+  }
+
+  return name.charAt(0).toLowerCase() + name.slice(1);
+}
+
+export const whitepaperUrl =
   'https://greenmatter.nl/wp-content/uploads/2025/01/Whitepaper-GreenMatter.pdf';
-const casefolderUrl = '/downloads/casefolder-onze-gezellen-2026.pdf';
+export const casefolderUrl = '/downloads/casefolder-onze-gezellen-2026.pdf';
 
 function renderInlineText(content, keyPrefix = 'inline') {
   if (typeof content !== 'string') {
@@ -150,14 +164,15 @@ const expandTransition = {
 function SolutionShowcaseSection({
   activeSolutionId,
   language = 'nl',
-  onSelectSolution,
+  onToggleSelected,
+  selectedIds = [],
   solutions,
 }) {
   const copy = uiText[language] ?? uiText.nl;
   const compactFilterLabels =
     language === 'en' ? mobileFilterLabelsEn : mobileFilterLabels;
   const [expandedSolutionId, setExpandedSolutionId] = useState(null);
-  const [selectedFilters, setSelectedFilters] = useState([]);
+  const [activeGoal, setActiveGoal] = useState(null);
   const [isDesktopNavDragging, setIsDesktopNavDragging] = useState(false);
   const solutionNavRef = useRef(null);
   const desktopNavDragRef = useRef({
@@ -176,67 +191,17 @@ function SolutionShowcaseSection({
     );
   };
 
-  const toggleFilter = (solutionId) => {
-    setSelectedFilters((currentValue) =>
-      currentValue.includes(solutionId)
-        ? currentValue.filter((value) => value !== solutionId)
-        : [...currentValue, solutionId],
-    );
-  };
-
   const filteredSolutions = useMemo(() => {
-    if (selectedFilters.length === 0) {
+    if (!activeGoal) {
       return solutions;
     }
 
-    return solutions.filter((solution) => selectedFilters.includes(solution.id));
-  }, [selectedFilters, solutions]);
+    return solutions.filter((solution) => solution.goals?.includes(activeGoal));
+  }, [activeGoal, solutions]);
 
-  const selectedSolutionsForMail = useMemo(() => {
-    if (selectedFilters.length === 0) {
-      return solutions;
-    }
-
-    return solutions.filter((solution) => selectedFilters.includes(solution.id));
-  }, [selectedFilters, solutions]);
-
-  const mailSelectionHref = useMemo(() => {
-    if (selectedSolutionsForMail.length === 0) {
-      return '#';
-    }
-
-    const onderwerp = encodeURIComponent(copy.quoteSubject);
-    const geselecteerdeProducten = selectedSolutionsForMail.map(
-      (solution) => solution.title,
-    );
-
-    const bericht = encodeURIComponent(
-      `Hallo GreenMatter,
-
-Ik ben geïnteresseerd in de volgende producten:
-
-- ${geselecteerdeProducten.join('\n- ')}
-
-Kunnen jullie meer informatie sturen?
-
-Met vriendelijke groet,`,
-    );
-
-    return `mailto:info@greenmatter.nl?subject=${onderwerp}&body=${encodeURIComponent(
-      copy.quoteBody(geselecteerdeProducten),
-    )}`;
-  }, [copy, selectedSolutionsForMail]);
-
-  const mailCtaText =
-    selectedFilters.length > 0
-      ? `Offerte aanvragen • ${selectedSolutionsForMail.length} ${
-          selectedSolutionsForMail.length === 1 ? 'product' : 'producten'
-        }`
-      : 'Offerte aanvragen';
-
-  const localizedMailCtaText =
-    selectedFilters.length > 0
-      ? copy.quoteButtonWithCount(selectedSolutionsForMail.length)
+  const quoteCtaText =
+    selectedIds.length > 0
+      ? copy.quoteButtonWithCount(selectedIds.length)
       : copy.quoteButton;
 
   const handleDesktopFilterWheel = (event) => {
@@ -348,14 +313,6 @@ Met vriendelijke groet,`,
   }, [expandedSolutionId, filteredSolutions]);
 
   useEffect(() => {
-    if (!activeSolutionId || selectedFilters.length === 0 || selectedFilters.includes(activeSolutionId)) {
-      return;
-    }
-
-    setSelectedFilters((currentValue) => [...currentValue, activeSolutionId]);
-  }, [activeSolutionId, selectedFilters]);
-
-  useEffect(() => {
     const handleMouseMove = (event) => {
       moveDesktopNavDrag(event);
     };
@@ -374,23 +331,44 @@ Met vriendelijke groet,`,
   }, []);
 
   return (
-    <section className={styles.section}>
+    <section aria-labelledby="oplossingen-heading" className={styles.section} id="oplossingen">
       <div className={styles.intro}>
         <div className={styles.introCopy}>
-          <h2>{copy.solutionsHeading}</h2>
+          <h2 id="oplossingen-heading" tabIndex={-1}>{copy.solutionsHeading}</h2>
           <p>{copy.solutionsIntro}</p>
-          <p hidden>
-            Bekijk hier op je gemak al onze oplossingen die wij passend vinden voor
-            het sportpark van de toekomst. Ben je geïnspireerd geraakt? Klik dan
-            hieronder de oplossingen aan die jou interesseren en gebruik daarna de
-            mailknop. We maken het je makkelijk: er staat meteen een mailtje met
-            jouw aangeklikte oplossingen klaar.
-          </p>
+        </div>
+
+        <div aria-label={copy.goalsLabel} className={styles.goalFilter} role="group">
+          <span aria-hidden="true" className={styles.goalFilterLabel}>
+            {copy.goalsLabel}
+          </span>
+          <button
+            aria-pressed={activeGoal === null}
+            className={`${styles.goalChip} ${activeGoal === null ? styles.goalChipActive : ''}`}
+            type="button"
+            onClick={() => setActiveGoal(null)}
+          >
+            {copy.goalAll}
+          </button>
+          {goalIds.map((goalId) => (
+            <button
+              key={goalId}
+              aria-pressed={activeGoal === goalId}
+              className={`${styles.goalChip} ${activeGoal === goalId ? styles.goalChipActive : ''}`}
+              type="button"
+              onClick={() => setActiveGoal((current) => (current === goalId ? null : goalId))}
+            >
+              <span aria-hidden="true" className={`${styles.goalDot} ${styles[`goal_${goalId}`] ?? ''}`} />
+              {copy.goals[goalId]}
+            </button>
+          ))}
         </div>
 
         <div className={styles.solutionNavBar}>
           <div
             ref={solutionNavRef}
+            aria-label={copy.chipsLabel}
+            role="group"
             className={`${styles.solutionNav} ${isDesktopNavDragging ? styles.solutionNavDragging : ''}`}
             onClickCapture={handleDesktopNavClickCapture}
             onMouseDown={startDesktopNavDrag}
@@ -404,11 +382,11 @@ Met vriendelijke groet,`,
             {solutions.map((solution) => (
               <button
                 key={solution.id}
-                aria-pressed={selectedFilters.includes(solution.id)}
-                className={`${styles.solutionChip} ${selectedFilters.includes(solution.id) ? styles.solutionChipActive : ''}`}
+                aria-pressed={selectedIds.includes(solution.id)}
+                className={`${styles.solutionChip} ${selectedIds.includes(solution.id) ? styles.solutionChipActive : ''}`}
                 title={solution.title}
                 type="button"
-                onClick={() => toggleFilter(solution.id)}
+                onClick={() => onToggleSelected(solution.id)}
               >
                 <span className={styles.chipLabelDesktop}>{solution.title}</span>
                 <span className={styles.chipLabelMobile}>
@@ -419,8 +397,8 @@ Met vriendelijke groet,`,
           </div>
 
           <div className={styles.desktopCtaRow}>
-            <a className={styles.mailChip} href={mailSelectionHref}>
-              {localizedMailCtaText}
+            <a className={styles.mailChip} href="#contact">
+              {quoteCtaText}
             </a>
 
             <a
@@ -443,8 +421,8 @@ Met vriendelijke groet,`,
         </div>
 
         <div className={styles.mobileCtaGroup}>
-          <a className={styles.mobileMailCta} href={mailSelectionHref}>
-            {localizedMailCtaText}
+          <a className={styles.mobileMailCta} href="#contact">
+            {quoteCtaText}
           </a>
 
           <a
@@ -467,16 +445,18 @@ Met vriendelijke groet,`,
       </div>
 
       <div className={styles.solutionList}>
-        {filteredSolutions.map((solution, index) => {
+        {filteredSolutions.length === 0 ? (
+          <p className={styles.noResults}>{copy.noResults}</p>
+        ) : null}
+        {filteredSolutions.map((solution) => {
+          const index = solutions.indexOf(solution);
+          const isSelected = selectedIds.includes(solution.id);
+          const shortName = getShortSolutionName(solution, language);
           const isExpanded = expandedSolutionId === solution.id;
           const detailsId = `solution-details-${solution.id}`;
           const summaryParagraphs = getSummaryParagraphs(solution.summary);
           const previewSummaryParagraphs = summaryParagraphs.slice(0, 1);
           const expandedSummaryParagraphs = summaryParagraphs.slice(1);
-          const resolvedButtonText =
-            typeof solution.buttonText === 'string' && solution.buttonText.trim()
-              ? solution.buttonText.trim()
-              : copy.defaultProductButton;
           const hasPossibleSolutions =
             solutionsWithPossibleSolutions.has(solution.id) &&
             !(language === 'en' && solution.id === 'speeltoestellen') &&
@@ -484,6 +464,33 @@ Met vriendelijke groet,`,
             solution.benefits.length > 0;
           const hasExpandableContent =
             expandedSummaryParagraphs.length > 0 || hasPossibleSolutions;
+
+          const parkButton = (
+            <button
+              aria-label={
+                isSelected
+                  ? copy.removeFromParkAria(solution.title)
+                  : copy.addToParkAria(solution.title)
+              }
+              aria-pressed={isSelected}
+              className={`${styles.addButton} ${isSelected ? styles.addButtonActive : ''}`}
+              type="button"
+              onClick={() => onToggleSelected(solution.id)}
+            >
+              <span aria-hidden="true" className={styles.addButtonIcon}>
+                {isSelected ? '✓' : '+'}
+              </span>
+              {isSelected ? copy.addedToPark : copy.addToPark}
+            </button>
+          );
+
+          // Na het toevoegen direct door kunnen naar het aanvraagformulier
+          const quoteLink = isSelected ? (
+            <a className={styles.quoteLink} href="#contact">
+              {copy.quoteButton}
+              <span aria-hidden="true"> →</span>
+            </a>
+          ) : null;
 
           return (
             <article
@@ -501,6 +508,16 @@ Met vriendelijke groet,`,
                     {copy.hotspotLabel} {String(index + 1).padStart(2, '0')}
                   </span>
                   <h3>{solution.title}</h3>
+                  {solution.goals?.length ? (
+                    <ul aria-label={copy.goalsLabel} className={styles.goalTags}>
+                      {solution.goals.map((goalId) => (
+                        <li key={goalId} className={styles.goalTag}>
+                          <span aria-hidden="true" className={`${styles.goalDot} ${styles[`goal_${goalId}`] ?? ''}`} />
+                          {copy.goals[goalId]}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
                   <p className={styles.lead}>
                     {renderInlineText(solution.description, `${solution.id}-lead`)}
                   </p>
@@ -518,16 +535,38 @@ Met vriendelijke groet,`,
                     ))}
                   </div>
 
-                  {!isExpanded && hasExpandableContent ? (
-                    <button
-                      aria-controls={detailsId}
-                      aria-expanded={false}
-                      className={styles.expandButton}
-                      type="button"
-                      onClick={(event) => toggleSolutionContent(solution.id, event)}
-                    >
-                      {copy.readMore}
-                    </button>
+                  {solution.impact?.length ? (
+                    <div className={styles.impactBlock}>
+                      <h4>{copy.impactHeading}</h4>
+                      <dl className={styles.impactList}>
+                        {solution.impact.map((item) => (
+                          <div key={item.label}>
+                            <dt>{item.value}</dt>
+                            <dd>{item.label}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                    </div>
+                  ) : null}
+
+                  {/* Uitgeklapt staan deze knoppen onderaan, in plaats van de oude productlink */}
+                  {!isExpanded || !hasExpandableContent ? (
+                  <div className={styles.cardActions}>
+                    {parkButton}
+                    {quoteLink}
+
+                    {hasExpandableContent ? (
+                      <button
+                        aria-controls={detailsId}
+                        aria-expanded={false}
+                        className={styles.expandButton}
+                        type="button"
+                        onClick={(event) => toggleSolutionContent(solution.id, event)}
+                      >
+                        {copy.readMoreAbout(shortName)}
+                      </button>
+                    ) : null}
+                  </div>
                   ) : null}
 
                   <AnimatePresence initial={false}>
@@ -581,17 +620,31 @@ Met vriendelijke groet,`,
                             </div>
                           ) : null}
 
+                          {solution.downloads?.length ? (
+                            <div className={styles.benefitBlock}>
+                              <h4>{copy.downloadsHeading}</h4>
+                              <ul className={styles.downloadList}>
+                                {solution.downloads.map((download) => (
+                                  <li key={download.url}>
+                                    <a
+                                      className={styles.inlineLink}
+                                      href={download.url}
+                                      rel="noreferrer"
+                                      target="_blank"
+                                    >
+                                      {download.label ?? `Flyer ${shortName} (pdf)`}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ) : null}
+
                           <div className={styles.actionsRow}>
-                            {solution.url ? (
-                              <a
-                                className={styles.externalLink}
-                                href={solution.url}
-                                rel="noreferrer"
-                                target="_blank"
-                              >
-                                {resolvedButtonText}
-                              </a>
-                            ) : null}
+                            <div className={styles.cardActions}>
+                              {parkButton}
+                              {quoteLink}
+                            </div>
 
                             <button
                               aria-controls={detailsId}
@@ -600,7 +653,7 @@ Met vriendelijke groet,`,
                               type="button"
                               onClick={(event) => toggleSolutionContent(solution.id, event)}
                             >
-                              {copy.readLess}
+                              {copy.readLessAbout(shortName)}
                             </button>
                           </div>
                         </motion.div>

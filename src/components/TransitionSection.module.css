@@ -1362,9 +1362,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: rgb(120, 128, 136);
-  mix-blend-mode: saturation;
-  opacity: 0.35;
+  background: rgba(120, 130, 142, 0.16);
   pointer-events: none;
 }
 
@@ -1400,7 +1398,7 @@
   color: #ffffff;
   font-size: 1rem;
   line-height: 1.45;
-  text-align: center;
+  text-align: left;
   transform: translateX(-50%);
   box-shadow: 0 1rem 2rem rgba(10, 20, 30, 0.25);
 }
@@ -1730,4 +1728,117 @@
   .popup {
     border-radius: var(--card-radius);
   }
+}
+
+/* --- Zonsondergang bij de solar-knop ---
+   De dagfoto blijft staan en wordt geleidelijk donkerder, een warme gloed
+   trekt over het park en daarna komt de nachtfoto met verlichting op. */
+/* Dimmen gebeurt met een overlay (alleen opacity) in plaats van een filter */
+.dayDim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(20, 28, 58, 0.62), rgba(10, 16, 36, 0.55));
+  opacity: 0;
+  transition: opacity 0.9s cubic-bezier(0.45, 0, 0.25, 1);
+  will-change: opacity;
+}
+
+.dayDimOn {
+  opacity: 1;
+}
+
+/* Terug naar dag: nachtfoto rustig weg */
+.nightLayer {
+  transition: opacity 0.9s cubic-bezier(0.45, 0, 0.25, 1);
+}
+
+/* Naar nacht: nachtfoto komt pas op na de gloed */
+.nightLayer.parkImageLayerVisible {
+  transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+}
+
+.skyTransition {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.toNight {
+  /* Blauwe uur: koele blauwpaarse schemer in plaats van oranje */
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(170, 150, 220, 0.55), rgba(170, 150, 220, 0) 60%),
+    linear-gradient(180deg, rgba(96, 104, 186, 0.6) 0%, rgba(58, 82, 150, 0.55) 50%, rgba(26, 40, 86, 0.6) 100%);
+  animation: sunset 1.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.toDay {
+  /* Ochtend: zacht lichtblauw met een vleugje warm licht */
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 236, 214, 0.55), rgba(255, 236, 214, 0) 60%),
+    linear-gradient(180deg, rgba(186, 214, 245, 0.5) 0%, rgba(220, 234, 248, 0.25) 60%, rgba(255, 255, 255, 0) 100%);
+  animation: sunrise 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes sunset {
+  0% { opacity: 0; }
+  30% { opacity: 1; }
+  65% { opacity: 0.65; }
+  100% { opacity: 0; }
+}
+
+@keyframes sunrise {
+  0% { opacity: 0; }
+  35% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skyTransition {
+    display: none;
+  }
+
+  .dayLayer .parkImage,
+  .dayLayerDimmed .parkImage,
+  .nightLayer,
+  .nightLayer.parkImageLayerVisible {
+    transition-duration: 0.3s;
+    transition-delay: 0s;
+  }
+}
+
+/* --- Prestaties dag/nacht + regen --- */
+.nightLayer,
+.skyTransition,
+.rainOverlay {
+  will-change: opacity;
+}
+
+.countdownBar,
+.countdownItem,
+.themeToggle,
+.themeStatus,
+.rainToggle,
+.countdownExplain,
+.rainCaption {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.countdownBar,
+.themeStatus,
+.rainToggle,
+.themeToggle {
+  background-color: rgba(18, 32, 27, 0.78);
+}
+
+.themeToggleNight {
+  background-color: rgba(11, 18, 29, 0.82);
+}
+
+.rainToggleActive {
+  background-color: rgba(47, 105, 175, 0.92);
 }

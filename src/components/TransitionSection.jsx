@@ -548,6 +548,33 @@ function TransitionSection({
     return undefined;
   }, [isNightMode, shouldLoadNightAssets]);
 
+  // Nachtfoto alvast op de achtergrond laden, zodat de zonsondergang direct
+  // vloeiend kan beginnen zodra iemand op de solar-knop klikt.
+  useEffect(() => {
+    if (shouldLoadNightAssets) {
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => setShouldLoadNightAssets(true), 2500);
+    return () => window.clearTimeout(timeoutId);
+  }, [shouldLoadNightAssets]);
+
+  // Zonsondergang / zonsopgang: bij elke wissel speelt een kleuroverlay af
+  const [skyTransition, setSkyTransition] = useState(null);
+  const previousNightModeRef = useRef(isNightMode);
+
+  useEffect(() => {
+    if (previousNightModeRef.current === isNightMode) {
+      return;
+    }
+
+    previousNightModeRef.current = isNightMode;
+    setSkyTransition((current) => ({
+      key: (current?.key ?? 0) + 1,
+      direction: isNightMode ? 'toNight' : 'toDay',
+    }));
+  }, [isNightMode]);
+
   useEffect(() => {
     if (typeof window === 'undefined') {
       return undefined;
@@ -736,10 +763,13 @@ function TransitionSection({
             className={styles.parkReveal}
           >
             <div ref={imageStageRef} className={styles.parkImageStage}>
+              {/* De dagfoto blijft altijd staan en wordt 's avonds gedimd; de
+                  nachtfoto loopt er geleidelijk overheen. Zo zakt het beeld
+                  nooit tussendoor weg. */}
               <div
-                className={`${styles.parkImageLayer} ${
-                  !isNightMode ? styles.parkImageLayerVisible : ''
-                }`}
+                className={`${styles.parkImageLayer} ${styles.parkImageLayerVisible} ${
+                  styles.dayLayer
+                } ${isNightMode ? styles.dayLayerDimmed : ''}`}
               >
                 <picture>
                   {mobileDayImageSrc ? (
@@ -779,8 +809,14 @@ function TransitionSection({
                 </picture>
               </div>
 
+              {/* Dimlaag voor de schemer: alleen opacity, dus licht voor de browser */}
               <div
-                className={`${styles.parkImageLayer} ${
+                aria-hidden="true"
+                className={`${styles.dayDim} ${isNightMode ? styles.dayDimOn : ''}`}
+              />
+
+              <div
+                className={`${styles.parkImageLayer} ${styles.nightLayer} ${
                   isNightMode ? styles.parkImageLayerVisible : ''
                 }`}
               >
@@ -815,7 +851,7 @@ function TransitionSection({
                       data-pin-no-hover="true"
                       data-pin-nopin="true"
                       height={DESKTOP_NIGHT_HEIGHT}
-                      loading="lazy"
+                      loading="eager"
                       nopin="nopin"
                       src="/sportpark-photo-night-2026-05-19-1920.jpg?v=1"
                       sizes="(max-width: 760px) 82vw, 100vw"
@@ -824,6 +860,14 @@ function TransitionSection({
                   </picture>
                 ) : null}
               </div>
+
+              {skyTransition ? (
+                <div
+                  key={skyTransition.key}
+                  aria-hidden="true"
+                  className={`${styles.skyTransition} ${styles[skyTransition.direction]}`}
+                />
+              ) : null}
             </div>
 
             <div

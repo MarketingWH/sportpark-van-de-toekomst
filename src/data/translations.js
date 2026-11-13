@@ -70,7 +70,7 @@ export const uiText = {
     switchRainOn: 'Laat het regenen op het sportpark',
     switchRainOff: 'Stop de regenbui',
     rainCaption:
-      'Op de Ecoraster-tegels zakt het regenwater direct de grond in. Het loopt niet naar het riool en er blijven geen plassen staan.',
+      'Op de Ecoraster-tegels zakt het regenwater direct de grond in, zo blijven er geen plassen staan bij hevige regenbuien.',
     rainMarker: 'Water zakt weg',
     form: {
       heading: 'Informatie of offerte aanvragen',
@@ -243,7 +243,7 @@ Met vriendelijke groet,`,
     switchRainOn: 'Make it rain on the sport park',
     switchRainOff: 'Stop the rain',
     rainCaption:
-      'On the Ecoraster tiles, rainwater soaks straight into the ground. It does not run to the sewer and no puddles are left behind.',
+      'On the Ecoraster tiles, rainwater soaks straight into the ground, so no puddles are left behind during heavy showers.',
     rainMarker: 'Water soaks away',
     form: {
       heading: 'Request information or a quote',
